@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>정보보안 학습 자료 | INHYUK PI</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --p:#1a2540;--a:#2d5be3;--al:#e8eeff;
+  --g:#1a7a4a;--gl:#edf7f2;
+  --bd:#dde3ec;--bg:#fff;--tx:#1c2331;--tm:#5a6478;
+  --g0:#f8f9fa;--g1:#f0f2f5;
+  --sans:'Noto Sans KR',sans-serif;--serif:'Noto Serif KR',serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--sans);background:#eef1f8;color:var(--tx);min-height:100vh;}
+
+/* HEADER */
+.hdr{background:linear-gradient(135deg,#0a1628 0%,#1a2540 55%,#0d3060 100%);padding:50px 40px 44px;text-align:center;position:relative;overflow:hidden;}
+.hdr::before{content:'🔐';position:absolute;left:6%;top:50%;transform:translateY(-50%);font-size:72px;opacity:.07;}
+.hdr::after{content:'📚';position:absolute;right:6%;top:50%;transform:translateY(-50%);font-size:72px;opacity:.07;}
+.htag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;background:rgba(122,162,247,.18);color:#7aa2f7;padding:4px 14px;border-radius:20px;margin-bottom:16px;}
+.htitle{font-family:var(--serif);font-size:32px;font-weight:600;color:white;letter-spacing:-.02em;margin-bottom:8px;}
+.hsub{color:rgba(255,255,255,.5);font-size:13px;font-weight:300;}
+.hinfo{display:flex;justify-content:center;gap:28px;margin-top:22px;padding-top:18px;border-top:1px solid rgba(255,255,255,.1);}
+.hi{text-align:center;}
+.hi-n{font-size:20px;font-weight:700;color:#7aa2f7;}
+.hi-l{font-size:10px;color:rgba(255,255,255,.45);margin-top:2px;}
+
+/* MAIN */
+.main{max-width:760px;margin:0 auto;padding:36px 16px 60px;}
+
+/* SECTION LABEL */
+.sec-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--tm);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--bd);}
+
+/* CARD GRID */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:32px;}
+
+/* CARD */
+.card{background:var(--bg);border:1px solid var(--bd);border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;display:block;transition:transform .18s, box-shadow .18s;}
+.card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(45,91,227,.13);}
+.card-top{padding:20px 22px 16px;position:relative;}
+.card-num{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;opacity:.85;}
+.card-title{font-family:var(--serif);font-size:17px;font-weight:600;color:var(--p);margin-bottom:5px;line-height:1.4;}
+.card-desc{font-size:11.5px;color:var(--tm);line-height:1.65;}
+.card-bottom{padding:11px 22px;background:var(--g0);border-top:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;}
+.card-tags{display:flex;gap:6px;flex-wrap:wrap;}
+.tag{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:10px;letter-spacing:.04em;}
+.card-arrow{color:var(--a);font-size:16px;flex-shrink:0;}
+
+/* ACCENT BARS */
+.card-top::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;}
+.c1 .card-top::before{background:linear-gradient(180deg,#2d5be3,#1a7a4a);}
+.c2 .card-top::before{background:linear-gradient(180deg,#6d28d9,#2d5be3);}
+.c3 .card-top::before{background:linear-gradient(180deg,#1a7a4a,#0f766e);}
+.c4 .card-top::before{background:linear-gradient(180deg,#c0392b,#b45309);}
+.c5 .card-top::before{background:linear-gradient(180deg,#0f766e,#2d5be3);}
+.c6 .card-top::before{background:linear-gradient(180deg,#1a2540,#6d28d9);}
+
+/* TAG COLORS */
+.t-b{background:#e8eeff;color:#2d5be3;}
+.t-g{background:#edf7f2;color:#1a7a4a;}
+.t-r{background:#fdf0ef;color:#c0392b;}
+.t-v{background:#ede9fe;color:#6d28d9;}
+.t-t{background:#ccfbf1;color:#0f766e;}
+.t-w{background:#fffbeb;color:#b45309;}
+.t-p{background:#f3e8ff;color:#7c3aed;}
+
+/* FOOTER */
+.footer{text-align:center;padding:24px 16px;font-size:11px;color:var(--tm);border-top:1px solid var(--bd);background:var(--bg);}
+
+@media(max-width:600px){
+  .grid{grid-template-columns:1fr;}
+  .htitle{font-size:24px;}
+  .hinfo{gap:16px;}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="htag">Chapter 08 · 정보보안 학습 자료</div>
+  <div class="htitle">INHYUK PI 정보보안 교재</div>
+  <div class="hsub">2026 지방직 · 군무원 · 해경 · 국회직 대비</div>
+  <div class="hinfo">
+    <div class="hi"><div class="hi-n">6</div><div class="hi-l">교재 수</div></div>
+    <div class="hi"><div class="hi-n">Ch.08</div><div class="hi-l">웹보안 · 전자우편</div></div>
+    <div class="hi"><div class="hi-n">스토리</div><div class="hi-l">+ 기출 수록</div></div>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="sec-label">전체 교재 목록</div>
+
+  <div class="grid">
+
+    <!-- 1 -->
+    <a class="card c1" href="08_Main.html">
+      <div class="card-top">
+        <div class="card-num" style="color:#2d5be3;">01 · 웹 보안 기초</div>
+        <div class="card-title">웹 보안 개요 · 계층별 프로토콜 · SSL/TLS 기초</div>
+        <div class="card-desc">WWW 개요 · HTTP vs HTTPS · 계층별 보안 프로토콜 배치 · SSL 4가지 프로토콜 · Record 처리 순서</div>
+      </div>
+      <div class="card-bottom">
+        <div class="card-tags">
+          <span class="tag t-b">HTTPS</span>
+          <span class="tag t-g">SSL/TLS</span>
+          <span class="tag t-r">Record 순서 ★</span>
+        </div>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <!-- 2 -->
+    <a class="card c2" href="08_Protocol.html">
+      <div class="card-top">
+        <div class="card-num" style="color:#6d28d9;">02 · 프로토콜 스토리</div>
+        <div class="card-title">웹 보안 프로토콜 탄생 스토리</div>
+        <div class="card-desc">SMTP → MIME → PGP → S/MIME 흐름 · S-HTTP vs HTTPS 대결 · SSL이 HTTP와 TCP 사이에 끼어든 이야기 · SNMP</div>
+      </div>
+      <div class="card-bottom">
+        <div class="card-tags">
+          <span class="tag t-v">스토리</span>
+          <span class="tag t-b">MIME</span>
+          <span class="tag t-g">SNMP</span>
+        </div>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <!-- 3 -->
+    <a class="card c3" href="08_MailGujo.html">
+      <div class="card-top">
+        <div class="card-num" style="color:#1a7a4a;">03 · 인터넷 메일 구조</div>
+        <div class="card-title">MUA · MSA · MTA · MDA · MS</div>
+        <div class="card-desc">이메일 전송 전 과정 · 5개 에이전트 역할 · SMTP / POP3 / IMAP 프로토콜 배치 · MSA ≠ MS 함정</div>
+      </div>
+      <div class="card-bottom">
+        <div class="card-tags">
+          <span class="tag t-g">MTA ★</span>
+          <span class="tag t-t">SMTP</span>
+          <span class="tag t-b">POP3/IMAP</span>
+        </div>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <!-- 4 -->
+    <a class="card c4" href="08_PGP_PEM_SMIME.html">
+      <div class="card-top">
+        <div class="card-num" style="color:#c0392b;">04 · 이메일 보안</div>
+        <div class="card-title">PGP · PEM · S/MIME 완전 정리</div>
+        <div class="card-desc">PGP 탄생 스토리 · Web of Trust · 처리 5단계 · S/MIME X.509 · PEM 중앙집중식 · 3종 비교표</div>
+      </div>
+      <div class="card-bottom">
+        <div class="card-tags">
+          <span class="tag t-r">PGP 서압암인 ★</span>
+          <span class="tag t-g">S/MIME</span>
+          <span class="tag t-w">PEM</span>
+        </div>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <!-- 5 -->
+    <a class="card c5" href="08_SSL_TLS.html">
+      <div class="card-top">
+        <div class="card-num" style="color:#0f766e;">05 · SSL / TLS</div>
+        <div class="card-title">SSL/TLS 완전 교재</div>
+        <div class="card-desc">4가지 프로토콜 · 핸드셰이크 4단계 · Record 처리 순서 · 키 교환 방식 · TLS vs SSL · Heartbleed · 공격 유형</div>
+      </div>
+      <div class="card-bottom">
+        <div class="card-tags">
+          <span class="tag t-t">핸드셰이크 ★</span>
+          <span class="tag t-r">단압MAC암헤</span>
+          <span class="tag t-b">Heartbleed</span>
+        </div>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <!-- 6 -->
+    <a class="card c6" href="08_SSH_TCP.html">
+      <div class="card-top">
+        <div class="card-num" style="color:#1a2540;">06 · SSH · TCP</div>
+        <div class="card-title">SSH · TCP 완전 교재</div>
+        <div class="card-desc">SSH 3가지 프로토콜 · TCP 헤더 구조 · 플래그 6종 · 3-way / 4-way 핸드셰이크 · SYN Flooding · 포트 스캔</div>
+      </div>
+      <div class="card-bottom">
+        <div class="card-tags">
+          <span class="tag t-p">SSH 3 프로토콜 ★</span>
+          <span class="tag t-b">3-way/4-way</span>
+          <span class="tag t-r">SYN Flooding</span>
+        </div>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- 빠른 참고 -->
+  <div class="sec-label">빠른 참고 — 핵심 암기</div>
+  <div style="background:var(--bg);border:1px solid var(--bd);border-radius:12px;overflow:hidden;">
+    <div style="background:#1a2540;padding:13px 20px;">
+      <span style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7aa2f7;">★ 시험 직전 핵심 3가지</span>
+    </div>
+    <div style="padding:16px 20px;display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;">
+        <span style="font-family:monospace;font-size:10.5px;font-weight:700;background:#e8eeff;color:#2d5be3;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;">Record 순서</span>
+        <span style="color:var(--tx);">단편화 → 압축 → MAC → 암호화 → 헤더 (단-압-MAC-암-헤)</span>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;">
+        <span style="font-family:monospace;font-size:10.5px;font-weight:700;background:#ede9fe;color:#6d28d9;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;">PGP 처리순서</span>
+        <span style="color:var(--tx);">서명 → 압축(ZIP) → 암호화 → Radix-64 (서-압-암-인)</span>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;">
+        <span style="font-family:monospace;font-size:10.5px;font-weight:700;background:#edf7f2;color:#1a7a4a;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;">SSH 3 프로토콜</span>
+        <span style="color:var(--tx);">전송층(서버인증·기밀성·무결성) / 사용자인증 / 연결(다중화·터널링)</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  정보보안 합격전략 교재 · INHYUK PI · 2026 목표
+</div>
+
+</body>
+</html>

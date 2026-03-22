@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>8단원 웹보안·전자우편보안 완전 교재 | INHYUK PI</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#1a2540;--accent:#2d5be3;--accent-light:#e8eeff;
+  --danger:#c0392b;--danger-light:#fdf0ef;
+  --success:#1a7a4a;--success-light:#edf7f2;
+  --warning:#b45309;--warning-light:#fffbeb;
+  --purple:#6d28d9;--purple-light:#ede9fe;
+  --teal:#0f766e;--teal-light:#ccfbf1;
+  --orange:#c2410c;--orange-light:#fff7ed;
+  --border:#dde3ec;--bg:#fff;--text:#1c2331;--text-muted:#5a6478;
+  --gray-50:#f8f9fa;--gray-100:#f0f2f5;
+  --sans:'Noto Sans KR',sans-serif;--serif:'Noto Serif KR',serif;--mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--sans);background:#eef1f8;color:var(--text);font-size:14px;line-height:1.8;}
+.wrap{max-width:940px;margin:0 auto;padding:32px 16px 80px;}
+
+/* HEADER */
+.doc-header{background:linear-gradient(135deg,#1a2540 0%,#0f3460 100%);border-radius:16px 16px 0 0;padding:34px 44px 28px;position:relative;overflow:hidden;}
+.doc-header::before{content:'';position:absolute;right:-40px;top:-40px;width:200px;height:200px;border-radius:50%;background:rgba(45,91,227,.18);}
+.doc-header::after{content:'';position:absolute;right:70px;top:60px;width:100px;height:100px;border-radius:50%;background:rgba(45,91,227,.1);}
+.meta-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.badge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.06em;text-transform:uppercase;}
+.badge-ch{background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);}
+.badge-hot{background:#c0392b;color:white;}
+.badge-ok{background:#2d5be3;color:white;}
+.h-title{font-family:var(--serif);font-size:29px;font-weight:600;color:white;letter-spacing:-.02em;margin-bottom:4px;position:relative;z-index:1;}
+.h-sub{color:rgba(255,255,255,.6);font-size:12.5px;font-weight:300;}
+.h-stats{display:flex;gap:26px;margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,.12);flex-wrap:wrap;}
+.stat-n{font-size:20px;font-weight:700;color:#7aa2f7;}
+.stat-l{font-size:10px;color:rgba(255,255,255,.5);margin-top:1px;}
+
+/* TABS */
+.tab-bar{display:flex;background:var(--primary);padding:0 44px;gap:2px;flex-wrap:wrap;border-bottom:2px solid rgba(255,255,255,.08);}
+.tab-btn{padding:11px 13px;font-size:11.5px;font-weight:600;color:rgba(255,255,255,.5);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all .18s;white-space:nowrap;}
+.tab-btn:hover{color:rgba(255,255,255,.8);}
+.tab-btn.active{color:#7aa2f7;border-bottom-color:#7aa2f7;}
+
+/* CONTENT */
+.content-card{background:var(--bg);border-radius:0 0 16px 16px;padding:38px 44px;border:1px solid var(--border);border-top:none;}
+.tab-pane{display:none;}
+.tab-pane.active{display:block;}
+
+/* TOC */
+.toc{background:var(--gray-50);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:0 10px 10px 0;padding:16px 20px;margin-bottom:30px;}
+.toc-title{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
+.toc-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:2px 18px;}
+.toc-list li{padding:2px 0;font-size:13px;color:var(--text-muted);}
+.toc-list li::before{content:attr(data-num)'. ';font-weight:700;color:var(--primary);margin-right:4px;}
+
+/* SECTION */
+.sec-h{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--gray-100);margin-top:6px;}
+.sec-num{width:30px;height:30px;background:var(--primary);color:white;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.sec-title{font-size:17px;font-weight:700;color:var(--primary);}
+.sec-label{font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:.06em;text-transform:uppercase;}
+.l-def{background:var(--accent-light);color:var(--accent);}
+.l-exam{background:var(--danger-light);color:var(--danger);}
+.l-tip{background:var(--warning-light);color:var(--warning);}
+
+/* PART DIV */
+.part-div{background:var(--primary);color:white;border-radius:10px;padding:12px 18px;margin:24px 0 18px;display:flex;align-items:center;gap:12px;}
+.part-tag{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:rgba(255,255,255,.15);padding:3px 10px;border-radius:20px;color:rgba(255,255,255,.9);}
+.part-title{font-size:14px;font-weight:700;color:white;}
+
+/* DEF BOX */
+.def-box{background:var(--primary);color:white;border-radius:12px;padding:18px 22px;margin-bottom:16px;position:relative;overflow:hidden;}
+.def-box::before{content:'"';position:absolute;right:14px;top:-8px;font-size:70px;color:rgba(255,255,255,.06);font-family:serif;line-height:1;}
+.def-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7aa2f7;margin-bottom:7px;}
+.def-box p{font-size:13px;line-height:1.9;color:rgba(255,255,255,.88);}
+.def-box strong{color:#7aa2f7;}
+
+/* TABLE */
+.tw{overflow-x:auto;margin:12px 0;border-radius:10px;border:1px solid var(--border);}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead tr{background:var(--primary);color:white;}
+thead th{padding:10px 13px;text-align:left;font-weight:600;font-size:11.5px;letter-spacing:.03em;}
+tbody tr{border-bottom:1px solid var(--gray-100);}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:#f7f9ff;}
+tbody td{padding:9px 13px;color:var(--text);vertical-align:top;}
+tbody td:first-child{font-weight:600;color:var(--primary);}
+.tc{text-align:center;}
+
+/* CARDS */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin:12px 0;}
+.card{border:1px solid var(--border);border-radius:10px;padding:13px 15px;background:var(--gray-50);}
+.card-t{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:5px;}
+.card-b{font-size:13px;color:var(--text);line-height:1.7;}
+.card-b strong{color:var(--primary);}
+
+/* ATTACK FLOW BOXES */
+.atk-flow{display:flex;align-items:center;gap:0;margin:14px 0;flex-wrap:wrap;}
+.atk-step{background:var(--primary);color:white;border-radius:8px;padding:10px 14px;font-size:12px;font-weight:600;min-width:120px;text-align:center;flex:1;}
+.atk-step.s1{background:#c0392b;}
+.atk-step.s2{background:#2d5be3;}
+.atk-step.s3{background:#6d28d9;}
+.atk-step.s4{background:#0f766e;}
+.atk-step.s5{background:#1a2540;}
+.atk-arr{color:var(--text-muted);font-size:18px;padding:0 4px;flex-shrink:0;}
+.atk-sub{font-size:10px;opacity:.8;font-weight:400;margin-top:2px;}
+
+/* COMPARE 2COL */
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0;}
+.cc{border-radius:10px;overflow:hidden;border:1px solid var(--border);}
+.cc-h{padding:10px 16px;font-size:13.5px;font-weight:700;color:white;}
+.cc-b{padding:11px 16px;background:var(--bg);}
+.cc-row{display:flex;gap:8px;padding:4px 0;border-bottom:1px solid var(--gray-100);font-size:12.5px;}
+.cc-row:last-child{border-bottom:none;}
+.cc-k{color:var(--text-muted);min-width:55px;font-size:11px;padding-top:2px;flex-shrink:0;}
+.cc-v{color:var(--text);font-weight:500;}
+
+/* TRAP */
+.trap{border:none;border-radius:12px;margin:14px 0;overflow:hidden;}
+.trap-h{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--danger);color:white;}
+.trap-ht{font-size:12.5px;font-weight:700;}
+.trap-b{background:var(--danger-light);padding:14px 18px;border:1px solid #f5c6c2;border-top:none;border-radius:0 0 12px 12px;}
+.trap-b p{font-size:13px;color:#7a1c1c;line-height:1.8;margin-bottom:6px;}
+.trap-b p:last-child{margin-bottom:0;}
+.tq{background:white;border-left:3px solid var(--danger);padding:8px 12px;border-radius:0 7px 7px 0;margin:8px 0;font-size:13px;color:var(--text);font-style:italic;}
+.vd{display:inline-block;font-size:11px;font-weight:700;padding:2px 7px;border-radius:20px;}
+.wrong{background:var(--danger);color:white;}
+.right{background:var(--success);color:white;}
+
+/* EXAM */
+.exam-card{border:1px solid var(--border);border-radius:12px;margin:12px 0;overflow:hidden;}
+.exam-h{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;background:var(--gray-50);border-bottom:1px solid var(--border);}
+.exam-yr{font-size:12px;font-weight:700;color:var(--primary);}
+.exam-star{color:#e8b000;font-size:12px;letter-spacing:2px;}
+.exam-body{padding:14px 16px;}
+.exam-q{font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px;line-height:1.7;}
+.exam-opts{display:flex;flex-direction:column;gap:4px;}
+.opt{font-size:13px;padding:6px 10px;border-radius:7px;border:1px solid transparent;}
+.opt-w{background:#fdf0ef;border-color:#f5c6c2;color:#7a1c1c;text-decoration:line-through;opacity:.8;}
+.opt-w::before{content:'✗ ';}
+.opt-r{background:var(--success-light);border-color:#a3dbc0;color:#0d4a2a;font-weight:600;}
+.opt-r::before{content:'✓ ';}
+.opt-n{background:var(--gray-50);border-color:var(--border);color:var(--text);}
+.exam-exp{margin-top:10px;padding:10px 12px;background:var(--gray-50);border-radius:8px;font-size:12px;color:var(--text-muted);line-height:1.75;border-left:3px solid var(--accent);}
+
+/* CHECKLIST */
+.cl{list-style:none;margin:12px 0;display:flex;flex-direction:column;gap:5px;}
+.cl li{display:flex;align-items:flex-start;gap:9px;font-size:13px;padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);}
+.cl-w{background:#fdf0ef;border-color:#f5c6c2;}
+.cl-w::before{content:'⚠';color:var(--danger)!important;font-size:13px;flex-shrink:0;margin-top:2px;}
+.cl-r{background:var(--success-light);border-color:#a3dbc0;}
+.cl-r::before{content:'✓';color:var(--success)!important;font-size:13px;flex-shrink:0;margin-top:2px;}
+
+/* MEMORY */
+.mem{background:linear-gradient(135deg,#1a2540 0%,#0f3460 100%);border-radius:14px;padding:20px 24px;color:white;margin:14px 0;position:relative;overflow:hidden;}
+.mem::before{content:'💡';position:absolute;right:16px;top:12px;font-size:40px;opacity:.15;}
+.mem-t{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7aa2f7;margin-bottom:12px;}
+.mem-items{display:flex;flex-direction:column;gap:8px;}
+.mem-item{display:flex;gap:10px;align-items:flex-start;}
+.mem-k{font-family:var(--mono);font-size:11px;font-weight:600;background:rgba(122,162,247,.2);color:#7aa2f7;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;}
+.mem-v{font-size:13px;color:rgba(255,255,255,.85);line-height:1.7;}
+.mem-v strong{color:#7aa2f7;}
+
+/* INFO */
+.info{background:var(--accent-light);border:1px solid #b8ccff;border-radius:10px;padding:12px 16px;margin:12px 0;font-size:13px;color:#1a2e70;line-height:1.8;}
+.info strong{color:var(--primary);}
+
+/* DIAGRAM */
+.diagram-wrap{background:var(--gray-50);border:1px solid var(--border);border-radius:12px;padding:18px;margin:14px 0;overflow-x:auto;}
+.diagram-title{font-size:11.5px;font-weight:700;color:var(--primary);margin-bottom:12px;letter-spacing:.03em;}
+
+/* OWASP TABLE */
+.owasp-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0;}
+.owasp-item{border-radius:8px;padding:10px 13px;border:1px solid var(--border);display:flex;gap:10px;align-items:flex-start;}
+.owasp-rank{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--accent);min-width:30px;flex-shrink:0;}
+.owasp-name{font-size:12.5px;color:var(--text);font-weight:600;}
+.owasp-sub{font-size:11px;color:var(--text-muted);margin-top:1px;}
+
+/* EMAIL PROTO */
+.proto-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0;}
+.proto-card{border-radius:10px;overflow:hidden;border:1px solid var(--border);text-align:center;}
+.proto-h{padding:12px 10px;color:white;font-size:13px;font-weight:700;}
+.proto-body{padding:12px 10px;background:var(--bg);}
+.proto-port{font-family:var(--mono);font-size:22px;font-weight:700;color:var(--primary);}
+.proto-desc{font-size:11px;color:var(--text-muted);margin-top:4px;}
+
+/* SF & COUNT */
+.sf{color:#e8b000;}
+.exam-count{display:inline-block;background:var(--danger);color:white;font-size:11px;font-weight:700;padding:2px 10px;border-radius:20px;margin-left:8px;vertical-align:middle;}
+
+/* DIV */
+.div{height:1px;background:var(--gray-100);margin:24px 0;}
+
+/* FOOTER */
+.footer{display:flex;justify-content:space-between;align-items:center;margin-top:30px;padding-top:14px;border-top:1px solid var(--border);font-size:11px;color:var(--text-muted);}
+
+@media(max-width:640px){
+  .content-card,.doc-header{padding:22px 18px;}
+  .tab-bar{padding:0 18px;}
+  .cg,.owasp-grid,.proto-row,.toc-list{grid-template-columns:1fr;}
+  .atk-flow{flex-direction:column;align-items:stretch;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HEADER -->
+<div class="doc-header">
+  <div class="meta-row">
+    <span class="badge badge-ch">Chapter 08 · 웹보안과 전자우편보안</span>
+    <span class="badge badge-hot">9급 핵심</span>
+    <span class="badge badge-ok">기출 12문제 수록</span>
+  </div>
+  <div class="h-title">웹보안 · 전자우편보안 완전 교재</div>
+  <div class="h-sub">XSS · CSRF · SQL Injection · HTTPS · 쿠키 · OWASP Top10 · PGP · S/MIME · PEM · 기출 전수</div>
+  <div class="h-stats">
+    <div><div class="stat-n">3대</div><div class="stat-l">웹 공격 유형</div></div>
+    <div><div class="stat-n">OWASP</div><div class="stat-l">Top 10 완전 정리</div></div>
+    <div><div class="stat-n">3가지</div><div class="stat-l">전자우편 보안</div></div>
+    <div><div class="stat-n">12문제</div><div class="stat-l">기출 수록</div></div>
+  </div>
+</div>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="sw('web')">🔴 웹 공격 3대장</button>
+  <button class="tab-btn" onclick="sw('https')">🔐 HTTPS·쿠키</button>
+  <button class="tab-btn" onclick="sw('owasp')">📋 OWASP Top10</button>
+  <button class="tab-btn" onclick="sw('email')">📧 전자우편 보안</button>
+  <button class="tab-btn" onclick="sw('exam')">📝 기출문제 12선</button>
+  <button class="tab-btn" onclick="sw('summary')">💡 암기·정리</button>
+</div>
+
+<div class="content-card">
+
+<!-- ══════ TAB 1: 웹 공격 ══════ -->
+<div class="tab-pane active" id="tab-web">
+<div class="toc">
+  <div class="toc-title">이 탭의 목차</div>
+  <ul class="toc-list">
+    <li data-num="1">XSS — 공격 원리·순서·유형</li>
+    <li data-num="2">CSRF — 공격 원리·XSS와 차이</li>
+    <li data-num="3">SQL Injection — 원리·대응</li>
+    <li data-num="4">XSS vs CSRF vs SQL 비교표</li>
+    <li data-num="5">핵심 함정 해부</li>
+  </ul>
+</div>
+
+<div class="part-div"><span class="part-tag">Part A</span><span class="part-title">웹 공격 3대장 — XSS · CSRF · SQL Injection</span></div>
+
+<!-- XSS -->
+<div class="sec-h"><div class="sec-num">1</div><div class="sec-title">XSS (Cross-Site Scripting)</div><span class="sec-label l-exam">★★★ 최빈출</span></div>
+
+<div class="def-box">
+  <div class="def-lbl">XSS 정의</div>
+  <p>공격자가 웹 취약점이 있는 서버에 <strong>악성 스크립트를 삽입</strong>하고, 이 스크립트가 다른 사용자의 브라우저에서 실행되도록 하는 공격. 서버가 입력값을 검증 없이 그대로 HTML에 포함시킬 때 발생. <strong>사용자의 세션 탈취, 웹사이트 변조, 악의적 사이트로 이동</strong>이 가능하다.</p>
+</div>
+
+<!-- XSS 공격 흐름 SVG -->
+<div class="diagram-wrap">
+  <div class="diagram-title">XSS 공격 흐름 — Stored XSS (저장형)</div>
+  <svg viewBox="0 0 800 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:800px;display:block;margin:0 auto;">
+    <!-- 공격자 -->
+    <rect x="10" y="40" width="100" height="60" rx="8" fill="#c0392b"/>
+    <text x="60" y="67" text-anchor="middle" fill="white" font-size="12" font-family="sans-serif" font-weight="700">공격자</text>
+    <text x="60" y="83" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="10" font-family="sans-serif">Attacker</text>
+
+    <!-- 1번 화살표 -->
+    <line x1="110" y1="70" x2="190" y2="70" stroke="#c0392b" stroke-width="2"/>
+    <polygon points="190,66 200,70 190,74" fill="#c0392b"/>
+    <text x="150" y="62" text-anchor="middle" fill="#c0392b" font-size="10" font-family="sans-serif" font-weight="600">① 악성 스크립트</text>
+    <text x="150" y="88" text-anchor="middle" fill="#5a6478" font-size="9" font-family="sans-serif">게시판에 삽입·저장</text>
+
+    <!-- 웹 서버 -->
+    <rect x="200" y="30" width="120" height="80" rx="8" fill="#1a2540"/>
+    <text x="260" y="65" text-anchor="middle" fill="white" font-size="12" font-family="sans-serif" font-weight="700">웹 서버</text>
+    <text x="260" y="81" text-anchor="middle" fill="#7aa2f7" font-size="10" font-family="sans-serif">악성 스크립트 저장</text>
+    <text x="260" y="97" text-anchor="middle" fill="rgba(255,255,255,.5)" font-size="9" font-family="sans-serif">DB</text>
+
+    <!-- 2번 화살표 (사용자→서버) -->
+    <line x1="460" y1="55" x2="325" y2="55" stroke="#2d5be3" stroke-width="2" stroke-dasharray="5,3"/>
+    <polygon points="325,51 315,55 325,59" fill="#2d5be3"/>
+    <text x="392" y="48" text-anchor="middle" fill="#2d5be3" font-size="10" font-family="sans-serif" font-weight="600">② 게시글 요청</text>
+
+    <!-- 3번 화살표 (서버→사용자) -->
+    <line x1="325" y1="85" x2="460" y2="85" stroke="#6d28d9" stroke-width="2"/>
+    <polygon points="460,81 470,85 460,89" fill="#6d28d9"/>
+    <text x="392" y="100" text-anchor="middle" fill="#6d28d9" font-size="10" font-family="sans-serif" font-weight="600">③ 악성 스크립트 포함 응답</text>
+
+    <!-- 사용자 -->
+    <rect x="470" y="30" width="110" height="80" rx="8" fill="#374151"/>
+    <text x="525" y="60" text-anchor="middle" fill="white" font-size="12" font-family="sans-serif" font-weight="700">피해 사용자</text>
+    <text x="525" y="76" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="9" font-family="sans-serif">④ 브라우저에서</text>
+    <text x="525" y="88" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="9" font-family="sans-serif">스크립트 실행</text>
+    <text x="525" y="100" text-anchor="middle" fill="#fca5a5" font-size="9" font-family="sans-serif">세션 탈취!</text>
+
+    <!-- 5번 화살표 (사용자→공격자) -->
+    <line x1="470" y1="120" x2="110" y2="120" stroke="#c0392b" stroke-width="2"/>
+    <polygon points="110,116 100,120 110,124" fill="#c0392b"/>
+    <text x="290" y="138" text-anchor="middle" fill="#c0392b" font-size="10" font-family="sans-serif" font-weight="600">⑤ 탈취된 세션/쿠키 정보 → 공격자에게 전달</text>
+  </svg>
+</div>
+
+<div class="info"><strong>XSS 공격 순서 (기출 정답):</strong> <strong>라</strong>(서버에 XSS 코드 저장) → <strong>가</strong>(사용자 접근) → <strong>다</strong>(서버가 XSS 포함 응답 전달) → <strong>나</strong>(사용자 브라우저에서 실행) → <strong>마</strong>(결과 공격자에게 전달) — 2020 국가직 정보시스템보안 문20 정답 ③</div>
+
+<div class="tw"><table>
+  <thead><tr><th>XSS 유형</th><th>특징</th><th>공격 방식</th></tr></thead>
+  <tbody>
+    <tr><td>Stored XSS (저장형)</td><td>가장 일반적. 서버 DB에 저장됨</td><td>게시판에 악성 스크립트 삽입 → 다른 사용자가 읽을 때 실행</td></tr>
+    <tr><td>Reflected XSS (반사형)</td><td>URL 파라미터에 스크립트 삽입</td><td>악성 URL을 이메일 등으로 배포 → 클릭 시 즉시 실행</td></tr>
+    <tr><td>DOM Based XSS</td><td>서버 응답 없이 브라우저에서만 실행</td><td>DOM 조작으로 스크립트 실행. 서버 로그에 안 남음</td></tr>
+  </tbody>
+</table></div>
+
+<div class="cg">
+  <div class="cc"><div class="cc-h" style="background:#c0392b;">XSS 대응 방법</div><div class="cc-b">
+    <div class="cc-row"><span class="cc-k">입력 검증</span><span class="cc-v">특수문자(&lt; &gt; " ' &amp;) HTML 이스케이프 처리</span></div>
+    <div class="cc-row"><span class="cc-k">출력 인코딩</span><span class="cc-v">< → &lt; / > → &gt; / " → &quot;</span></div>
+    <div class="cc-row"><span class="cc-k">보안 헤더</span><span class="cc-v">CSP(Content Security Policy) 설정</span></div>
+    <div class="cc-row"><span class="cc-k">HttpOnly</span><span class="cc-v">쿠키에 HttpOnly 플래그 설정 (JS 접근 차단)</span></div>
+  </div></div>
+  <div class="cc"><div class="cc-h" style="background:#2d5be3;">XSS 공격 목적</div><div class="cc-b">
+    <div class="cc-row"><span class="cc-k">세션 탈취</span><span class="cc-v">쿠키 훔쳐 로그인 세션 도용</span></div>
+    <div class="cc-row"><span class="cc-k">페이지 변조</span><span class="cc-v">웹 사이트 내용 무단 변경</span></div>
+    <div class="cc-row"><span class="cc-k">피싱 유도</span><span class="cc-v">악의적 사이트로 사용자 이동</span></div>
+    <div class="cc-row"><span class="cc-k">정보 탈취</span><span class="cc-v">입력 폼 데이터(아이디·비밀번호) 훔치기</span></div>
+  </div></div>
+</div>
+
+<div class="div"></div>
+
+<!-- CSRF -->
+<div class="sec-h"><div class="sec-num">2</div><div class="sec-title">CSRF (Cross-Site Request Forgery)</div><span class="sec-label l-exam">★★★ 최빈출</span></div>
+
+<div class="def-box">
+  <div class="def-lbl">CSRF 정의</div>
+  <p>로그인한 사용자가 <strong>자신의 의지와 무관하게</strong> 공격자가 의도한 행위(수정·삭제·등록·송금 등)를 <strong>특정 웹사이트에 요청하게 만드는 공격</strong>. 웹사이트가 사용자의 브라우저(세션·쿠키)를 신뢰하는 점을 악용. XSS와 유사하나 악성 스크립트 실행 위치가 다름.</p>
+</div>
+
+<!-- CSRF 공격 흐름 SVG -->
+<div class="diagram-wrap">
+  <div class="diagram-title">CSRF 공격 흐름</div>
+  <svg viewBox="0 0 800 155" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:800px;display:block;margin:0 auto;">
+    <!-- 공격자 서버 -->
+    <rect x="10" y="35" width="130" height="60" rx="8" fill="#6d28d9"/>
+    <text x="75" y="60" text-anchor="middle" fill="white" font-size="12" font-family="sans-serif" font-weight="700">공격자 서버</text>
+    <text x="75" y="76" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="9" font-family="sans-serif">CSRF 스크립트 포함</text>
+    <text x="75" y="88" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="9" font-family="sans-serif">악성 페이지</text>
+
+    <!-- 1: 악성 링크 전달 -->
+    <line x1="140" y1="65" x2="310" y2="65" stroke="#6d28d9" stroke-width="2"/>
+    <polygon points="310,61 320,65 310,69" fill="#6d28d9"/>
+    <text x="225" y="57" text-anchor="middle" fill="#6d28d9" font-size="10" font-family="sans-serif" font-weight="600">① 악성 링크/이메일 전달</text>
+
+    <!-- 피해 사용자 -->
+    <rect x="320" y="25" width="120" height="80" rx="8" fill="#374151"/>
+    <text x="380" y="58" text-anchor="middle" fill="white" font-size="12" font-family="sans-serif" font-weight="700">피해 사용자</text>
+    <text x="380" y="73" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="9" font-family="sans-serif">이미 정상 사이트</text>
+    <text x="380" y="85" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="9" font-family="sans-serif">로그인 상태</text>
+    <text x="380" y="97" text-anchor="middle" fill="#86efac" font-size="9" font-family="sans-serif">세션 쿠키 보유</text>
+
+    <!-- 2: 요청 자동 전송 -->
+    <line x1="440" y1="55" x2="615" y2="55" stroke="#c0392b" stroke-width="2"/>
+    <polygon points="615,51 625,55 615,59" fill="#c0392b"/>
+    <text x="530" y="47" text-anchor="middle" fill="#c0392b" font-size="10" font-family="sans-serif" font-weight="600">② 사용자 모르게 요청 자동 전송</text>
+    <text x="530" y="72" text-anchor="middle" fill="#5a6478" font-size="9" font-family="sans-serif">(세션 쿠키 포함)</text>
+
+    <!-- 정상 서버 -->
+    <rect x="625" y="25" width="130" height="80" rx="8" fill="#1a7a4a"/>
+    <text x="690" y="60" text-anchor="middle" fill="white" font-size="12" font-family="sans-serif" font-weight="700">정상 웹 서버</text>
+    <text x="690" y="76" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="9" font-family="sans-serif">정상 사용자 요청으로</text>
+    <text x="690" y="88" text-anchor="middle" fill="#fca5a5" font-size="9" font-family="sans-serif">오인 → 실행!</text>
+
+    <!-- 결과 설명 -->
+    <text x="400" y="130" text-anchor="middle" fill="#c0392b" font-size="11" font-family="sans-serif" font-weight="600">⚠ 사용자는 모르게 송금·비밀번호 변경·게시물 등록 등이 실행됨</text>
+  </svg>
+</div>
+
+<div class="div"></div>
+
+<!-- SQL Injection -->
+<div class="sec-h"><div class="sec-num">3</div><div class="sec-title">SQL Injection</div><span class="sec-label l-exam">★★★</span></div>
+
+<div class="def-box">
+  <div class="def-lbl">SQL Injection 정의</div>
+  <p>공격자가 입력 폼에 <strong>특수한 SQL 코드를 삽입</strong>하여 DB 인증을 우회하거나 데이터를 조회·수정·삭제하는 공격. 웹 서버가 사용자 입력을 검증 없이 SQL 쿼리에 포함할 때 발생. OWASP Top 10에 매년 포함되는 핵심 취약점.</p>
+</div>
+
+<!-- SQL Injection 예시 -->
+<div class="diagram-wrap">
+  <div class="diagram-title">SQL Injection 동작 원리</div>
+  <svg viewBox="0 0 760 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px;display:block;margin:0 auto;">
+    <!-- 정상 케이스 -->
+    <text x="10" y="18" fill="#1a7a4a" font-size="11" font-family="monospace" font-weight="700">정상 로그인 쿼리</text>
+    <rect x="10" y="24" width="730" height="28" rx="5" fill="#edf7f2" stroke="#1a7a4a" stroke-width="1"/>
+    <text x="20" y="42" fill="#1a7a4a" font-size="12" font-family="monospace">SELECT * FROM users WHERE ID = 'admin' AND PW = '비밀번호';</text>
+
+    <!-- 공격 케이스 -->
+    <text x="10" y="74" fill="#c0392b" font-size="11" font-family="monospace" font-weight="700">SQL Injection 공격 — 입력: ' OR 1=1 --</text>
+    <rect x="10" y="80" width="730" height="28" rx="5" fill="#fdf0ef" stroke="#c0392b" stroke-width="1.5"/>
+    <text x="20" y="98" fill="#7a1c1c" font-size="12" font-family="monospace">SELECT * FROM users WHERE ID = '' OR 1=1 AND PW = '';</text>
+    <rect x="350" y="80" width="60" height="28" rx="0" fill="rgba(192,57,43,.2)" stroke="#c0392b" stroke-width="1"/>
+    <text x="380" y="99" text-anchor="middle" fill="#c0392b" font-size="9" font-family="monospace" font-weight="700">항상 참!</text>
+
+    <!-- 결과 -->
+    <rect x="10" y="118" width="730" height="18" rx="5" fill="#1a2540"/>
+    <text x="375" y="131" text-anchor="middle" fill="#fca5a5" font-size="11" font-family="sans-serif" font-weight="700">→ ID/PW 달라도 무조건 로그인 성공! DB 전체 조회 가능</text>
+  </svg>
+</div>
+
+<div class="cards">
+  <div class="card"><div class="card-t">대응 ① Prepared Statement</div><div class="card-b">바인딩 변수 사용: <code style="font-family:var(--mono);font-size:11px;">WHERE ID=? AND PW=?</code> — 입력값이 SQL 쿼리로 해석되지 않음</div></div>
+  <div class="card"><div class="card-t">대응 ② 특수문자 필터링</div><div class="card-b">' " / ; -- + 공백 등 SQL 예약어·특수문자 포함 시 차단. 입력값 화이트리스트 검증.</div></div>
+  <div class="card"><div class="card-t">주의 — SQL vs 다른 공격</div><div class="card-b">SQL Injection은 <strong>DB 조작</strong>이 목적. XSS는 <strong>스크립트 실행</strong>이 목적. 혼동 함정 주의!</div></div>
+</div>
+
+<div class="div"></div>
+
+<!-- 3대 공격 비교표 -->
+<div class="sec-h"><div class="sec-num">4</div><div class="sec-title">XSS · CSRF · SQL Injection 완전 비교</div><span class="sec-label l-exam">★★★ 핵심</span></div>
+
+<div class="tw"><table>
+  <thead><tr><th>구분</th><th>XSS</th><th>CSRF</th><th>SQL Injection</th></tr></thead>
+  <tbody>
+    <tr><td>공격 대상</td><td><strong>사용자</strong> 브라우저</td><td><strong>사용자</strong>를 통해 서버</td><td><strong>DB 서버</strong></td></tr>
+    <tr><td>신뢰 악용</td><td>서버가 <strong>사용자 입력</strong> 신뢰</td><td>서버가 <strong>사용자 브라우저</strong> 신뢰</td><td>서버가 <strong>입력값</strong> 신뢰</td></tr>
+    <tr><td>스크립트 실행 위치</td><td><strong>클라이언트</strong> 브라우저</td><td><strong>서버</strong>에 요청 전송</td><td>DB 쿼리 실행</td></tr>
+    <tr><td>주요 목적</td><td>세션 탈취, 페이지 변조</td><td>송금·수정·삭제 등 강제 실행</td><td>DB 인증 우회, 데이터 조회·조작</td></tr>
+    <tr><td>관계</td><td colspan="2" class="tc">CSRF는 XSS의 발전형으로 보기도 함<br>XSS: 스크립트가 클라이언트 실행 / CSRF: 스크립트가 서버에 요청</td><td>별개 유형</td></tr>
+    <tr><td>대응</td><td>입력값 이스케이프, CSP</td><td>CSRF 토큰, Referer 검증</td><td>Prepared Statement, 특수문자 필터링</td></tr>
+  </tbody>
+</table></div>
+
+<div class="trap">
+  <div class="trap-h"><span>⚠</span><span class="trap-ht">CSRF 함정 — "시퀀스 넘버를 이용한 세션 혼란" (2020 국가직 정보시스템보안)</span></div>
+  <div class="trap-b">
+    <div class="tq">③ "서버와 클라이언트에 각각 잘못된 시퀀스 넘버를 사용하여 연결된 세션에 혼란을 줌으로써 공격자가 서버와의 연결을 획득하는 방법이다" → <span class="vd wrong">✗ 오답</span></div>
+    <p>이것은 <strong>TCP 세션 하이재킹(Session Hijacking)</strong> 설명이다. CSRF는 로그인된 사용자의 권한(세션/쿠키)을 이용해 의도치 않은 요청을 보내는 공격이며, TCP 시퀀스 번호와 관계없다.</p>
+  </div>
+</div>
+<div class="footer"><span>정보보안 합격전략 교재 · INHYUK PI</span><span>웹 공격 3대장 탭</span></div>
+</div>
+
+<!-- ══════ TAB 2: HTTPS·쿠키 ══════ -->
+<div class="tab-pane" id="tab-https">
+<div class="sec-h"><div class="sec-num">1</div><div class="sec-title">HTTPS 완전 정리</div><span class="sec-label l-exam">★★★</span></div>
+
+<div class="def-box">
+  <div class="def-lbl">HTTPS 정의</div>
+  <p>HTTPS = <strong>HTTP over SSL/TLS</strong>. 웹브라우저와 웹서버 간의 안전한 통신을 위해 HTTP에 SSL을 결합한 프로토콜. RFC 2818 문서에 정의. 정상 HTTP는 <strong>80번 포트</strong> 사용, HTTPS 지정 시 <strong>443번 포트</strong> 사용하며 SSL을 호출한다.</p>
+</div>
+
+<!-- HTTPS 암호화 범위 시각화 -->
+<div class="diagram-wrap">
+  <div class="diagram-title">HTTPS 암호화 시 보호되는 요소 vs 보호 안 되는 요소</div>
+  <svg viewBox="0 0 760 170" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px;display:block;margin:0 auto;">
+    <text x="10" y="20" fill="#1a7a4a" font-size="12" font-family="sans-serif" font-weight="700">✓ HTTPS 암호화 대상 (보호됨)</text>
+    
+    <rect x="10" y="28" width="110" height="36" rx="6" fill="#edf7f2" stroke="#1a7a4a" stroke-width="1.5"/>
+    <text x="65" y="48" text-anchor="middle" fill="#1a7a4a" font-size="11" font-family="sans-serif" font-weight="600">요청 문서</text>
+    <text x="65" y="60" text-anchor="middle" fill="#1a7a4a" font-size="9" font-family="sans-serif">URL / URI</text>
+    
+    <rect x="130" y="28" width="110" height="36" rx="6" fill="#edf7f2" stroke="#1a7a4a" stroke-width="1.5"/>
+    <text x="185" y="48" text-anchor="middle" fill="#1a7a4a" font-size="11" font-family="sans-serif" font-weight="600">문서 내용</text>
+    <text x="185" y="60" text-anchor="middle" fill="#1a7a4a" font-size="9" font-family="sans-serif">HTML, 데이터</text>
+    
+    <rect x="250" y="28" width="130" height="36" rx="6" fill="#edf7f2" stroke="#1a7a4a" stroke-width="1.5"/>
+    <text x="315" y="44" text-anchor="middle" fill="#1a7a4a" font-size="11" font-family="sans-serif" font-weight="600">브라우저 양식</text>
+    <text x="315" y="58" text-anchor="middle" fill="#1a7a4a" font-size="9" font-family="sans-serif">사용자 입력 내용</text>
+    
+    <rect x="390" y="28" width="160" height="36" rx="6" fill="#edf7f2" stroke="#1a7a4a" stroke-width="1.5"/>
+    <text x="470" y="44" text-anchor="middle" fill="#1a7a4a" font-size="11" font-family="sans-serif" font-weight="600">쿠키</text>
+    <text x="470" y="58" text-anchor="middle" fill="#1a7a4a" font-size="9" font-family="sans-serif">브라우저↔서버 쿠키</text>
+    
+    <rect x="560" y="28" width="120" height="36" rx="6" fill="#edf7f2" stroke="#1a7a4a" stroke-width="1.5"/>
+    <text x="620" y="44" text-anchor="middle" fill="#1a7a4a" font-size="11" font-family="sans-serif" font-weight="600">HTTP 헤더</text>
+    <text x="620" y="58" text-anchor="middle" fill="#1a7a4a" font-size="9" font-family="sans-serif">헤더 내용 전체</text>
+
+    <text x="10" y="100" fill="#c0392b" font-size="12" font-family="sans-serif" font-weight="700">✗ HTTPS가 보호하지 않는 것 (기출 함정)</text>
+    
+    <rect x="10" y="108" width="160" height="36" rx="6" fill="#fdf0ef" stroke="#c0392b" stroke-width="1.5"/>
+    <text x="90" y="125" text-anchor="middle" fill="#7a1c1c" font-size="11" font-family="sans-serif" font-weight="600">서버의 IP 주소</text>
+    <text x="90" y="138" text-anchor="middle" fill="#7a1c1c" font-size="9" font-family="sans-serif">연결 대상은 노출됨</text>
+    
+    <rect x="185" y="108" width="180" height="36" rx="6" fill="#fdf0ef" stroke="#c0392b" stroke-width="1.5"/>
+    <text x="275" y="122" text-anchor="middle" fill="#7a1c1c" font-size="11" font-family="sans-serif" font-weight="600">전송 데이터 크기·시간</text>
+    <text x="275" y="136" text-anchor="middle" fill="#7a1c1c" font-size="9" font-family="sans-serif">트래픽 분석은 가능</text>
+    
+    <rect x="380" y="108" width="200" height="36" rx="6" fill="#fffbeb" stroke="#b45309" stroke-width="1.5"/>
+    <text x="480" y="122" text-anchor="middle" fill="#7a1c1c" font-size="11" font-family="sans-serif" font-weight="600">TTL·플래그 (IP/TCP 헤더)</text>
+    <text x="480" y="136" text-anchor="middle" fill="#b45309" font-size="9" font-family="sans-serif">← 2019 국가직 기출 함정!</text>
+  </svg>
+</div>
+
+<div class="cards">
+  <div class="card"><div class="card-t">HTTP 포트</div><div class="card-b">기본 <strong>TCP 80번</strong>. HTTP/3부터 UDP 사용. 상태를 저장하지 않는 <strong>Stateless</strong> 프로토콜.</div></div>
+  <div class="card"><div class="card-t">HTTPS 포트</div><div class="card-b">기본 <strong>TCP 443번</strong>. HTTP + SSL/TLS 결합. URL에 <strong>https://</strong> 사용.</div></div>
+  <div class="card"><div class="card-t">RFC</div><div class="card-b">HTTP 1.0=RFC 1945 / HTTP 1.1=RFC 2616 / <strong>HTTPS=RFC 2818</strong></div></div>
+</div>
+
+<div class="sec-h" style="margin-top:8px;"><div class="sec-num">2</div><div class="sec-title">쿠키 (Cookie)</div><span class="sec-label l-exam">★★</span></div>
+
+<div class="def-box">
+  <div class="def-lbl">쿠키 정의</div>
+  <p>쿠키는 1994년 넷스케이프에서 처음 사용. 사용자가 웹사이트를 방문할 때 생기는 <strong>4KB 이하의 텍스트 파일</strong>. <strong>클라이언트 컴퓨터</strong>에 저장됨. 사용자와 웹사이트를 연결해주는 정보 포함. 다음 방문 시 서버로 전송하여 클라이언트 신원 확인에 활용.</p>
+</div>
+
+<div class="tw"><table>
+  <thead><tr><th>쿠키 특성</th><th>내용</th></tr></thead>
+  <tbody>
+    <tr><td>저장 위치</td><td><strong>클라이언트 컴퓨터</strong> (서버가 아님)</td></tr>
+    <tr><td>용도</td><td>사이트 개인화 / 장바구니 시스템 / 웹사이트 이용 방식 추적</td></tr>
+    <tr><td>바이러스 전파</td><td><strong>직접 바이러스 옮기거나 악성코드 설치 불가</strong></td></tr>
+    <tr><td>저장 내용 ✗ 오답 주의</td><td>"로그인·로그아웃·시스템 재부팅 정보 저장" → <span style="color:var(--danger);font-weight:700;">✗ 오답</span> (2020 국가직 정보시스템보안)</td></tr>
+    <tr><td>보안 위협</td><td>XSS 공격으로 쿠키 탈취 가능 → 세션 하이재킹으로 이어짐</td></tr>
+    <tr><td>대응</td><td>HttpOnly 플래그 (JS 접근 차단) / Secure 플래그 (HTTPS 전용)</td></tr>
+  </tbody>
+</table></div>
+
+<div class="trap">
+  <div class="trap-h"><span>⚠</span><span class="trap-ht">쿠키 함정 — "로그아웃·재부팅 정보 저장" (2020 국가직 정보시스템보안)</span></div>
+  <div class="trap-b">
+    <div class="tq">④ "사용자들의 로그인, 로그아웃, 시스템 재부팅 정보를 저장한다" → <span class="vd wrong">✗ 오답</span></div>
+    <p>쿠키는 사이트 개인화·장바구니·이용 방식 추적에 사용. 로그아웃·재부팅 정보는 <strong>시스템 로그(wtmp, utmp)</strong>에 저장됨. 쿠키가 바이러스를 옮기지 않는다는 것도 함께 암기.</p>
+  </div>
+</div>
+<div class="footer"><span>정보보안 합격전략 교재 · INHYUK PI</span><span>HTTPS·쿠키 탭</span></div>
+</div>
+
+<!-- ══════ TAB 3: OWASP ══════ -->
+<div class="tab-pane" id="tab-owasp">
+<div class="sec-h"><div class="sec-num">📋</div><div class="sec-title">OWASP Top 10 (2021/2022 기준)</div><span class="sec-label l-exam">★★★</span></div>
+
+<div class="def-box">
+  <div class="def-lbl">OWASP 정의</div>
+  <p>OWASP(Open Web Application Security Project)는 2001년 설립된 비영리 재단으로, <strong>10대 웹 애플리케이션 보안 취약점(Top 10)</strong>을 주기적으로 발표한다. 이 목록은 개발자·보안 전문가의 웹 보안 기준이 된다.</p>
+</div>
+
+<!-- OWASP Top10 현재 기준 -->
+<div class="owasp-grid">
+  <div class="owasp-item" style="background:#fdf0ef;border-color:#f5c6c2;">
+    <div class="owasp-rank">A01</div>
+    <div><div class="owasp-name">취약한 접근 제어</div><div class="owasp-sub">Broken Access Control</div></div>
+  </div>
+  <div class="owasp-item" style="background:#ede9fe;border-color:#c4b5fd;">
+    <div class="owasp-rank">A02</div>
+    <div><div class="owasp-name">암호화 실패</div><div class="owasp-sub">Cryptographic Failures</div></div>
+  </div>
+  <div class="owasp-item" style="background:#fff7ed;border-color:#fed7aa;">
+    <div class="owasp-rank">A03</div>
+    <div><div class="owasp-name">인젝션 (Injection)</div><div class="owasp-sub">SQL·XSS 포함. 2013~2017 A1</div></div>
+  </div>
+  <div class="owasp-item" style="background:#f0fdf4;border-color:#bbf7d0;">
+    <div class="owasp-rank">A04</div>
+    <div><div class="owasp-name">불안전한 설계</div><div class="owasp-sub">Insecure Design — 2021 신규</div></div>
+  </div>
+  <div class="owasp-item" style="background:#eff6ff;border-color:#bfdbfe;">
+    <div class="owasp-rank">A05</div>
+    <div><div class="owasp-name">보안 설정 오류</div><div class="owasp-sub">Security Misconfiguration</div></div>
+  </div>
+  <div class="owasp-item" style="background:#fdf0ef;border-color:#f5c6c2;">
+    <div class="owasp-rank">A06</div>
+    <div><div class="owasp-name">오래된 컴포넌트 사용</div><div class="owasp-sub">Vulnerable &amp; Outdated Components</div></div>
+  </div>
+  <div class="owasp-item" style="background:#f5f3ff;border-color:#ddd6fe;">
+    <div class="owasp-rank">A07</div>
+    <div><div class="owasp-name">인증 실패</div><div class="owasp-sub">Identification &amp; Authentication Failures</div></div>
+  </div>
+  <div class="owasp-item" style="background:#fffbeb;border-color:#fde68a;">
+    <div class="owasp-rank">A08</div>
+    <div><div class="owasp-name">소프트웨어·데이터 무결성 결함</div><div class="owasp-sub">Software &amp; Data Integrity Failures</div></div>
+  </div>
+  <div class="owasp-item" style="background:#ecfdf5;border-color:#a7f3d0;">
+    <div class="owasp-rank">A09</div>
+    <div><div class="owasp-name">보안 로깅·모니터링 실패</div><div class="owasp-sub">Security Logging &amp; Monitoring Failures</div></div>
+  </div>
+  <div class="owasp-item" style="background:#eff6ff;border-color:#bfdbfe;">
+    <div class="owasp-rank">A10</div>
+    <div><div class="owasp-name">서버 사이드 요청 위조</div><div class="owasp-sub">Server-Side Request Forgery (SSRF)</div></div>
+  </div>
+</div>
+
+<div class="info">
+  <strong>연도별 변화 핵심 암기:</strong> Injection(SQL·XSS)은 2007~2017 꾸준히 상위권. CSRF는 2013 A8 → 2017/2020 A8. XSS는 2013 A3 → 2017 A7. 2021년 <strong>A01=취약한 접근 제어</strong>로 순위 상승. SSRF는 2021년 신규 등장(A10).
+</div>
+
+<div class="trap">
+  <div class="trap-h"><span>⚠</span><span class="trap-ht">OWASP 함정 — "클라우드 컴퓨팅 남용이 Top 10에 속한다" (2020 국회직)</span></div>
+  <div class="trap-b">
+    <div class="tq">① "Abuse of Cloud Computing이 OWASP 2020 Top 10에 포함된다" → <span class="vd wrong">✗ 오답</span></div>
+    <p>OWASP 2020 Top 10에 Abuse of Cloud Computing은 포함되지 않는다. 실제 포함: Injection, Broken Authentication, Sensitive Data Exposure, XML External Entities, Broken Access Control 등.</p>
+  </div>
+</div>
+<div class="footer"><span>정보보안 합격전략 교재 · INHYUK PI</span><span>OWASP Top10 탭</span></div>
+</div>
+
+<!-- ══════ TAB 4: 전자우편 보안 ══════ -->
+<div class="tab-pane" id="tab-email">
+<div class="sec-h"><div class="sec-num">📧</div><div class="sec-title">이메일 프로토콜 + 보안 3가지</div><span class="sec-label l-exam">★★★</span></div>
+
+<!-- 이메일 프로토콜 -->
+<div class="proto-row">
+  <div class="proto-card">
+    <div class="proto-h" style="background:#1a2540;">SMTP</div>
+    <div class="proto-body">
+      <div class="proto-port">25</div>
+      <div class="proto-desc">Simple Mail Transfer Protocol<br>메일 <strong>전송</strong> (송신)<br>TCP 25번</div>
+    </div>
+  </div>
+  <div class="proto-card">
+    <div class="proto-h" style="background:#2d5be3;">POP3</div>
+    <div class="proto-body">
+      <div class="proto-port">110</div>
+      <div class="proto-desc">Post Office Protocol 3<br>메일 <strong>수신 후 삭제</strong><br>TCP 110번</div>
+    </div>
+  </div>
+  <div class="proto-card">
+    <div class="proto-h" style="background:#6d28d9;">IMAP</div>
+    <div class="proto-body">
+      <div class="proto-port">143</div>
+      <div class="proto-desc">Internet Message Access Protocol<br>메일 <strong>서버에 유지</strong><br>TCP 143번</div>
+    </div>
+  </div>
+</div>
+
+<div class="part-div"><span class="part-tag">전자우편 보안</span><span class="part-title">PGP · S/MIME · PEM 완전 비교</span></div>
+
+<!-- PGP -->
+<div class="sec-h"><div class="sec-num">1</div><div class="sec-title">PGP (Pretty Good Privacy)</div><span class="sec-label l-exam">★★★</span></div>
+<div class="def-box">
+  <div class="def-lbl">PGP 정의</div>
+  <p>필 짐머만(Phil Zimmermann)이 <strong>1991년</strong> 제안한 전자우편 보안 프로토콜. <strong>무료</strong>로 제공됨. 인증기관(CA) 없이 <strong>공개키 인증을 사용자 개개인에게 위임</strong> (Web of Trust / 분산 신뢰 모델). IDEA·AES·CAST·3-DES 대칭 암호 사용. 기밀성·인증·무결성·부인방지 제공.</p>
+</div>
+
+<div class="cg">
+  <div class="cc"><div class="cc-h" style="background:#1a2540;">PGP 특징</div><div class="cc-b">
+    <div class="cc-row"><span class="cc-k">개발자</span><span class="cc-v">Phil Zimmermann, <strong>1991년</strong></span></div>
+    <div class="cc-row"><span class="cc-k">비용</span><span class="cc-v"><strong>무료</strong> 제공 (오픈소스)</span></div>
+    <div class="cc-row"><span class="cc-k">인증 구조</span><span class="cc-v">CA 없음. <strong>분산 신뢰 모델</strong> (Web of Trust)</span></div>
+    <div class="cc-row"><span class="cc-k">인증서</span><span class="cc-v">X.509 인증서 미사용 (직접 신뢰)</span></div>
+    <div class="cc-row"><span class="cc-k">대칭키</span><span class="cc-v">IDEA, AES, CAST, 3-DES</span></div>
+    <div class="cc-row"><span class="cc-k">전자서명</span><span class="cc-v">RSA + SHA-1 해시 (160bit)</span></div>
+    <div class="cc-row"><span class="cc-k">압축</span><span class="cc-v">ZIP 알고리즘 사용</span></div>
+  </div></div>
+  <div class="cc"><div class="cc-h" style="background:#6d28d9;">PGP 처리 순서 (기밀성)</div><div class="cc-b">
+    <div class="cc-row"><span class="cc-k">①</span><span class="cc-v">메시지 서명 (발신자 개인키)</span></div>
+    <div class="cc-row"><span class="cc-k">②</span><span class="cc-v">압축 (ZIP)</span></div>
+    <div class="cc-row"><span class="cc-k">③</span><span class="cc-v">대칭키로 암호화</span></div>
+    <div class="cc-row"><span class="cc-k">④</span><span class="cc-v">대칭키를 수신자 공개키로 암호화</span></div>
+    <div class="cc-row"><span class="cc-k">⑤</span><span class="cc-v">Radix-64 인코딩 (ASCII 변환)</span></div>
+    <div class="cc-row"><span class="cc-k">핵심</span><span class="cc-v"><strong>하이브리드 암호 시스템</strong> (대칭+공개키)</span></div>
+  </div></div>
+</div>
+
+<!-- S/MIME -->
+<div class="sec-h" style="margin-top:8px;"><div class="sec-num">2</div><div class="sec-title">S/MIME (Secure/MIME)</div><span class="sec-label l-exam">★★★</span></div>
+<div class="def-box">
+  <div class="def-lbl">S/MIME 정의</div>
+  <p>RSA 데이터 보안이 MIME 인터넷 메일 형식을 보안 강화시킨 것. IETF 작업 그룹에서 표준화. <strong>X.509 버전 3 인증서</strong> 사용 (PGP와의 차이점). 기밀성·무결성·사용자 인증·송신 사실 부인 방지 제공. 암호화 알고리즘: 메시지=<strong>Triple-DES</strong>, 서명=<strong>DSA</strong>, 해시=<strong>SHA-1</strong>.</p>
+</div>
+
+<!-- PEM -->
+<div class="sec-h" style="margin-top:8px;"><div class="sec-num">3</div><div class="sec-title">PEM (Privacy Enhanced Mail)</div><span class="sec-label l-tip">보충</span></div>
+<div class="cards">
+  <div class="card"><div class="card-t">PEM 정의</div><div class="card-b">인터넷 표준안으로 <strong>IETF에서 만든</strong> 암호화 기법. 이진 데이터를 6비트씩 분할하여 아스키 변환하는 <strong>Base64</strong> 사용.</div></div>
+  <div class="card"><div class="card-t">특징</div><div class="card-b">자동 암호화로 전송 중 유출돼도 내용 확인 불가. <strong>PGP보다 보안능력 뛰어남</strong>. 중앙 집중식 키 인증방식으로 대중화 어려움.</div></div>
+</div>
+
+<!-- 3가지 비교표 -->
+<div class="tw"><table>
+  <thead><tr><th>구분</th><th>PGP</th><th>S/MIME</th><th>PEM</th></tr></thead>
+  <tbody>
+    <tr><td>개발 주체</td><td>Phil Zimmermann (1991)</td><td>RSA Data Security + IETF</td><td>IETF</td></tr>
+    <tr><td>인증 구조</td><td><strong>분산 신뢰 (CA 없음)</strong></td><td><strong>중앙 집중식 (CA, X.509)</strong></td><td>중앙 집중식</td></tr>
+    <tr><td>인증서</td><td>X.509 미사용</td><td><strong>X.509 v3</strong> 사용</td><td>X.509 사용</td></tr>
+    <tr><td>비용</td><td><strong>무료</strong></td><td>유료</td><td>무료</td></tr>
+    <tr><td>인코딩</td><td>Radix-64</td><td>MIME</td><td><strong>Base64</strong></td></tr>
+    <tr><td>대중화</td><td><strong>가장 널리 사용</strong></td><td>기업 환경 사용</td><td>중앙 집중식으로 어려움</td></tr>
+    <tr><td>보안 서비스</td><td>기밀성·인증·무결성·부인방지</td><td>기밀성·무결성·사용자인증·부인방지</td><td>기밀성</td></tr>
+  </tbody>
+</table></div>
+
+<div class="trap">
+  <div class="trap-h"><span>⚠</span><span class="trap-ht">PGP 함정 — "CA를 사용하여 중앙 집중식으로 관리" (빈출 오답)</span></div>
+  <div class="trap-b">
+    <div class="tq">"PGP는 인증기관(CA)으로부터 인증서를 발급받아야 한다" → <span class="vd wrong">✗ 오답</span></div>
+    <p>PGP의 최대 특징은 <strong>CA 없는 분산 신뢰 모델</strong>. 공개키 인증을 사용자 개개인에게 위임. S/MIME이 X.509 인증서·CA를 사용하는 것과 반대. "PGP는 구현이 쉽고, 특정 기관으로부터 인증서를 발급받지 않아도 된다" → <span class="vd right">✓ 정답</span> (2019 국가직 정보시스템보안)</p>
+  </div>
+</div>
+<div class="footer"><span>정보보안 합격전략 교재 · INHYUK PI</span><span>전자우편 보안 탭</span></div>
+</div>
+
+<!-- ══════ TAB 5: 기출문제 ══════ -->
+<div class="tab-pane" id="tab-exam">
+<div class="sec-h"><div class="sec-num">📝</div><div class="sec-title">기출문제 전수 해설 <span class="exam-count">12문제</span></div><span class="sec-label l-exam">연도순</span></div>
+
+<div class="exam-card">
+  <div class="exam-h"><span class="exam-yr">📄 2014 서울시 9급 · XSS 설명 매칭</span><span class="exam-star">★★★</span></div>
+  <div class="exam-body">
+    <div class="exam-q">웹사이트에서 입력을 엄밀하게 검증하지 않는 취약점을 이용하는 공격으로, 사용자로 위장한 공격자가 웹사이트에 프로그램 코드를 삽입하여 나중에 이 사이트를 방문하는 다른 사용자의 웹 브라우저에서 해당 코드가 실행되도록 한다. 이 공격은?</div>
+    <div class="exam-opts">
+      <div class="opt opt-w">① HTTP 세션 탈취 (Session Hijacking)</div>
+      <div class="opt opt-w">② 피싱 (Phishing)</div>
+      <div class="opt opt-r">③ 사이트 간 스크립팅 (XSS)</div>
+      <div class="opt opt-w">④ 파밍 (Pharming)</div>
+    </div>
+    <div class="exam-exp"><strong>정답 ③</strong> — "입력 미검증 + 코드 삽입 + 다른 사용자 브라우저에서 실행" = <strong>XSS</strong>. 세션 하이재킹은 TCP 시퀀스번호 공격, 피싱은 가짜 사이트 유도, 파밍은 DNS 조작.</div>
+  </div>
+</div>
+
+<div class="exam-card">
+  <div class="exam-h"><span class="exam-yr">📄 2015 국가직 9급 · SQL Injection 설명 매칭</span><span class="exam-star">★★★</span></div>
+  <div class="exam-body">
+    <div class="exam-q">공격자가 사용자의 명령어나 질의어에 특정한 코드를 삽입하여 DB 인증을 우회하거나 데이터를 조작한다. 이 공격은?</div>
+    <div class="exam-opts">
+      <div class="opt opt-w">① 직접 객체 참조</div>
+      <div class="opt opt-w">② Cross Site Request Forgery</div>
+      <div class="opt opt-w">③ Cross Site Scripting</div>
+      <div class="opt opt-r">④ SQL Injection</div>
+    </div>
+    <div class="exam-exp"><strong>정답 ④</strong> — "명령어·질의어에 코드 삽입 + DB 인증 우회 + 데이터 조작" = <strong>SQL Injection</strong>. XSS는 스크립트 삽입, CSRF는 강제 요청이 핵심.</div>
+  </div>
+</div>
+
+<div class="exam-card">
+  <div class="exam-h"><span class="exam-yr">📄 2016 정보시스템보안 · CSRF 설명 매칭</span><span class="exam-star">★★★</span></div>
+  <div class="exam-body">
+    <div class="exam-q">( )는 불특정 다수를 대상으로 로그인된 사용자가 자신의 의도와는 무관하게 공격자가 의도한 행위(수정, 삭제, 등록, 송금)를 하게 만드는 공격이다.</div>
+    <div class="exam-opts">
+      <div class="opt opt-w">① 명령 삽입 취약점</div>
+      <div class="opt opt-w">② XSS 취약점</div>
+      <div class="opt opt-w">③ 디렉터리 리스팅 취약점</div>
+      <div class="opt opt-r">④ CSRF 취약점</div>
+    </div>
+    <div class="exam-exp"><strong>정답 ④</strong> — "불특정 다수 + 로그인 사용자 + 의도와 무관한 행위 강제" = <strong>CSRF</strong>. 핵심 키워드를 외울 것: "의지와 무관하게" + "웹사이트가 사용자 브라우저를 신뢰".</div>
+  </div>
+</div>
+
+<div class="exam-card">
+  <div class="exam-h"><span class="exam-yr">📄 2019 국가직 정보시스템보안 문5 · PGP 설명</span><span class="exam-star">★★★</span></div>
+  <div class="exam-body">
+    <div class="exam-q">전자우편 암호화에 대한 설명이다. 괄호 안에 들어갈 용어는?<br>( )은/는 IDEA 알고리즘과 RSA 알고리즘을 조합하여 만들었다. 장점으로는 구현이 쉽고, 특정 기관으로부터 인증서를 발급받지 않아도 된다는 것이다.</div>
+    <div class="exam-opts">
+      <div class="opt opt-r">① PGP</div>
+      <div class="opt opt-w">② PEM</div>
+      <div class="opt opt-w">③ S/MIME</div>
+      <div class="opt opt-w">④ IMAP</div>
+    </div>
+    <div class="exam-exp"><strong>정답 ①</strong> — "IDEA(대칭) + RSA(공개키) 조합 + 인증서 불필요" = <strong>PGP</strong>. PGP는 CA 없는 분산 신뢰 모델. S/MIME은 X.509 인증서 필요. IMAP은 이메일 수신 프로토콜(143번 포트).</div>
+  </div>
+</div>
+
+<div class="exam-card">
+  <div class="exam-h"><span class="exam-yr">📄 2019 국가직 정보시스템보안 문1 · HTTPS 구성 요소</span><span class="exam-star">★★★</span></div>
+  <div class="exam-body">
+    <div class="exam-q">HTTPS를 구성하기 위해 필요한 프로토콜만을 모두 고르면?<br>ㄱ. TCP  ㄴ. SSL  ㄷ. SOAP  ㄹ. SET</div>
+    <div class="exam-opts">
+      <div class="opt opt-r">① ㄱ, ㄴ</div>
+      <div class="opt opt-w">② ㄱ, ㄹ</div>
+      <div class="opt opt-w">③ ㄴ, ㄷ</div>
+      <div class="opt opt-w">④ ㄷ, ㄹ</div>
+    </div>
+    <div class="exam-exp"><strong>정답 ①</strong> — HTTPS = HTTP + SSL/TLS + TCP. SOAP은 웹 서비스 프로토콜, SET은 전자상거래 보안 프로토콜로 HTTPS 구성 요소가 아님.</div>
+  </div>
+</div>
+
+<div class="exam-card">
+  <div class="exam-h"><span class="exam-yr">📄 2020 국가직 정보시스템보안 문15 · CSRF 오답</span><span class="exam-star">★★★</span></div>
+  <div class="exam-body">
+    <div class="exam-q">CSRF(Cross Site Request Forgery)의 특징에 대한 설명으로 <u>옳지 않은 것</u>은?</div>
+    <div class="exam-opts">
+      <div class="opt opt-n">① 사용자가 자신의 의지와는 무관하게 공격자가 의도한 행위를 특정 웹사이트에 요청하게 하는 방법이다.</div>
+      <div class="opt opt-n">② 사이트에 방문하는 사용자가 정상적인 요청이 아닌 임의의 요청을 하도록 위조하는 방법이다.</div>
+      <div class="opt opt-w">③ 서버와 클라이언트에 각각 잘못된 시퀀스 넘버를 사용하여 연결된 세션에 혼란을 줌으로써 공격자가 서버와의 연결을 획득하는 방법이다.</div>
+      <div class="opt opt-n">④ 특정 웹사이트가 사용자의 웹브라우저를 신용하는 상태를 악용하는 방법이다.</div>
+    </div>
+    <div class="exam-exp"><strong>정답 ③</strong> — ③은 <strong>TCP 세션 하이재킹</strong> 설명. CSRF는 시퀀스 번호와 무관하며, 로그인된 사용자의 세션/쿠키를 이용해 의도치 않은 요청을 전송하는 공격.</div>
+  </div>
+</div>
+
+<div class="exam-card">
+  <div class="exam-h"><span class="exam-yr">📄 2020 국가직 정보시스템보안 문13 · 쿠키 오답</span><span class="exam-star">★★</span></div>
+  <div class="exam-body">
+    <div class="exam-q">Cookie에 대한 설명으로 <u>옳지 않은 것</u>은?</div>
+    <div class="exam-opts">
+      <div class="opt opt-n">① 쿠키는 클라이언트의 컴퓨터에 생성된다.</div>
+      <div class="opt opt-n">② 사용자와 웹사이트를 연결해 주는 정보가 저장되어 있다.</div>
+      <div class="opt opt-n">③ 직접 바이러스를 옮기거나 악성코드를 설치할 수 없다.</div>
+      <div class="opt opt-w">④ 사용자들의 로그인, 로그아웃, 시스템 재부팅 정보를 저장한다.</div>
+    </div>
+    <div class="exam-exp"><strong>정답 ④</strong> — 쿠키 용도: 사이트 개인화·장바구니·이용 방식 추적. 로그인·로그아웃·재부팅 정보는 <strong>시스템 로그(wtmp, utmp)</strong>에 저장. 쿠키는 4KB 이하 텍스트 파일로 악성코드 전파 불가.</div>
+  </div>
+</div>
+
+<div class="exam-card">
+  <div class="exam-h"><span class="exam-yr">📄 2020 국가직 정보시스템보안 문17 · SQL Injection 오답</span><span class="exam-star">★★</span></div>
+  <div class="exam-body">
+    <div class="exam-q">SQL 인젝션에 대한 설명으로 <u>옳지 않은 것</u>은?</div>
+    <div class="exam-opts">
+      <div class="opt opt-n">① 공격자가 입력값을 조작하여 원하는 SQL 구문을 실행한다.</div>
+      <div class="opt opt-w">② 전송되는 패킷을 가로채어 자신이 송신자인 것처럼 패킷을 변경하여 다시 보내는 기법이다.</div>
+      <div class="opt opt-n">③ 대응 방법 중에는 사용자의 입력에 특수문자가 포함되어 있는지 검증하는 방법이 있다.</div>
+      <div class="opt opt-n">④ OWASP에서 선정한 10대 웹 어플리케이션 보안 위험에 포함된다.</div>
+    </div>
+    <div class="exam-exp"><strong>정답 ②</strong> — ②는 <strong>IP 스푸핑(IP Spoofing)</strong> 또는 패킷 변조 공격 설명. SQL Injection은 입력 폼에 SQL 코드 삽입하여 DB 조작하는 공격이며 패킷 가로채기와 관계없음.</div>
+  </div>
+</div>
+
+<div class="exam-card">
+  <div class="exam-h"><span class="exam-yr">📄 2020 국가직 정보시스템보안 문20 · XSS 공격 순서</span><span class="exam-star">★★★</span></div>
+  <div class="exam-body">
+    <div class="exam-q">일반적인 XSS 공격 수행 과정을 순서대로 바르게 나열한 것은?<br>가. 사용자가 XSS 코드에 접근한다 / 나. 사용자 시스템에서 XSS 코드 실행 / 다. 서버가 XSS 포함 글 사용자에게 전달 / 라. 서버에 XSS 코드 작성·저장 / 마. 결과가 공격자에게 전달</div>
+    <div class="exam-opts">
+      <div class="opt opt-w">① 라→가→나→다→마</div>
+      <div class="opt opt-w">② 라→가→다→나→마</div>
+      <div class="opt opt-r">③ 라→다→가→나→마</div>
+      <div class="opt opt-w">④ 라→다→나→가→마</div>
+    </div>
+    <div class="exam-exp"><strong>정답 ③</strong> — XSS 순서: <strong>라</strong>(공격자 서버에 XSS 저장) → <strong>다</strong>(서버가 XSS 포함 글 전달) → <strong>가</strong>(사용자 접근) → <strong>나</strong>(사용자 시스템에서 실행) → <strong>마</strong>(결과 공격자에게). 서버가 먼저 전달(다)한 후 사용자가 접근(가)하는 순서 주의!</div>
+  </div>
+</div>
+
+<div class="exam-card">
+  <div class="exam-h"><span class="exam-yr">📄 2020 국회직 9급 · OWASP Top10 해당 안 되는 것</span><span class="exam-star">★★</span></div>
+  <div class="exam-body">
+    <div class="exam-q">OWASP 2020에서 발표된 10가지 보안 위협에 <u>속하지 않는 것</u>은?</div>
+    <div class="exam-opts">
+      <div class="opt opt-w">① Abuse of Cloud Computing</div>
+      <div class="opt opt-n">② Injection</div>
+      <div class="opt opt-n">③ XML External Entities</div>
+      <div class="opt opt-n">④ Broken Authentication</div>
+      <div class="opt opt-n">⑤ Sensitive Data Exposure</div>
+    </div>
+    <div class="exam-exp"><strong>정답 ①</strong> — "Abuse of Cloud Computing(클라우드 컴퓨팅 남용)"은 OWASP Top 10에 없는 항목. ②Injection·③XML External Entities·④Broken Authentication·⑤Sensitive Data Exposure는 모두 2017/2020 OWASP Top 10 포함.</div>
+  </div>
+</div>
+
+<div class="exam-card">
+  <div class="exam-h"><span class="exam-yr">📄 2020 국회직 9급 · XSS 설명 (Stored XSS)</span><span class="exam-star">★★★</span></div>
+  <div class="exam-body">
+    <div class="exam-q">게시판의 글에 원본과 함께 악성 코드를 삽입하여 글을 읽을 경우 악성코드가 실행되도록 하여 클라이언트의 정보를 유출하는 공격기법이다. 웹 페이지가 사용자로부터 입력받은 데이터를 필터링하지 않고 그대로 동적으로 생성된 웹 페이지에 포함하여 사용자에게 재전송할 때 발생한다.</div>
+    <div class="exam-opts">
+      <div class="opt opt-w">① SQL Injection</div>
+      <div class="opt opt-r">② XSS (Cross Site Scripting)</div>
+      <div class="opt opt-w">③ 파일 업로드 취약점</div>
+      <div class="opt opt-w">④ CSRF (Cross Site Request Forgery)</div>
+      <div class="opt opt-w">⑤ 쿠키/세션 위조</div>
+    </div>
+    <div class="exam-exp"><strong>정답 ②</strong> — "게시판 글에 악성 코드 삽입 + 읽을 때 실행 + 입력값 필터링 없이 재전송" = <strong>Stored XSS</strong>. CSRF는 사용자가 모르게 요청을 서버에 전송하는 공격으로 스크립트 실행이 주목적 아님.</div>
+  </div>
+</div>
+
+<div class="exam-card">
+  <div class="exam-h"><span class="exam-yr">📄 2021 군무원 7급 · 이메일 보안 기술</span><span class="exam-star">★★★</span></div>
+  <div class="exam-body">
+    <div class="exam-q">이메일 보안을 위해 사용되는 보안 기술로만 묶인 것으로 가장 옳은 것은?</div>
+    <div class="exam-opts">
+      <div class="opt opt-w">① SET, S/MIME</div>
+      <div class="opt opt-r">② PEM, PGP</div>
+      <div class="opt opt-w">③ S/MIME, IDS</div>
+      <div class="opt opt-w">④ PGP, SSO</div>
+    </div>
+    <div class="exam-exp"><strong>정답 ②</strong> — 전자우편 보안 기술: <strong>PGP, S/MIME, PEM</strong>. SET은 전자상거래(신용카드) 보안, IDS는 침입탐지시스템, SSO는 단일 로그인 인증. ①의 SET·③의 IDS·④의 SSO는 이메일 보안 기술이 아님.</div>
+  </div>
+</div>
+
+<div class="footer"><span>정보보안 합격전략 교재 · INHYUK PI</span><span>기출문제 탭</span></div>
+</div>
+
+<!-- ══════ TAB 6: 암기·정리 ══════ -->
+<div class="tab-pane" id="tab-summary">
+<div class="sec-h"><div class="sec-num">💡</div><div class="sec-title">핵심 암기 카드 + 체크리스트</div><span class="sec-label l-tip">시험 직전</span></div>
+
+<!-- XSS vs CSRF 한눈에 -->
+<div class="diagram-wrap">
+  <div class="diagram-title">XSS vs CSRF — 핵심 차이 한눈에</div>
+  <svg viewBox="0 0 720 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px;display:block;margin:0 auto;">
+    <!-- XSS -->
+    <rect x="10" y="10" width="330" height="110" rx="10" fill="#fdf0ef" stroke="#c0392b" stroke-width="2"/>
+    <text x="175" y="34" text-anchor="middle" fill="#c0392b" font-size="14" font-family="sans-serif" font-weight="700">XSS (Cross-Site Scripting)</text>
+    <text x="175" y="54" text-anchor="middle" fill="#7a1c1c" font-size="11" font-family="sans-serif">악성 스크립트가 <tspan font-weight="700">클라이언트</tspan>에서 실행</text>
+    <text x="175" y="72" text-anchor="middle" fill="#7a1c1c" font-size="11" font-family="sans-serif">서버가 사용자 입력을 신뢰</text>
+    <text x="175" y="90" text-anchor="middle" fill="#7a1c1c" font-size="11" font-family="sans-serif">목적: 세션 탈취 / 페이지 변조</text>
+    <text x="175" y="108" text-anchor="middle" fill="#7a1c1c" font-size="10" font-family="sans-serif">대응: 입력 이스케이프, CSP, HttpOnly</text>
+    
+    <!-- CSRF -->
+    <rect x="380" y="10" width="330" height="110" rx="10" fill="#ede9fe" stroke="#6d28d9" stroke-width="2"/>
+    <text x="545" y="34" text-anchor="middle" fill="#6d28d9" font-size="14" font-family="sans-serif" font-weight="700">CSRF (요청 위조)</text>
+    <text x="545" y="54" text-anchor="middle" fill="#4c1d95" font-size="11" font-family="sans-serif">악성 스크립트가 <tspan font-weight="700">서버</tspan>에 요청 전송</text>
+    <text x="545" y="72" text-anchor="middle" fill="#4c1d95" font-size="11" font-family="sans-serif">서버가 사용자 브라우저를 신뢰</text>
+    <text x="545" y="90" text-anchor="middle" fill="#4c1d95" font-size="11" font-family="sans-serif">목적: 송금/수정/삭제 강제 실행</text>
+    <text x="545" y="108" text-anchor="middle" fill="#4c1d95" font-size="10" font-family="sans-serif">대응: CSRF 토큰, Referer 검증</text>
+  </svg>
+</div>
+
+<div class="mem">
+  <div class="mem-t">💡 8단원 핵심 암기</div>
+  <div class="mem-items">
+    <div class="mem-item"><span class="mem-k">XSS</span><span class="mem-v">클라이언트 브라우저에서 스크립트 실행. 서버가 <strong>입력값</strong> 신뢰. 세션탈취·페이지변조.</span></div>
+    <div class="mem-item"><span class="mem-k">CSRF</span><span class="mem-v">사용자 모르게 서버에 요청 전송. 서버가 <strong>사용자 브라우저</strong> 신뢰. 송금·수정 강제.</span></div>
+    <div class="mem-item"><span class="mem-k">SQL Injection</span><span class="mem-v">SQL 코드 삽입 → DB 인증 우회. 대응: Prepared Statement, 특수문자 필터링.</span></div>
+    <div class="mem-item"><span class="mem-k">XSS 순서</span><span class="mem-v">라(저장) → <strong>다(서버 전달) → 가(사용자 접근)</strong> → 나(실행) → 마(결과 전달)</span></div>
+    <div class="mem-item"><span class="mem-k">HTTPS</span><span class="mem-v">HTTP+SSL. 포트 <strong>443</strong>. URL·문서내용·쿠키·HTTP헤더 암호화. RFC 2818.</span></div>
+    <div class="mem-item"><span class="mem-k">쿠키</span><span class="mem-v"><strong>클라이언트</strong>에 저장. 4KB 이하 텍스트. 바이러스 전파 불가. 개인화·장바구니 용도.</span></div>
+    <div class="mem-item"><span class="mem-k">PGP</span><span class="mem-v">1991, 필 짐머만. <strong>CA 없음</strong>, 무료. IDEA+RSA+SHA-1. 분산 신뢰 모델.</span></div>
+    <div class="mem-item"><span class="mem-k">S/MIME</span><span class="mem-v">RSA 개발. <strong>X.509 v3 인증서</strong> 사용. Triple-DES(메시지) + DSA(서명).</span></div>
+    <div class="mem-item"><span class="mem-k">PEM</span><span class="mem-v">IETF 표준. <strong>Base64</strong> 인코딩. PGP보다 보안능력 뛰어남. 중앙집중식 어려움.</span></div>
+    <div class="mem-item"><span class="mem-k">이메일 보안</span><span class="mem-v">PGP + S/MIME + PEM. SET·IDS·SSO는 이메일 보안 기술 아님.</span></div>
+  </div>
+</div>
+
+<ul class="cl">
+  <li class="cl-w">"CSRF는 시퀀스 번호를 이용해 세션에 혼란을 주는 공격" → ✗ (TCP 세션 하이재킹)</li>
+  <li class="cl-w">"SQL Injection은 패킷을 가로채 변경하는 기법" → ✗ (IP 스푸핑)</li>
+  <li class="cl-w">"쿠키는 서버에 저장되며 로그인/재부팅 정보를 담는다" → ✗</li>
+  <li class="cl-w">"PGP는 CA로부터 X.509 인증서를 발급받아야 한다" → ✗ (S/MIME이 X.509 사용)</li>
+  <li class="cl-w">"HTTPS 사용 시 IP 헤더의 TTL 필드도 암호화된다" → ✗ (TTL은 암호화 안 됨)</li>
+  <li class="cl-w">"Abuse of Cloud Computing이 OWASP Top 10에 포함된다" → ✗</li>
+  <li class="cl-r">"XSS = 클라이언트 브라우저에서 스크립트 실행" → ✓</li>
+  <li class="cl-r">"CSRF = 사용자 의지와 무관한 서버 요청 강제" → ✓</li>
+  <li class="cl-r">"HTTPS 암호화: URL·문서내용·쿠키·HTTP헤더" → ✓</li>
+  <li class="cl-r">"PGP = CA 없음, 무료, 1991년, 필 짐머만" → ✓</li>
+  <li class="cl-r">"전자우편 보안 = PGP·S/MIME·PEM (SET·IDS·SSO 아님)" → ✓</li>
+  <li class="cl-r">"쿠키 = 클라이언트 저장, 4KB, 바이러스 전파 불가" → ✓</li>
+</ul>
+
+<div class="tw"><table>
+  <thead><tr><th>출제 포인트</th><th>빈출도</th><th>주요 함정</th></tr></thead>
+  <tbody>
+    <tr><td>XSS vs CSRF vs SQL 구분</td><td><span class="sf">★★★</span></td><td>설명을 바꿔치기하여 다른 공격으로 제시</td></tr>
+    <tr><td>CSRF 정의 오답 찾기</td><td><span class="sf">★★★</span></td><td>세션 하이재킹(시퀀스 번호) 설명 삽입</td></tr>
+    <tr><td>XSS 공격 순서 배열</td><td><span class="sf">★★★</span></td><td>다(서버전달)와 가(사용자접근) 순서 혼동</td></tr>
+    <tr><td>PGP 특징 (CA 없음, 무료)</td><td><span class="sf">★★★</span></td><td>"CA로부터 인증서 발급 필요" → 오답</td></tr>
+    <tr><td>이메일 보안 기술 구분</td><td><span class="sf">★★★</span></td><td>SET·IDS·SSO를 이메일 보안으로 서술</td></tr>
+    <tr><td>쿠키 저장 위치·용도</td><td><span class="sf">★★</span></td><td>서버 저장, 재부팅 정보 저장이라 서술</td></tr>
+    <tr><td>HTTPS 암호화 범위</td><td><span class="sf">★★</span></td><td>IP헤더 TTL이 암호화된다 서술</td></tr>
+    <tr><td>OWASP Top10 포함 여부</td><td><span class="sf">★★</span></td><td>Abuse of Cloud Computing 포함이라 서술</td></tr>
+  </tbody>
+</table></div>
+
+<div class="footer">
+  <span>정보보안 합격전략 교재 · INHYUK PI</span>
+  <span>Chapter 08 · 웹보안·전자우편보안 완전 교재 · 2026 목표</span>
+</div>
+</div>
+
+</div><!-- /content-card -->
+</div><!-- /wrap -->
+
+<script>
+function sw(id){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  event.currentTarget.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>

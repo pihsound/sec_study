@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SSH · TCP 완전 교재 | INHYUK PI</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --p:#1a2540;--a:#2d5be3;--al:#e8eeff;
+  --r:#c0392b;--rl:#fdf0ef;
+  --g:#1a7a4a;--gl:#edf7f2;
+  --w:#b45309;--wl:#fffbeb;
+  --v:#6d28d9;--vl:#ede9fe;
+  --t:#0f766e;--tl:#ccfbf1;
+  --o:#c2410c;--ol:#fff7ed;
+  --bd:#dde3ec;--bg:#fff;--tx:#1c2331;--tm:#5a6478;
+  --g0:#f8f9fa;--g1:#f0f2f5;
+  --sans:'Noto Sans KR',sans-serif;--serif:'Noto Serif KR',serif;--mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--sans);background:#eef1f8;color:var(--tx);font-size:14px;line-height:1.8;}
+.wrap{max-width:960px;margin:0 auto;padding:28px 14px 70px;}
+
+/* HEADER */
+.hdr{border-radius:14px 14px 0 0;padding:30px 42px 26px;position:relative;overflow:hidden;}
+.hdr-ssh{background:linear-gradient(135deg,#0a1628 0%,#1a3040 50%,#0d4060 100%);}
+.hdr-tcp{background:linear-gradient(135deg,#1a1028 0%,#2d1a40 50%,#3d0a50 100%);}
+.hdr::before{position:absolute;right:28px;top:18px;font-size:90px;opacity:.05;}
+.hdr-ssh::before{content:'🔐';}
+.hdr-tcp::before{content:'🔗';}
+.mbr{display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap;}
+.bdg{font-size:9.5px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.06em;text-transform:uppercase;}
+.bdg-ch{background:rgba(255,255,255,.13);color:rgba(255,255,255,.9);}
+.bdg-hot{background:#c0392b;color:white;}
+.bdg-ok{background:#2d5be3;color:white;}
+.bdg-g{background:#1a7a4a;color:white;}
+.ht{font-family:var(--serif);font-size:27px;font-weight:600;color:white;letter-spacing:-.02em;margin-bottom:3px;}
+.hs{color:rgba(255,255,255,.55);font-size:12px;font-weight:300;}
+.hst{display:flex;gap:22px;margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.1);flex-wrap:wrap;}
+.hn{font-size:19px;font-weight:700;color:#7aa2f7;}
+.hl{font-size:9.5px;color:rgba(255,255,255,.5);margin-top:1px;}
+
+/* TABS */
+.tab-bar{display:flex;background:var(--p);padding:0 42px;gap:2px;flex-wrap:wrap;border-bottom:2px solid rgba(255,255,255,.08);}
+.tab-btn{padding:11px 13px;font-size:11.5px;font-weight:600;color:rgba(255,255,255,.5);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all .18s;white-space:nowrap;}
+.tab-btn:hover{color:rgba(255,255,255,.8);}
+.tab-btn.active{color:#7aa2f7;border-bottom-color:#2d5be3;}
+
+/* CONTENT */
+.cc{background:var(--bg);border-radius:0 0 14px 14px;padding:36px 42px;border:1px solid var(--bd);border-top:none;}
+.tab-pane{display:none;}
+.tab-pane.active{display:block;}
+
+/* SECTION */
+.sh{display:flex;align-items:center;gap:9px;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--g1);margin-top:6px;}
+.sn2{width:30px;height:30px;background:var(--p);color:white;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.st{font-size:17px;font-weight:700;color:var(--p);}
+.slb{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.06em;text-transform:uppercase;}
+.ld{background:var(--al);color:var(--a);}
+.le{background:var(--rl);color:var(--r);}
+.lv{background:var(--vl);color:var(--v);}
+.lt{background:var(--wl);color:var(--w);}
+.lg{background:var(--gl);color:var(--g);}
+
+/* STORY */
+.sb{font-size:13.5px;line-height:2;color:var(--tx);}
+.sb p{margin-bottom:12px;}
+.sb strong{color:var(--p);}
+.sq{background:var(--p);color:white;border-radius:10px;padding:13px 20px 13px 32px;margin:14px 0;font-size:13px;line-height:1.8;position:relative;}
+.sq::before{content:'💬';position:absolute;left:-12px;top:10px;font-size:20px;}
+.sq strong{color:#7aa2f7;}
+.sdiv{height:1px;background:linear-gradient(90deg,transparent,var(--bd),transparent);margin:26px 0;}
+
+/* INSIGHT */
+.insight{background:linear-gradient(135deg,#1a2540,#0a2448);border-radius:11px;padding:15px 20px;margin:13px 0;color:white;}
+.ins-t{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7aa2f7;margin-bottom:7px;}
+.insight p{font-size:13px;line-height:1.8;color:rgba(255,255,255,.85);}
+.insight strong{color:#7aa2f7;}
+
+/* DEF */
+.dfb{background:var(--p);color:white;border-radius:11px;padding:16px 21px;margin-bottom:14px;}
+.dfl{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7aa2f7;margin-bottom:5px;}
+.dfb p{font-size:13px;line-height:1.9;color:rgba(255,255,255,.88);}
+.dfb strong{color:#7aa2f7;}
+
+/* TABLE */
+.tw{overflow-x:auto;margin:12px 0;border-radius:9px;border:1px solid var(--bd);}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead tr{background:var(--p);color:white;}
+thead th{padding:10px 13px;text-align:left;font-weight:600;font-size:11.5px;}
+tbody tr{border-bottom:1px solid var(--g1);}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:#f7f9ff;}
+tbody td{padding:9px 13px;color:var(--tx);vertical-align:top;}
+tbody td:first-child{font-weight:600;}
+.tc{text-align:center;}
+.mono{font-family:var(--mono);font-size:12px;}
+
+/* CARDS */
+.cds{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:12px 0;}
+.cd{border:1px solid var(--bd);border-radius:9px;padding:13px 14px;background:var(--g0);}
+.cdt{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--a);margin-bottom:5px;}
+.cdb{font-size:13px;color:var(--tx);line-height:1.7;}
+.cdb strong{color:var(--p);}
+
+/* DIAGRAM */
+.dw{background:var(--g0);border:1px solid var(--bd);border-radius:12px;padding:18px;margin:14px 0;overflow-x:auto;}
+.dt{font-size:11px;font-weight:700;color:var(--p);margin-bottom:12px;letter-spacing:.03em;}
+
+/* PROC */
+.proc{display:flex;flex-direction:column;gap:0;margin:14px 0;border-radius:11px;overflow:hidden;border:1px solid var(--bd);}
+.proc-step{display:flex;align-items:flex-start;gap:14px;padding:12px 16px;border-bottom:1px solid var(--g1);}
+.proc-step:last-child{border-bottom:none;}
+.proc-step:nth-child(even){background:var(--g0);}
+.pn{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white;flex-shrink:0;margin-top:2px;}
+.pc{flex:1;}
+.pt{font-size:13.5px;font-weight:700;color:var(--p);margin-bottom:3px;}
+.pd{font-size:12.5px;color:var(--tm);line-height:1.7;}
+.ptag{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:600;padding:2px 8px;border-radius:5px;margin-top:5px;}
+
+/* 2-col compare */
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0;}
+.cv{border-radius:10px;overflow:hidden;border:1px solid var(--bd);}
+.cvh{padding:10px 15px;font-size:13px;font-weight:700;color:white;}
+.cvb{padding:11px 15px;background:var(--bg);}
+.cvr{display:flex;gap:7px;padding:4px 0;border-bottom:1px solid var(--g1);font-size:12.5px;}
+.cvr:last-child{border-bottom:none;}
+.cvk{color:var(--tm);min-width:55px;font-size:10.5px;padding-top:2px;flex-shrink:0;}
+.cvv{color:var(--tx);font-weight:500;}
+
+/* FLAG BOX */
+.flag-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:12px 0;}
+.flag{border-radius:8px;padding:10px 8px;text-align:center;border:1px solid var(--bd);}
+.flag-name{font-family:var(--mono);font-size:14px;font-weight:700;margin-bottom:4px;}
+.flag-desc{font-size:10px;color:var(--tm);line-height:1.4;}
+
+/* TRAP */
+.trap{border-radius:11px;margin:14px 0;overflow:hidden;}
+.th{display:flex;align-items:center;gap:7px;padding:10px 15px;background:var(--r);color:white;}
+.tht{font-size:12px;font-weight:700;}
+.tb{background:var(--rl);padding:13px 17px;border:1px solid #f5c6c2;border-top:none;border-radius:0 0 11px 11px;}
+.tb p{font-size:12.5px;color:#7a1c1c;line-height:1.8;margin-bottom:5px;}
+.tb p:last-child{margin-bottom:0;}
+.tq{background:white;border-left:3px solid var(--r);padding:8px 12px;border-radius:0 7px 7px 0;margin:8px 0;font-size:13px;color:var(--tx);font-style:italic;}
+.vw{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:20px;background:var(--r);color:white;}
+.vr{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:20px;background:var(--g);color:white;}
+
+/* EXAM */
+.ec{border:1px solid var(--bd);border-radius:11px;margin:11px 0;overflow:hidden;}
+.eh{display:flex;align-items:center;justify-content:space-between;padding:9px 15px;background:var(--g0);border-bottom:1px solid var(--bd);}
+.ey{font-size:11.5px;font-weight:700;color:var(--p);}
+.es{color:#e8b000;font-size:12px;letter-spacing:2px;}
+.eb{padding:13px 15px;}
+.eq{font-size:13px;font-weight:600;color:var(--tx);margin-bottom:10px;line-height:1.7;}
+.eo{display:flex;flex-direction:column;gap:4px;}
+.op{font-size:13px;padding:6px 10px;border-radius:6px;border:1px solid transparent;}
+.ow{background:#fdf0ef;border-color:#f5c6c2;color:#7a1c1c;text-decoration:line-through;opacity:.8;}
+.ow::before{content:'✗ ';}
+.or{background:var(--gl);border-color:#a3dbc0;color:#0d4a2a;font-weight:600;}
+.or::before{content:'✓ ';}
+.on{background:var(--g0);border-color:var(--bd);color:var(--tx);}
+.ex{margin-top:10px;padding:10px 12px;background:var(--g0);border-radius:7px;font-size:12px;color:var(--tm);line-height:1.75;border-left:3px solid var(--a);}
+
+/* MEM */
+.mem{background:linear-gradient(135deg,#0a1628 0%,#1a2540 100%);border-radius:13px;padding:20px 23px;color:white;margin:14px 0;position:relative;overflow:hidden;}
+.mem::before{content:'💡';position:absolute;right:16px;top:12px;font-size:38px;opacity:.12;}
+.mt{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7aa2f7;margin-bottom:11px;}
+.mi{display:flex;flex-direction:column;gap:8px;}
+.mr{display:flex;gap:10px;align-items:flex-start;}
+.mk{font-family:var(--mono);font-size:10.5px;font-weight:600;background:rgba(122,162,247,.2);color:#7aa2f7;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;}
+.mv{font-size:12.5px;color:rgba(255,255,255,.85);line-height:1.7;}
+.mv strong{color:#7aa2f7;}
+
+/* CL */
+.cl{list-style:none;margin:12px 0;display:flex;flex-direction:column;gap:5px;}
+.cl li{display:flex;align-items:flex-start;gap:8px;font-size:13px;padding:7px 12px;border-radius:7px;border:1px solid var(--bd);background:var(--bg);}
+.clw{background:#fdf0ef;border-color:#f5c6c2;}
+.clw::before{content:'⚠';color:var(--r)!important;font-size:12px;flex-shrink:0;margin-top:2px;}
+.clr{background:var(--gl);border-color:#a3dbc0;}
+.clr::before{content:'✓';color:var(--g)!important;font-size:12px;flex-shrink:0;margin-top:2px;}
+
+.inf{background:var(--al);border:1px solid #b8ccff;border-radius:9px;padding:11px 15px;margin:11px 0;font-size:13px;color:#1a2e70;line-height:1.8;}
+.inf strong{color:var(--p);}
+.sf{color:#e8b000;}
+.dv{height:1px;background:var(--g1);margin:22px 0;}
+.ft{display:flex;justify-content:space-between;margin-top:28px;padding-top:13px;border-top:1px solid var(--bd);font-size:10.5px;color:var(--tm);}
+@media(max-width:640px){
+  .cc,.hdr{padding:20px 16px;}
+  .tab-bar{padding:0 16px;}
+  .cg{grid-template-columns:1fr;}
+  .flag-grid{grid-template-columns:repeat(3,1fr);}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ══ SSH HEADER ══ -->
+<div class="hdr hdr-ssh">
+  <div class="mbr">
+    <span class="bdg bdg-ch">Chapter 07–08 · 네트워크 보안</span>
+    <span class="bdg bdg-hot">9급 핵심</span>
+    <span class="bdg bdg-g">SSH + TCP 통합</span>
+  </div>
+  <div class="ht">SSH · TCP 완전 교재</div>
+  <div class="hs">탄생 스토리 · SSH 3가지 프로토콜 · TCP 3-way / 4-way 핸드셰이크 · 헤더 구조 · 플래그 · 포트 번호 · 기출 전수</div>
+  <div class="hst">
+    <div><div class="hn">SSH 3개</div><div class="hl">전송층·인증·연결 프로토콜</div></div>
+    <div><div class="hn">3-way</div><div class="hl">TCP 연결 수립</div></div>
+    <div><div class="hn">4-way</div><div class="hl">TCP 연결 해제</div></div>
+    <div><div class="hn">12문제</div><div class="hl">기출 수록</div></div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="sw('story')">📖 탄생 스토리</button>
+  <button class="tab-btn" onclick="sw('ssh')">🔐 SSH 완전 정리</button>
+  <button class="tab-btn" onclick="sw('tcp')">🔗 TCP 완전 정리</button>
+  <button class="tab-btn" onclick="sw('attack')">⚡ TCP 기반 공격</button>
+  <button class="tab-btn" onclick="sw('exam')">📝 기출 12선</button>
+</div>
+
+<div class="cc">
+
+<!-- ════ 스토리 ════ -->
+<div class="tab-pane active" id="tab-story">
+
+<div class="sh"><div class="sn2">1</div><div class="st">Telnet의 시대 — 왜 SSH가 필요했나</div></div>
+
+<div class="sb">
+<p>1990년대 초, 시스템 관리자들은 원격에서 서버를 관리하기 위해 <strong>Telnet</strong>을 사용했어요. 원리는 단순해요 — 터미널 명령어를 네트워크로 전송하는 것. 그런데 문제가 있었어요.</p>
+</div>
+
+<div class="sq"><strong>Telnet은 모든 것을 평문으로 전송합니다.</strong><br>
+비밀번호를 입력하면? 네트워크에서 <strong>p-a-s-s-w-o-r-d</strong>가 그대로 날아다녀요.<br>
+스니핑 도구 하나만 있으면 누구나 잡을 수 있어요.</div>
+
+<div class="sb">
+<p>1995년, 핀란드 헬싱키 대학교 연구자 타투 일로넨(Tatu Ylönen)이 자신의 대학 네트워크에서 스니핑 공격이 발생했다는 소식을 들었어요. 그는 몇 달 만에 <strong>SSH(Secure Shell)</strong>를 개발해 인터넷에 무료로 공개했어요.</p>
+<p>SSH의 아이디어는 명확해요. <strong>Telnet처럼 원격 접속하되, 모든 통신을 암호화하자.</strong> 사용자 입장에서는 Telnet과 똑같이 쓸 수 있는데, 네트워크에서는 아무것도 읽을 수 없는 암호문만 보이는 것이죠.</p>
+</div>
+
+<div class="insight">
+  <div class="ins-t">💡 SSH가 해결한 3가지 문제</div>
+  <p><strong>① 기밀성</strong> — 모든 통신 암호화. 스니핑해도 읽을 수 없음.<br>
+  <strong>② 서버 인증</strong> — "내가 진짜 목적지 서버에 접속한 건지" 검증. 중간자 공격 방지.<br>
+  <strong>③ 무결성</strong> — 전송 중 데이터 변조 여부 탐지.</p>
+</div>
+
+<div class="sdiv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">TCP — 신뢰성의 탄생</div></div>
+
+<div class="sb">
+<p>인터넷의 핵심 원칙은 <strong>"패킷"</strong>이에요. 데이터를 작은 조각으로 쪼개서 각자 다른 경로로 목적지까지 보내는 방식이에요. 빠르고 효율적이지만, 문제가 있어요.</p>
+<p>패킷이 중간에 사라질 수 있어요. 순서가 뒤바뀔 수 있어요. 손상될 수 있어요. 이걸 IP 프로토콜만으로는 해결할 수 없었어요. IP는 그냥 "최선을 다해 보내드리겠습니다"라고만 할 뿐, 도착 보장을 안 해요.</p>
+</div>
+
+<div class="sq">그래서 <strong>TCP(Transmission Control Protocol)</strong>가 나왔어요.<br>
+<strong>"전 패킷이 빠짐없이, 순서대로, 손상 없이 도착했는지 제가 책임지겠습니다."</strong><br>
+연결을 맺고(3-way), 데이터를 보내고, 연결을 끊는(4-way) 구조로 신뢰성을 보장해요.</div>
+
+<div class="sb">
+<p>오늘날 HTTP(웹), HTTPS, FTP, SSH, SMTP — 신뢰성이 필요한 거의 모든 인터넷 서비스가 TCP 위에서 동작해요. TCP는 인터넷 통신의 근간이에요.</p>
+</div>
+
+</div><!-- /tab-story -->
+
+<!-- ════ SSH ════ -->
+<div class="tab-pane" id="tab-ssh">
+
+<div class="sh"><div class="sn2">1</div><div class="st">SSH 정의 및 개요</div><span class="slb le">★★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">SSH 정의</div>
+  <p>SSH(Secure Shell)는 <strong>Telnet·FTP 등을 대체</strong>하는 암호화된 원격 접속 프로토콜. <strong>TCP 기반</strong>. 포트 <strong>22번</strong>. IETF RFC 4250~4256 표준. 서버 인증·기밀성·무결성 제공. <strong>완전 순방향 비밀성(PFS)</strong> 지원.</p>
+</div>
+
+<div class="cds">
+  <div class="cd"><div class="cdt">전송 프로토콜</div><div class="cdb"><strong>TCP만</strong> 사용. UDP 사용 안 함. 포트 22.</div></div>
+  <div class="cd"><div class="cdt">표준</div><div class="cdb">IETF <strong>RFC 4250~4256</strong></div></div>
+  <div class="cd"><div class="cdt">대체 대상</div><div class="cdb">Telnet(23), FTP(20/21), rlogin 등 비보안 원격접속</div></div>
+  <div class="cd"><div class="cdt">PFS</div><div class="cdb">완전 순방향 비밀성 — 키 노출돼도 이전 세션 안전</div></div>
+  <div class="cd"><div class="cdt">압축</div><div class="cdb">전송 계층에서 <strong>옵션으로</strong> 압축 가능</div></div>
+  <div class="cd"><div class="cdt">구성</div><div class="cdb">3개 프로토콜로 구성 (전송층·사용자인증·연결)</div></div>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">SSH 3가지 구성 프로토콜</div><span class="slb le">★★★ 최빈출</span></div>
+
+<div class="inf"><strong>핵심 암기:</strong> SSH = <strong>전송층 프로토콜 + 사용자 인증 프로토콜 + 연결 프로토콜</strong> — 3개가 TCP 위에서 계층적으로 동작</div>
+
+<!-- SSH 스택 SVG -->
+<div class="dw">
+  <div class="dt">SSH 프로토콜 스택 — 3가지 구성 요소</div>
+  <svg viewBox="0 0 740 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:740px;display:block;margin:0 auto;">
+
+    <!-- 사용자 인증 프로토콜 -->
+    <rect x="10" y="8" width="340" height="58" rx="8" fill="#c0392b"/>
+    <text x="180" y="30" text-anchor="middle" fill="white" font-size="13" font-family="sans-serif" font-weight="700">② 사용자 인증 프로토콜</text>
+    <text x="180" y="48" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="11" font-family="sans-serif">User Authentication Protocol</text>
+    <text x="180" y="62" text-anchor="middle" fill="rgba(255,255,255,.65)" font-size="9" font-family="sans-serif">서버에게 클라이언트 측 사용자를 인증</text>
+
+    <!-- 연결 프로토콜 -->
+    <rect x="360" y="8" width="370" height="58" rx="8" fill="#6d28d9"/>
+    <text x="545" y="30" text-anchor="middle" fill="white" font-size="13" font-family="sans-serif" font-weight="700">③ 연결 프로토콜</text>
+    <text x="545" y="48" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="11" font-family="sans-serif">Connection Protocol</text>
+    <text x="545" y="62" text-anchor="middle" fill="rgba(255,255,255,.65)" font-size="9" font-family="sans-serif">기본 SSH 연결을 여러 논리 채널로 다중화</text>
+
+    <!-- 전송 계층 프로토콜 -->
+    <rect x="10" y="78" width="720" height="72" rx="8" fill="#1a7a4a" stroke="#86efac" stroke-width="1.5"/>
+    <text x="370" y="104" text-anchor="middle" fill="white" font-size="14" font-family="sans-serif" font-weight="700">① SSH 전송 계층 프로토콜</text>
+    <text x="370" y="122" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="11" font-family="sans-serif">Transport Layer Protocol</text>
+    <text x="210" y="140" text-anchor="middle" fill="#86efac" font-size="10" font-family="sans-serif">서버 인증 · 데이터 기밀성 · 데이터 무결성</text>
+    <text x="560" y="140" text-anchor="middle" fill="rgba(255,255,255,.65)" font-size="10" font-family="sans-serif">완전 순방향 비밀성(PFS) · 압축(옵션)</text>
+
+    <!-- TCP -->
+    <rect x="10" y="162" width="720" height="30" rx="7" fill="#374151"/>
+    <text x="370" y="181" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="12" font-family="sans-serif" font-weight="700">TCP (포트 22)</text>
+
+    <!-- IP -->
+    <rect x="10" y="200" width="720" height="7" rx="3" fill="#374151" opacity=".4"/>
+    <text x="370" y="207" text-anchor="middle" fill="rgba(255,255,255,.4)" font-size="8" font-family="sans-serif">IP</text>
+  </svg>
+</div>
+
+<div class="proc">
+  <div class="proc-step">
+    <div class="pn" style="background:#1a7a4a;">①</div>
+    <div class="pc">
+      <div class="pt">SSH 전송 계층 프로토콜 (Transport Layer Protocol)</div>
+      <div class="pd">서버 인증·데이터 기밀성·데이터 무결성을 제공. <strong>완전 순방향 비밀성(PFS)</strong> 지원 — 세션키나 영구 개인키가 손상되더라도 이전 세션의 기밀성에 영향 없음. 전송 계층에서는 <strong>옵션으로 압축 제공 가능</strong>. ★ "논리 채널 다중화"는 전송층 역할이 아님 → 연결 프로토콜 역할!</div>
+      <span class="ptag" style="background:#edf7f2;color:#1a7a4a;">서버인증·기밀성·무결성·PFS·압축(옵션)</span>
+    </div>
+  </div>
+  <div class="proc-step">
+    <div class="pn" style="background:#c0392b;">②</div>
+    <div class="pc">
+      <div class="pt">사용자 인증 프로토콜 (User Authentication Protocol)</div>
+      <div class="pd">서버에게 <strong>클라이언트 측 사용자를 인증</strong>하는 역할. 비밀번호 인증, 공개키 인증, 호스트 기반 인증 등 여러 방식 지원. ① 전송 계층 프로토콜 위에서 동작.</div>
+      <span class="ptag" style="background:#fdf0ef;color:#c0392b;">클라이언트 → 서버 방향 사용자 인증</span>
+    </div>
+  </div>
+  <div class="proc-step">
+    <div class="pn" style="background:#6d28d9;">③</div>
+    <div class="pc">
+      <div class="pt">연결 프로토콜 (Connection Protocol)</div>
+      <div class="pd">하나의 기본 SSH 연결을 사용하여 <strong>여러 개의 논리적 통신 채널을 다중화(multiplex)</strong>. 예: 하나의 SSH 연결로 터미널·파일 전송·포트 포워딩을 동시에 처리. 터널링 지원.</div>
+      <span class="ptag" style="background:#ede9fe;color:#6d28d9;">논리 채널 다중화 · 터널링</span>
+    </div>
+  </div>
+</div>
+
+<div class="trap">
+  <div class="th"><span>⚠</span><span class="tht">함정 — "SSH 전송계층이 논리 채널 다중화를 수행한다" (2023 지방직)</span></div>
+  <div class="tb">
+    <div class="tq">④ "SSH 전송계층 프로토콜은 다수의 기본 SSH 연결을 사용하여 통신채널을 다중화한다" → <span class="vw">✗ 오답</span></div>
+    <p><strong>논리 채널 다중화 = 연결 프로토콜</strong>의 역할. 전송 계층 프로토콜은 서버 인증·기밀성·무결성·PFS·압축(옵션) 담당. SSH는 <strong>TCP만</strong> 사용 (UDP 아님).</p>
+    <div class="tq">① "SSH는 TCP 및 UDP 기반의 보안 프로토콜이다" → <span class="vw">✗ 오답</span> — SSH는 <strong>TCP만</strong> 사용</div>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">3</div><div class="st">Telnet vs SSH 비교</div><span class="slb le">★★</span></div>
+
+<div class="cg">
+  <div class="cv">
+    <div class="cvh" style="background:#c0392b;">Telnet (취약)</div>
+    <div class="cvb">
+      <div class="cvr"><span class="cvk">포트</span><span class="cvv"><strong>TCP 23번</strong></span></div>
+      <div class="cvr"><span class="cvk">암호화</span><span class="cvv">없음 — <strong>평문 전송</strong></span></div>
+      <div class="cvr"><span class="cvk">인증</span><span class="cvv">ID/PW 평문 노출</span></div>
+      <div class="cvr"><span class="cvk">스니핑</span><span class="cvv">매우 취약. 패킷 가로채면 그대로 읽힘</span></div>
+      <div class="cvr"><span class="cvk">현재</span><span class="cvv">보안 이유로 사용 권장 안 함</span></div>
+    </div>
+  </div>
+  <div class="cv">
+    <div class="cvh" style="background:#1a7a4a;">SSH (보안)</div>
+    <div class="cvb">
+      <div class="cvr"><span class="cvk">포트</span><span class="cvv"><strong>TCP 22번</strong></span></div>
+      <div class="cvr"><span class="cvk">암호화</span><span class="cvv"><strong>전체 세션 암호화</strong></span></div>
+      <div class="cvr"><span class="cvk">인증</span><span class="cvv">공개키·비밀번호·호스트 기반</span></div>
+      <div class="cvr"><span class="cvk">스니핑</span><span class="cvv">암호화로 내용 읽기 불가</span></div>
+      <div class="cvr"><span class="cvk">추가</span><span class="cvv">파일 전송(SCP/SFTP)·포트 포워딩·터널링</span></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /tab-ssh -->
+
+<!-- ════ TCP ════ -->
+<div class="tab-pane" id="tab-tcp">
+
+<div class="sh"><div class="sn2">1</div><div class="st">TCP 정의 및 특성</div><span class="slb le">★★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">TCP 정의</div>
+  <p>TCP(Transmission Control Protocol)는 전송 계층(4층) 프로토콜. <strong>연결 지향(Connection-oriented)</strong>. 신뢰성 있는 데이터 전송 보장. 3-way 핸드셰이크로 연결 수립, 4-way로 해제. 흐름 제어·혼잡 제어·오류 제어 제공.</p>
+</div>
+
+<div class="cg">
+  <div class="cv">
+    <div class="cvh" style="background:#2d5be3;">TCP 특성</div>
+    <div class="cvb">
+      <div class="cvr"><span class="cvk">연결</span><span class="cvv"><strong>연결 지향</strong> (Connection-oriented)</span></div>
+      <div class="cvr"><span class="cvk">신뢰성</span><span class="cvv">패킷 순서·오류·재전송 보장</span></div>
+      <div class="cvr"><span class="cvk">속도</span><span class="cvv">UDP보다 느림 (오버헤드 큼)</span></div>
+      <div class="cvr"><span class="cvk">흐름제어</span><span class="cvv">윈도우 크기(Window Size)로 조절</span></div>
+      <div class="cvr"><span class="cvk">혼잡제어</span><span class="cvv">Slow Start, AIMD 등</span></div>
+    </div>
+  </div>
+  <div class="cv">
+    <div class="cvh" style="background:#6d28d9;">TCP vs UDP</div>
+    <div class="cvb">
+      <div class="cvr"><span class="cvk">연결</span><span class="cvv">TCP=연결지향 / UDP=비연결</span></div>
+      <div class="cvr"><span class="cvk">신뢰성</span><span class="cvv">TCP=있음 / UDP=없음</span></div>
+      <div class="cvr"><span class="cvk">순서보장</span><span class="cvv">TCP=있음 / UDP=없음</span></div>
+      <div class="cvr"><span class="cvk">헤더크기</span><span class="cvv">TCP=20~60bytes / UDP=8bytes</span></div>
+      <div class="cvr"><span class="cvk">용도</span><span class="cvv">TCP=HTTP·SSH·FTP / UDP=DNS·SNMP·DHCP</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">TCP 헤더 구조</div><span class="slb le">★★★</span></div>
+
+<!-- TCP 헤더 SVG -->
+<div class="dw">
+  <div class="dt">TCP 헤더 구조 (최소 20 bytes)</div>
+  <svg viewBox="0 0 780 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:780px;display:block;margin:0 auto;">
+
+    <!-- 비트 눈금 -->
+    <text x="10" y="14" fill="#5a6478" font-size="8" font-family="monospace">0</text>
+    <text x="198" y="14" fill="#5a6478" font-size="8" font-family="monospace">15</text>
+    <text x="390" y="14" fill="#5a6478" font-size="8" font-family="monospace">16</text>
+    <text x="758" y="14" fill="#5a6478" font-size="8" font-family="monospace">31</text>
+
+    <!-- Row 1: 출발지 포트 / 목적지 포트 -->
+    <rect x="10" y="18" width="375" height="34" rx="0" fill="#1a7a4a" stroke="white" stroke-width="1"/>
+    <text x="197" y="31" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">출발지 포트 (Source Port)</text>
+    <text x="197" y="46" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="9" font-family="sans-serif">16 bits</text>
+    <rect x="385" y="18" width="385" height="34" rx="0" fill="#1a7a4a" stroke="white" stroke-width="1"/>
+    <text x="577" y="31" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">목적지 포트 (Destination Port)</text>
+    <text x="577" y="46" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="9" font-family="sans-serif">16 bits</text>
+
+    <!-- Row 2: 순서 번호 -->
+    <rect x="10" y="52" width="760" height="34" rx="0" fill="#2d5be3" stroke="white" stroke-width="1"/>
+    <text x="390" y="65" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">순서 번호 (Sequence Number)</text>
+    <text x="390" y="80" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="9" font-family="sans-serif">32 bits — 세션 하이재킹의 핵심</text>
+
+    <!-- Row 3: 확인 응답 번호 -->
+    <rect x="10" y="86" width="760" height="34" rx="0" fill="#2d5be3" stroke="white" stroke-width="1"/>
+    <text x="390" y="99" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">확인 응답 번호 (Acknowledgment Number)</text>
+    <text x="390" y="114" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="9" font-family="sans-serif">32 bits — ACK 플래그가 1일 때 유효</text>
+
+    <!-- Row 4: 헤더길이 / 예약 / 플래그 / 윈도우 -->
+    <rect x="10" y="120" width="110" height="34" rx="0" fill="#b45309" stroke="white" stroke-width="1"/>
+    <text x="65" y="133" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">헤더 길이</text>
+    <text x="65" y="148" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="8" font-family="sans-serif">4 bits</text>
+
+    <rect x="120" y="120" width="60" height="34" rx="0" fill="#374151" stroke="white" stroke-width="1"/>
+    <text x="150" y="133" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" font-family="sans-serif">예약</text>
+    <text x="150" y="148" text-anchor="middle" fill="rgba(255,255,255,.4)" font-size="8" font-family="sans-serif">6 bits</text>
+
+    <rect x="180" y="120" width="205" height="34" rx="0" fill="#c0392b" stroke="white" stroke-width="1"/>
+    <text x="282" y="133" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">제어 플래그 (Control Flags)</text>
+    <text x="282" y="148" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="8" font-family="sans-serif">6 bits: URG·ACK·PSH·RST·SYN·FIN</text>
+
+    <rect x="385" y="120" width="385" height="34" rx="0" fill="#6d28d9" stroke="white" stroke-width="1"/>
+    <text x="577" y="133" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">윈도우 크기 (Window Size)</text>
+    <text x="577" y="148" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="9" font-family="sans-serif">16 bits — 흐름 제어</text>
+
+    <!-- Row 5: 체크섬 / 긴급 포인터 -->
+    <rect x="10" y="154" width="375" height="34" rx="0" fill="#0f766e" stroke="white" stroke-width="1"/>
+    <text x="197" y="167" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">체크섬 (Checksum)</text>
+    <text x="197" y="182" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="9" font-family="sans-serif">16 bits — 오류 검출 / UDP도 있음!</text>
+
+    <rect x="385" y="154" width="385" height="34" rx="0" fill="#374151" stroke="white" stroke-width="1"/>
+    <text x="577" y="167" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="11" font-family="sans-serif" font-weight="700">긴급 포인터 (Urgent Pointer)</text>
+    <text x="577" y="182" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" font-family="sans-serif">16 bits — URG=1일 때 유효</text>
+
+    <!-- Row 6: 옵션 -->
+    <rect x="10" y="188" width="760" height="28" rx="0" fill="#374151" opacity=".6" stroke="white" stroke-width="1"/>
+    <text x="390" y="206" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="10" font-family="sans-serif">옵션 (Options) — 가변 길이 (최대 40 bytes)</text>
+  </svg>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">3</div><div class="st">TCP 6가지 제어 플래그</div><span class="slb le">★★★</span></div>
+
+<div class="inf"><strong>핵심:</strong> 플래그 6bits의 순서 — <strong>URG · ACK · PSH · RST · SYN · FIN</strong> (왼쪽 = 상위 비트)</div>
+
+<div class="flag-grid">
+  <div class="flag" style="background:#fdf0ef;border-color:#f5c6c2;">
+    <div class="flag-name" style="color:#c0392b;">URG</div>
+    <div class="flag-desc">긴급 데이터 포함. 긴급 포인터 유효화</div>
+  </div>
+  <div class="flag" style="background:#edf7f2;border-color:#a3dbc0;">
+    <div class="flag-name" style="color:#1a7a4a;">ACK</div>
+    <div class="flag-desc">확인 응답. 확인 응답 번호 유효화</div>
+  </div>
+  <div class="flag" style="background:#fffbeb;border-color:#fcd34d;">
+    <div class="flag-name" style="color:#b45309;">PSH</div>
+    <div class="flag-desc">Push. 데이터 즉시 전달 요청</div>
+  </div>
+  <div class="flag" style="background:#fff7ed;border-color:#fdba74;">
+    <div class="flag-name" style="color:#c2410c;">RST</div>
+    <div class="flag-desc">연결 강제 리셋. 비정상 종료</div>
+  </div>
+  <div class="flag" style="background:#e8eeff;border-color:#93c5fd;">
+    <div class="flag-name" style="color:#2d5be3;">SYN</div>
+    <div class="flag-desc">연결 수립 요청. 3-way 시작</div>
+  </div>
+  <div class="flag" style="background:#ede9fe;border-color:#c4b5fd;">
+    <div class="flag-name" style="color:#6d28d9;">FIN</div>
+    <div class="flag-desc">연결 종료 요청. 4-way 시작</div>
+  </div>
+</div>
+
+<div class="tw"><table>
+  <thead><tr><th>플래그 조합 예시</th><th>비트값</th><th>의미</th></tr></thead>
+  <tbody>
+    <tr><td>SYN=1, ACK=0</td><td class="mono">000010</td><td>최초 연결 요청 (3-way 1단계)</td></tr>
+    <tr><td>SYN=1, ACK=1</td><td class="mono">010010</td><td>연결 요청 수락 (3-way 2단계)</td></tr>
+    <tr><td>ACK=1, FIN=0</td><td class="mono">010000</td><td>데이터 수신 확인</td></tr>
+    <tr><td>ACK=1, FIN=1</td><td class="mono">010001</td><td>연결 종료 요청 (4-way)</td></tr>
+    <tr><td>RST=1</td><td class="mono">000100</td><td>연결 강제 리셋</td></tr>
+    <tr><td><strong>ACK=1, FIN=1 → 010001</strong></td><td class="mono"><strong>010001</strong></td><td>2018 국가직 기출 — ②ACK+FIN 플래그</td></tr>
+  </tbody>
+</table></div>
+
+<div class="trap">
+  <div class="th"><span>⚠</span><span class="tht">함정 — 플래그 비트값 계산 (2018 국가직 9급)</span></div>
+  <div class="tb">
+    <div class="tq">TCP 헤더의 제어용 플래그 6bits 값 <strong>010001</strong>이 의미하는 것은? → <span class="vr">✓ ② ACK + FIN</span></div>
+    <p>URG(1bit)·ACK(1bit)·PSH(1bit)·RST(1bit)·SYN(1bit)·FIN(1bit) 순서. <br>010001 = URG=0, <strong>ACK=1</strong>, PSH=0, RST=0, SYN=0, <strong>FIN=1</strong>. → ACK와 FIN이 1.</p>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">4</div><div class="st">3-way 핸드셰이크 — 연결 수립</div><span class="slb le">★★★</span></div>
+
+<!-- 3-way SVG -->
+<div class="dw">
+  <div class="dt">TCP 3-way Handshake — 연결 수립 과정</div>
+  <svg viewBox="0 0 680 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;display:block;margin:0 auto;">
+
+    <!-- 클라이언트 -->
+    <rect x="10" y="10" width="120" height="44" rx="8" fill="#1a2540"/>
+    <text x="70" y="30" text-anchor="middle" fill="white" font-size="12" font-family="sans-serif" font-weight="700">클라이언트</text>
+    <text x="70" y="46" text-anchor="middle" fill="#7aa2f7" font-size="9" font-family="sans-serif">CLOSED</text>
+    <line x1="70" y1="54" x2="70" y2="215" stroke="#2d5be3" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+    <!-- 서버 -->
+    <rect x="550" y="10" width="120" height="44" rx="8" fill="#1a2540"/>
+    <text x="610" y="30" text-anchor="middle" fill="white" font-size="12" font-family="sans-serif" font-weight="700">서버</text>
+    <text x="610" y="46" text-anchor="middle" fill="#86efac" font-size="9" font-family="sans-serif">LISTEN</text>
+    <line x1="610" y1="54" x2="610" y2="215" stroke="#1a7a4a" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+    <!-- 1단계: SYN -->
+    <line x1="70" y1="80" x2="605" y2="80" stroke="#2d5be3" stroke-width="2.5"/>
+    <polygon points="605,76 615,80 605,84" fill="#2d5be3"/>
+    <rect x="200" y="62" width="280" height="20" rx="5" fill="#2d5be3"/>
+    <text x="340" y="76" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">① SYN (연결 요청)</text>
+    <text x="70" y="98" fill="#2d5be3" font-size="9" font-family="sans-serif">SYN_SENT</text>
+    <text x="610" y="98" text-anchor="middle" fill="#1a7a4a" font-size="9" font-family="sans-serif">SYN_RECEIVED</text>
+
+    <!-- 2단계: SYN+ACK -->
+    <line x1="605" y1="120" x2="75" y2="120" stroke="#1a7a4a" stroke-width="2.5"/>
+    <polygon points="75,116 65,120 75,124" fill="#1a7a4a"/>
+    <rect x="200" y="102" width="280" height="20" rx="5" fill="#1a7a4a"/>
+    <text x="340" y="116" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">② SYN + ACK (요청 수락)</text>
+
+    <!-- 3단계: ACK -->
+    <line x1="70" y1="160" x2="605" y2="160" stroke="#6d28d9" stroke-width="2.5"/>
+    <polygon points="605,156 615,160 605,164" fill="#6d28d9"/>
+    <rect x="200" y="142" width="280" height="20" rx="5" fill="#6d28d9"/>
+    <text x="340" y="156" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">③ ACK (확인)</text>
+    <text x="70" y="178" fill="#6d28d9" font-size="9" font-family="sans-serif">ESTABLISHED</text>
+    <text x="610" y="178" text-anchor="middle" fill="#6d28d9" font-size="9" font-family="sans-serif">ESTABLISHED</text>
+
+    <!-- 연결 완료 -->
+    <rect x="150" y="188" width="380" height="20" rx="5" fill="#1a7a4a" opacity=".2" stroke="#1a7a4a"/>
+    <text x="340" y="202" text-anchor="middle" fill="#1a7a4a" font-size="10" font-family="sans-serif" font-weight="700">✓ 연결 수립 완료 — 데이터 전송 시작</text>
+  </svg>
+</div>
+
+<div class="proc">
+  <div class="proc-step">
+    <div class="pn" style="background:#2d5be3;">①</div>
+    <div class="pc">
+      <div class="pt">SYN — 클라이언트 → 서버 (연결 요청)</div>
+      <div class="pd">클라이언트가 서버에 연결 요청. <strong>SYN=1, ACK=0</strong>. 초기 순서 번호(ISN) 포함. 클라이언트 상태: CLOSED → SYN_SENT. 서버 상태: LISTEN → SYN_RECEIVED.</div>
+      <span class="ptag" style="background:#e8eeff;color:#2d5be3;">SYN=1, ACK=0, Seq=x</span>
+    </div>
+  </div>
+  <div class="proc-step">
+    <div class="pn" style="background:#1a7a4a;">②</div>
+    <div class="pc">
+      <div class="pt">SYN + ACK — 서버 → 클라이언트 (요청 수락)</div>
+      <div class="pd">서버가 클라이언트의 SYN을 받고 수락. <strong>SYN=1, ACK=1</strong>. 서버의 ISN과 클라이언트 Seq+1 (ACK 번호)를 포함. 서버 상태: SYN_RECEIVED → ESTABLISHED 준비.</div>
+      <span class="ptag" style="background:#edf7f2;color:#1a7a4a;">SYN=1, ACK=1, Seq=y, Ack=x+1</span>
+    </div>
+  </div>
+  <div class="proc-step">
+    <div class="pn" style="background:#6d28d9;">③</div>
+    <div class="pc">
+      <div class="pt">ACK — 클라이언트 → 서버 (확인)</div>
+      <div class="pd">클라이언트가 서버의 SYN+ACK를 받고 확인. <strong>SYN=0, ACK=1</strong>. 양측 모두 ESTABLISHED 상태. 이후 데이터 전송 시작.</div>
+      <span class="ptag" style="background:#ede9fe;color:#6d28d9;">SYN=0, ACK=1, Ack=y+1</span>
+    </div>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">5</div><div class="st">4-way 핸드셰이크 — 연결 해제</div><span class="slb le">★★★</span></div>
+
+<!-- 4-way SVG -->
+<div class="dw">
+  <div class="dt">TCP 4-way Handshake — 연결 해제 과정 (정상 종료)</div>
+  <svg viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;display:block;margin:0 auto;">
+
+    <rect x="10" y="8" width="120" height="40" rx="8" fill="#1a2540"/>
+    <text x="70" y="24" text-anchor="middle" fill="white" font-size="12" font-family="sans-serif" font-weight="700">클라이언트</text>
+    <text x="70" y="39" text-anchor="middle" fill="#7aa2f7" font-size="9" font-family="sans-serif">ESTABLISHED</text>
+    <line x1="70" y1="48" x2="70" y2="255" stroke="#2d5be3" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+    <rect x="550" y="8" width="120" height="40" rx="8" fill="#1a2540"/>
+    <text x="610" y="24" text-anchor="middle" fill="white" font-size="12" font-family="sans-serif" font-weight="700">서버</text>
+    <text x="610" y="39" text-anchor="middle" fill="#86efac" font-size="9" font-family="sans-serif">ESTABLISHED</text>
+    <line x1="610" y1="48" x2="610" y2="255" stroke="#1a7a4a" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+    <!-- 1: FIN -->
+    <line x1="70" y1="70" x2="605" y2="70" stroke="#c0392b" stroke-width="2.5"/>
+    <polygon points="605,66 615,70 605,74" fill="#c0392b"/>
+    <rect x="195" y="52" width="290" height="20" rx="5" fill="#c0392b"/>
+    <text x="340" y="66" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">① FIN (종료 요청)</text>
+    <text x="70" y="86" fill="#c0392b" font-size="9" font-family="sans-serif">FIN_WAIT_1</text>
+
+    <!-- 2: ACK -->
+    <line x1="605" y1="108" x2="75" y2="108" stroke="#b45309" stroke-width="2.5"/>
+    <polygon points="75,104 65,108 75,112" fill="#b45309"/>
+    <rect x="195" y="90" width="290" height="20" rx="5" fill="#b45309"/>
+    <text x="340" y="104" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">② ACK (확인)</text>
+    <text x="70" y="124" fill="#b45309" font-size="9" font-family="sans-serif">FIN_WAIT_2</text>
+    <text x="610" y="124" text-anchor="middle" fill="#b45309" font-size="9" font-family="sans-serif">CLOSE_WAIT</text>
+
+    <!-- 서버 데이터 마저 전송 -->
+    <rect x="200" y="128" width="280" height="16" rx="4" fill="#374151" opacity=".5"/>
+    <text x="340" y="140" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" font-family="sans-serif">서버가 남은 데이터 전송 중...</text>
+
+    <!-- 3: FIN -->
+    <line x1="605" y1="162" x2="75" y2="162" stroke="#6d28d9" stroke-width="2.5"/>
+    <polygon points="75,158 65,162 75,166" fill="#6d28d9"/>
+    <rect x="195" y="144" width="290" height="20" rx="5" fill="#6d28d9"/>
+    <text x="340" y="158" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">③ FIN (서버 종료 요청)</text>
+    <text x="610" y="178" text-anchor="middle" fill="#6d28d9" font-size="9" font-family="sans-serif">LAST_ACK</text>
+
+    <!-- 4: ACK -->
+    <line x1="70" y1="200" x2="605" y2="200" stroke="#1a7a4a" stroke-width="2.5"/>
+    <polygon points="605,196 615,200 605,204" fill="#1a7a4a"/>
+    <rect x="195" y="182" width="290" height="20" rx="5" fill="#1a7a4a"/>
+    <text x="340" y="196" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">④ ACK (최종 확인)</text>
+    <text x="70" y="216" fill="#1a7a4a" font-size="9" font-family="sans-serif">TIME_WAIT → CLOSED</text>
+    <text x="610" y="216" text-anchor="middle" fill="#1a7a4a" font-size="9" font-family="sans-serif">CLOSED</text>
+
+    <rect x="150" y="228" width="380" height="20" rx="5" fill="#c0392b" opacity=".15" stroke="#c0392b"/>
+    <text x="340" y="242" text-anchor="middle" fill="#c0392b" font-size="10" font-family="sans-serif" font-weight="700">⚠ TIME_WAIT: 일정 시간 대기 후 완전 종료 (지연 패킷 처리)</text>
+  </svg>
+</div>
+
+<div class="insight">
+  <div class="ins-t">💡 3-way vs 4-way — 왜 연결 해제는 4단계인가?</div>
+  <p>연결 수립(3-way): 양측이 동시에 준비 가능 → SYN+ACK를 합쳐서 전송 가능.<br>
+  연결 해제(4-way): <strong>서버가 FIN을 받아도 데이터를 다 보내야 해요.</strong> 그래서 ACK 먼저 보내고(②), 데이터 다 보낸 후 FIN을 별도로 보내요(③). 즉 ACK와 FIN을 합칠 수 없어서 4단계가 필요.</p>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">6</div><div class="st">잘 알려진 포트 번호 (Well-Known Port)</div><span class="slb le">★★★</span></div>
+
+<div class="tw"><table>
+  <thead><tr><th>포트 번호</th><th>프로토콜</th><th>서비스</th><th>전송 계층</th></tr></thead>
+  <tbody>
+    <tr><td>20</td><td>FTP-Data</td><td>FTP 데이터 전송</td><td class="tc">TCP</td></tr>
+    <tr><td>21</td><td>FTP</td><td>FTP 제어</td><td class="tc">TCP</td></tr>
+    <tr><td><strong>22</strong></td><td><strong>SSH</strong></td><td><strong>보안 원격 접속</strong></td><td class="tc">TCP</td></tr>
+    <tr><td>23</td><td>Telnet</td><td>원격 접속 (평문)</td><td class="tc">TCP</td></tr>
+    <tr><td>25</td><td>SMTP</td><td>이메일 송신</td><td class="tc">TCP</td></tr>
+    <tr><td>53</td><td>DNS</td><td>도메인 이름 확인</td><td class="tc">UDP (주로)</td></tr>
+    <tr><td>67/68</td><td>DHCP</td><td>IP 자동 할당</td><td class="tc">UDP</td></tr>
+    <tr><td>69</td><td>TFTP</td><td>단순 파일 전송 (인증 없음)</td><td class="tc">UDP</td></tr>
+    <tr><td>80</td><td>HTTP</td><td>웹 서비스</td><td class="tc">TCP</td></tr>
+    <tr><td>110</td><td>POP3</td><td>이메일 수신</td><td class="tc">TCP</td></tr>
+    <tr><td>143</td><td>IMAP</td><td>이메일 수신 (서버 유지)</td><td class="tc">TCP</td></tr>
+    <tr><td>161/162</td><td>SNMP</td><td>네트워크 관리</td><td class="tc">UDP</td></tr>
+    <tr><td>443</td><td>HTTPS</td><td>보안 웹 서비스</td><td class="tc">TCP</td></tr>
+  </tbody>
+</table></div>
+
+</div><!-- /tab-tcp -->
+
+<!-- ════ TCP 공격 ════ -->
+<div class="tab-pane" id="tab-attack">
+
+<div class="sh"><div class="sn2">1</div><div class="st">SYN Flooding 공격</div><span class="slb le">★★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">SYN Flooding 공격 정의</div>
+  <p>TCP의 3-way 핸드셰이크 구조적 취약점을 이용한 <strong>DoS 공격</strong>. 공격자가 존재하지 않는 출발지 IP로 위조된 <strong>SYN 패킷</strong>을 대량 전송 → 서버가 SYN_RECEIVED 상태로 대기하는 반연결(Half-Open)을 쌓아 <strong>연결 큐를 고갈</strong>시켜 정상 사용자 접속을 차단.</p>
+</div>
+
+<!-- SYN Flooding SVG -->
+<div class="dw">
+  <div class="dt">SYN Flooding 공격 vs 정상 3-way 핸드셰이크 비교</div>
+  <svg viewBox="0 0 760 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px;display:block;margin:0 auto;">
+
+    <!-- 정상 -->
+    <text x="185" y="16" text-anchor="middle" fill="#1a7a4a" font-size="11" font-family="sans-serif" font-weight="700">정상 3-way</text>
+    <rect x="10" y="24" width="80" height="30" rx="6" fill="#1a7a4a"/>
+    <text x="50" y="43" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif">클라이언트</text>
+    <rect x="290" y="24" width="80" height="30" rx="6" fill="#1a7a4a"/>
+    <text x="330" y="43" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif">서버</text>
+    <line x1="90" y1="64" x2="290" y2="64" stroke="#1a7a4a" stroke-width="1.5"/>
+    <polygon points="290,60 298,64 290,68" fill="#1a7a4a"/>
+    <text x="190" y="58" text-anchor="middle" fill="#1a7a4a" font-size="9" font-family="sans-serif">SYN</text>
+    <line x1="290" y1="84" x2="90" y2="84" stroke="#1a7a4a" stroke-width="1.5"/>
+    <polygon points="90,80 82,84 90,88" fill="#1a7a4a"/>
+    <text x="190" y="78" text-anchor="middle" fill="#1a7a4a" font-size="9" font-family="sans-serif">SYN+ACK</text>
+    <line x1="90" y1="104" x2="290" y2="104" stroke="#1a7a4a" stroke-width="1.5"/>
+    <polygon points="290,100 298,104 290,108" fill="#1a7a4a"/>
+    <text x="190" y="98" text-anchor="middle" fill="#1a7a4a" font-size="9" font-family="sans-serif">ACK → 연결!</text>
+    <rect x="60" y="116" width="260" height="22" rx="5" fill="#edf7f2" stroke="#1a7a4a"/>
+    <text x="190" y="131" text-anchor="middle" fill="#1a7a4a" font-size="10" font-family="sans-serif" font-weight="700">✓ ESTABLISHED 정상 연결</text>
+
+    <!-- 구분선 -->
+    <line x1="390" y1="10" x2="390" y2="190" stroke="#dde3ec" stroke-width="2" stroke-dasharray="6,4"/>
+
+    <!-- SYN Flooding -->
+    <text x="575" y="16" text-anchor="middle" fill="#c0392b" font-size="11" font-family="sans-serif" font-weight="700">SYN Flooding 공격</text>
+    <rect x="405" y="24" width="80" height="30" rx="6" fill="#c0392b"/>
+    <text x="445" y="37" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif">공격자</text>
+    <text x="445" y="49" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="8" font-family="sans-serif">위조 IP</text>
+    <rect x="655" y="24" width="95" height="30" rx="6" fill="#1a2540"/>
+    <text x="703" y="37" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif">피해 서버</text>
+    <text x="703" y="49" text-anchor="middle" fill="#fca5a5" font-size="8" font-family="sans-serif">SYN 큐 고갈!</text>
+
+    <line x1="485" y1="64" x2="655" y2="64" stroke="#c0392b" stroke-width="1.5"/>
+    <polygon points="655,60 663,64 655,68" fill="#c0392b"/>
+    <text x="572" y="58" text-anchor="middle" fill="#c0392b" font-size="9" font-family="sans-serif">SYN (위조IP=A)</text>
+    <line x1="485" y1="80" x2="655" y2="80" stroke="#c0392b" stroke-width="1.5"/>
+    <polygon points="655,76 663,80 655,84" fill="#c0392b"/>
+    <text x="572" y="74" text-anchor="middle" fill="#c0392b" font-size="9" font-family="sans-serif">SYN (위조IP=B)</text>
+    <line x1="485" y1="96" x2="655" y2="96" stroke="#c0392b" stroke-width="1.5"/>
+    <polygon points="655,92 663,96 655,100" fill="#c0392b"/>
+    <text x="572" y="90" text-anchor="middle" fill="#c0392b" font-size="9" font-family="sans-serif">SYN (위조IP=C) ...</text>
+
+    <line x1="655" y1="112" x2="485" y2="112" stroke="#374151" stroke-width="1" stroke-dasharray="4,3"/>
+    <text x="572" y="106" text-anchor="middle" fill="#5a6478" font-size="8" font-family="sans-serif">SYN+ACK → 존재하지 않는 IP로 전송</text>
+    <text x="572" y="120" text-anchor="middle" fill="#5a6478" font-size="8" font-family="sans-serif">ACK 응답 없음 → 서버 SYN_RECEIVED 상태 대기</text>
+
+    <rect x="420" y="128" width="330" height="40" rx="6" fill="#fdf0ef" stroke="#f5c6c2"/>
+    <text x="585" y="146" text-anchor="middle" fill="#c0392b" font-size="10" font-family="sans-serif" font-weight="700">서버의 SYN 큐(반연결 테이블) 가득 참</text>
+    <text x="585" y="162" text-anchor="middle" fill="#c0392b" font-size="10" font-family="sans-serif">→ 정상 사용자 연결 불가 (서비스 거부)</text>
+  </svg>
+</div>
+
+<div class="tw"><table>
+  <thead><tr><th>항목</th><th>내용</th></tr></thead>
+  <tbody>
+    <tr><td>공격 원리</td><td>위조된 출발지 IP로 SYN만 대량 전송 → 서버 반연결 큐 고갈</td></tr>
+    <tr><td>취약점</td><td>TCP 3-way 핸드셰이크 구조 — SYN_RECEIVED 상태에서 ACK 대기</td></tr>
+    <tr><td>대응책 ①</td><td>대기 큐(SYN Queue)의 크기를 늘린다</td></tr>
+    <tr><td>대응책 ②</td><td>최대 접속 대기 시간을 줄인다</td></tr>
+    <tr><td>대응책 ③</td><td><strong>SYN Cookie</strong> — 서버가 상태를 저장하지 않고 쿠키값으로 검증</td></tr>
+    <tr><td>대응책 ④</td><td>방화벽에서 동일 IP의 SYN 패킷 임계값 초과 시 차단</td></tr>
+  </tbody>
+</table></div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">TCP 기반 포트 스캔 기법</div><span class="slb le">★★★</span></div>
+
+<div class="tw"><table>
+  <thead><tr><th>스캔 기법</th><th>전송 패킷</th><th>포트 열림 응답</th><th>포트 닫힘 응답</th><th>특징</th></tr></thead>
+  <tbody>
+    <tr><td><strong>TCP Full Open (Open)</strong></td><td>SYN</td><td>SYN+ACK → ACK</td><td>RST+ACK</td><td>완전한 3-way. 로그 남음.</td></tr>
+    <tr><td><strong>TCP Half Open (SYN)</strong></td><td>SYN</td><td>SYN+ACK → <strong>RST</strong></td><td>RST+ACK</td><td>ACK 안 보냄. 로그 안 남음. Stealth.</td></tr>
+    <tr><td><strong>FIN 스캔</strong></td><td>FIN</td><td><strong>응답 없음</strong></td><td>RST</td><td>열린 포트=무응답, 닫힌 포트=RST</td></tr>
+    <tr><td><strong>XMAS 스캔</strong></td><td>FIN+URG+PSH</td><td>응답 없음</td><td>RST</td><td>모든 플래그 ON. 크리스마스 트리.</td></tr>
+    <tr><td><strong>NULL 스캔</strong></td><td>플래그 없음(0)</td><td>응답 없음</td><td>RST</td><td>TCP 플래그 전부 0으로 전송</td></tr>
+  </tbody>
+</table></div>
+
+<div class="trap">
+  <div class="th"><span>⚠</span><span class="tht">함정 — TCP Half Open 스캔 응답 (2016 국가직 9급)</span></div>
+  <div class="tb">
+    <div class="tq">TCP Half-Open 스캔 — 포트 열림 시 ㉠, 닫힘 시 ㉡은? → 열림: <span class="vr">RST</span>, 닫힘: <span class="vr">RST+ACK</span></div>
+    <p>Half Open: SYN → (열림) SYN+ACK 수신 → <strong>RST 전송</strong> (연결 완성 안 함). 닫힌 포트: SYN → <strong>RST+ACK</strong> 수신. 정답: ㉠=RST, ㉡=RST+ACK.</p>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">3</div><div class="st">TCP 세션 하이재킹</div><span class="slb le">★★</span></div>
+
+<div class="proc">
+  <div class="proc-step">
+    <div class="pn" style="background:#c0392b;">1</div>
+    <div class="pc">
+      <div class="pt">TCP 세션 하이재킹 원리</div>
+      <div class="pd">공격자가 클라이언트와 서버의 TCP 연결 상태를 <strong>스니핑</strong>하여 순서 번호(Sequence Number)와 확인 번호(ACK Number)를 파악한 후, 클라이언트를 대신해 서버에게 위조 패킷을 전송해 세션을 탈취하는 공격.</div>
+      <span class="ptag" style="background:#fdf0ef;color:#c0392b;">필요 정보: IP주소·포트번호·순서번호</span>
+    </div>
+  </div>
+  <div class="proc-step">
+    <div class="pn" style="background:#6d28d9;">2</div>
+    <div class="pc">
+      <div class="pt">세션 하이재킹 공격 단계</div>
+      <div class="pd">① 스니핑으로 TCP 연결 상태 파악 → ② 공격자가 RST 패킷으로 클라이언트 연결 끊음 → ③ 조작된 순서번호로 서버와 새 TCP 연결 수립 → ④ 세션 탈취, 인증 우회.</div>
+      <span class="ptag" style="background:#ede9fe;color:#6d28d9;">RST로 클라이언트 끊기 → 조작 순서번호로 연결</span>
+    </div>
+  </div>
+</div>
+
+</div><!-- /tab-attack -->
+
+<!-- ════ 기출 ════ -->
+<div class="tab-pane" id="tab-exam">
+
+<div class="sh"><div class="sn2">📝</div><div class="st">기출문제 전수 해설 — 12문제</div><span class="slb le">연도순</span></div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2016 국가직 9급 · 네트워크보안 — Sniffing 대응 수단 SSH</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">○ (㉠)는(은) 네트워크 중간에서 상대방의 패킷 정보를 도청하는 수동적 공격이다.<br>○ (㉠) 공격의 대응 방안으로 텔넷의 경우 원격 접속 시 평문 패킷의 암호화를 지원하기 위해 (㉡)를(을) 사용한다.</div>
+    <div class="eo">
+      <div class="op ow">① ARP watch — SSH</div>
+      <div class="op ow">② ARP watch — PGP</div>
+      <div class="op or">③ Sniffing — SSH</div>
+      <div class="op ow">④ Sniffing — PGP</div>
+    </div>
+    <div class="ex"><strong>정답 ③</strong> — 수동적 도청 공격 = <strong>Sniffing</strong>. Telnet 평문 전송의 대안 = <strong>SSH</strong>. ARP watch는 ARP 스푸핑 탐지 도구. PGP는 이메일 암호화.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2016 국가직 9급 · 네트워크보안 — TCP Half Open 스캔</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">다음 그림은 TCP half open 스캔 절차이다. ㉠과 ㉡에 들어갈 패킷을 바르게 연결한 것은?<br>※ 그림1=포트 열린 경우: SYN → SYN+ACK → (㉠)<br>※ 그림2=포트 닫힌 경우: SYN → (㉡)</div>
+    <div class="eo">
+      <div class="op ow">① ㉠ ACK, ㉡ ACK</div>
+      <div class="op ow">② ㉠ ACK, ㉡ RST</div>
+      <div class="op or">③ ㉠ RST, ㉡ RST+ACK</div>
+      <div class="op ow">④ ㉠ RST, ㉡ SYN+ACK</div>
+    </div>
+    <div class="ex"><strong>정답 ③</strong> — Half Open(SYN 스캔): 열린 포트 → SYN+ACK 받은 후 <strong>RST 전송</strong>으로 연결 중단(로그 안 남김). 닫힌 포트 → <strong>RST+ACK</strong> 수신. ㉠=RST, ㉡=RST+ACK.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2018 국가직 9급 · 네트워크보안 — TCP 플래그 비트값</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">TCP 헤더의 제어용 플래그(control flags) 6bits에 할당된 값 <strong>010001</strong>이 의미하는 것은?</div>
+    <div class="eo">
+      <div class="op ow">① SYN과 RST 값이 1이다.</div>
+      <div class="op or">② ACK와 FIN 값이 1이다.</div>
+      <div class="op ow">③ URG와 PSH 값이 1이다.</div>
+      <div class="op ow">④ SYN과 PSH 값이 1이다.</div>
+    </div>
+    <div class="ex"><strong>정답 ②</strong> — 플래그 순서: <strong>U-A-P-R-S-F</strong> (URG·ACK·PSH·RST·SYN·FIN). 010001 = URG=0, <strong>ACK=1</strong>, PSH=0, RST=0, SYN=0, <strong>FIN=1</strong>. → ACK+FIN.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2021 국가직 9급 · 네트워크보안 — TCP는 응용 계층 아님</span><span class="es">★★</span></div>
+  <div class="eb">
+    <div class="eq">OSI 7계층의 응용 계층 프로토콜로 <u>옳지 않은 것</u>은?</div>
+    <div class="eo">
+      <div class="op on">① FTP</div>
+      <div class="op ow">② TCP</div>
+      <div class="op on">③ HTTP</div>
+      <div class="op on">④ SMTP</div>
+    </div>
+    <div class="ex"><strong>정답 ②</strong> — TCP는 <strong>전송 계층(4층)</strong> 프로토콜. FTP·HTTP·SMTP는 응용 계층(7층). 전송 계층 = TCP·UDP. 이 구분은 매우 기본적이지만 함정으로 자주 출제.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2021 국가직 9급 · 네트워크보안 — SSH 특성</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">SSH에 대한 설명으로 <u>옳은 것</u>은?</div>
+    <div class="eo">
+      <div class="op ow">① SSH는 TCP 및 UDP 기반의 보안 프로토콜이다.</div>
+      <div class="op or">② SSH 전송계층 프로토콜, SSH 인증 프로토콜, SSH 연결 프로토콜을 포함한다.</div>
+      <div class="op ow">③ SSH는 SSH 터널링을 지원하지 않는다.</div>
+      <div class="op ow">④ SSH 전송계층 프로토콜은 다수의 기본 SSH 연결을 사용하여 통신채널을 다중화한다.</div>
+    </div>
+    <div class="ex"><strong>정답 ②</strong> — ① SSH=TCP만. ③ SSH는 터널링 지원. ④ 다중화=연결 프로토콜(Connection Protocol) 역할. ②만 옳음: 3가지 프로토콜(전송층·인증·연결)로 구성.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2023 지방직 9급 · SSH 전송 계층 프로토콜 서비스</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">SSH(Secure Shell)의 전송 계층 프로토콜에 의해 제공되는 서비스가 <u>아닌 것</u>은?</div>
+    <div class="eo">
+      <div class="op on">① 서버 인증</div>
+      <div class="op on">② 데이터 기밀성</div>
+      <div class="op on">③ 데이터 무결성</div>
+      <div class="op ow">④ 논리 채널 다중화</div>
+    </div>
+    <div class="ex"><strong>정답 ④</strong> — SSH 전송 계층: <strong>서버 인증·기밀성·무결성·압축(옵션)·PFS</strong>. <strong>논리 채널 다중화 = 연결 프로토콜</strong>. 가장 자주 출제되는 함정.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2023 군무원 9급 · SYN Flooding 공격</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">TCP 3-Way 핸드셰이크 절차가 갖는 특성을 이용하여 정상 사용자의 접속에 영향을 미치는 공격 기법에 해당하는 것은?</div>
+    <div class="eo">
+      <div class="op ow">① Ping of Death</div>
+      <div class="op ow">② HTTP Get Flooding</div>
+      <div class="op or">③ SYN Flooding</div>
+      <div class="op ow">④ 스머핑(Smurfing) 공격</div>
+    </div>
+    <div class="ex"><strong>정답 ③</strong> — "TCP 3-way 핸드셰이크 취약점" = <strong>SYN Flooding</strong>. Ping of Death=ICMP 공격. HTTP Get Flooding=HTTP 응용층. Smurfing=ICMP+브로드캐스트.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2023 군무원 9급 · 세션 하이재킹 필요 정보</span><span class="es">★★</span></div>
+  <div class="eb">
+    <div class="eq">TCP 세션 하이재킹이 성공하기 위해서 공격자가 알고 있어야 하는 정보로 가장 <u>적절하지 않은 것</u>은?</div>
+    <div class="eo">
+      <div class="op on">① 세션을 구성하는 IP 주소</div>
+      <div class="op on">② 세션을 구성하는 포트 번호</div>
+      <div class="op on">③ 세션 내에서 주고받아지는 패킷의 적절한 일련번호</div>
+      <div class="op ow">④ 세션 내의 패킷을 주고받는 시간</div>
+    </div>
+    <div class="ex"><strong>정답 ④</strong> — 세션 하이재킹 필요 정보: <strong>IP 주소·포트 번호·순서 번호(Sequence Number)</strong>. "패킷을 주고받는 시간"은 필요 없음. 핵심은 순서 번호를 맞춰 위조 패킷을 삽입하는 것.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2017 국가직 9급 · 네트워크보안 — UDP 헤더 체크섬</span><span class="es">★★</span></div>
+  <div class="eb">
+    <div class="eq">UDP(User Datagram Protocol)의 헤더 포맷에 포함되어 있는 필드는?</div>
+    <div class="eo">
+      <div class="op ow">① 시퀀스 번호(sequence number)</div>
+      <div class="op ow">② 목적지 IP 주소(destination IP address)</div>
+      <div class="op or">③ 체크섬(checksum)</div>
+      <div class="op ow">④ 헤더 길이(header length)</div>
+    </div>
+    <div class="ex"><strong>정답 ③</strong> — UDP 헤더(8바이트): 출발지 포트·목적지 포트·길이·<strong>체크섬</strong>. 시퀀스 번호=TCP만. IP 주소=IP 헤더. 헤더 길이 필드=TCP에는 있음. UDP에는 "길이(Length)" 필드가 있지만 "헤더 길이"가 아닌 전체 UDP 세그먼트 길이.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2024 해경 9급 · SYN Flooding vs Smurf 설명 구분</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">네트워크 기반 보안위협에 대한 설명으로 가장 <u>옳지 않은 것</u>은?</div>
+    <div class="eo">
+      <div class="op on">① SYN Flooding 공격은 TCP의 3-way Handshake 취약점을 이용한 공격이다.</div>
+      <div class="op ow">② Smurf 공격은 출발지와 목적지의 IP 주소를 <u>공격대상의 IP 주소로 변조</u>하여 전송하며, 자신에게 응답하는 과정을 반복하게 하여 과부하를 유발한다.</div>
+      <div class="op on">③ Teardrop 공격을 받을 경우 네트워크 연결이 끊어지거나 블루 스크린 오류화면을 출력하고 시스템이 정지된다.</div>
+      <div class="op on">④ Ping of Death 공격은 아주 작은 조각의 ICMP Ping 패킷을 처리하게 하여 공격 대상 시스템의 성능저하 및 마비를 일으키는 공격이다.</div>
+    </div>
+    <div class="ex"><strong>정답 ②</strong> — Smurf 공격: <strong>출발지 IP를 피해자 IP로 위조</strong>한 ICMP Echo를 <strong>브로드캐스트</strong> 주소로 전송 → 네트워크 내 모든 호스트가 피해자에게 ICMP Reply 전송 → 과부하. "자신에게 응답 반복" = Land 공격 설명.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 복합 — SSH 포트번호 / Telnet 비교</span><span class="es">★★</span></div>
+  <div class="eb">
+    <div class="eq">SSH에 대한 설명으로 <u>옳지 않은 것</u>은?</div>
+    <div class="eo">
+      <div class="op on">① SSH는 Telnet보다 보안성이 높다.</div>
+      <div class="op on">② SSH는 TCP 22번 포트를 사용한다.</div>
+      <div class="op ow">③ SSH는 <u>UDP 프로토콜을 기반</u>으로 한다.</div>
+      <div class="op on">④ SSH는 파일 전송 기능(SCP/SFTP)을 제공한다.</div>
+    </div>
+    <div class="ex"><strong>정답 ③</strong> — SSH는 <strong>TCP만</strong> 사용. UDP 기반이 아님. DTLS처럼 UDP 기반 보안 프로토콜과 혼동 주의. SSH: TCP 22번, Telnet: TCP 23번.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 복합 — TFTP 특성 (UDP + 인증 없음)</span><span class="es">★★</span></div>
+  <div class="eb">
+    <div class="eq">TCP 대신에 UDP 69번 포트를 사용하고, 사용자 인증 절차를 요구하지 않기 때문에 누구나 호스트로부터 파일을 가져갈 수 있도록 고안된 프로토콜은?</div>
+    <div class="eo">
+      <div class="op ow">① HTTP</div>
+      <div class="op ow">② FTP</div>
+      <div class="op or">③ TFTP</div>
+      <div class="op ow">④ SOAP</div>
+    </div>
+    <div class="ex"><strong>정답 ③</strong> — TFTP(Trivial FTP): <strong>UDP 69번</strong>, 인증 없음, 단순 파일 전송. FTP는 TCP 20/21번. HTTP는 TCP 80번. TFTP는 라우터 부팅 시 설정 파일 로드 등에 사용.</div>
+  </div>
+</div>
+
+<!-- 암기 카드 -->
+<div class="dv"></div>
+<div class="mem">
+  <div class="mt">💡 SSH · TCP 핵심 암기</div>
+  <div class="mi">
+    <div class="mr"><span class="mk">SSH 포트</span><span class="mv">TCP <strong>22번</strong>. Telnet=23번. RFC 4250~4256. TCP만 사용 (UDP 아님!).</span></div>
+    <div class="mr"><span class="mk">SSH 3 프로토콜</span><span class="mv">전송층(서버인증·기밀성·무결성·PFS) / 사용자인증 / 연결(다중화·터널링)</span></div>
+    <div class="mr"><span class="mk">SSH 전송층 ≠</span><span class="mv">논리 채널 다중화는 <strong>연결 프로토콜</strong> 역할. 전송층 아님!</span></div>
+    <div class="mr"><span class="mk">TCP 플래그 순서</span><span class="mv"><strong>U-A-P-R-S-F</strong> (URG·ACK·PSH·RST·SYN·FIN)</span></div>
+    <div class="mr"><span class="mk">3-way</span><span class="mv">SYN → SYN+ACK → ACK (연결 수립)</span></div>
+    <div class="mr"><span class="mk">4-way</span><span class="mv">FIN → ACK → FIN → ACK (연결 해제, 서버 데이터 마저 보냄)</span></div>
+    <div class="mr"><span class="mk">SYN Flooding</span><span class="mv">위조IP로 SYN 대량전송 → 반연결 큐 고갈. 대응: SYN Cookie.</span></div>
+    <div class="mr"><span class="mk">Half Open 스캔</span><span class="mv">열림=RST 전송 / 닫힘=RST+ACK 수신. 로그 안 남음.</span></div>
+    <div class="mr"><span class="mk">포트번호</span><span class="mv">FTP=20/21·SSH=22·Telnet=23·SMTP=25·HTTP=80·HTTPS=443·TFTP=UDP69</span></div>
+  </div>
+</div>
+
+<ul class="cl">
+  <li class="clw">"SSH는 TCP 및 UDP 기반" → ✗ (TCP만 사용)</li>
+  <li class="clw">"SSH 전송층 프로토콜이 논리 채널 다중화를 담당" → ✗ (다중화=연결 프로토콜)</li>
+  <li class="clw">"SSH는 터널링을 지원하지 않는다" → ✗ (터널링 지원)</li>
+  <li class="clw">"TCP 플래그 010001 = SYN+RST" → ✗ (ACK+FIN)</li>
+  <li class="clw">"TCP Half Open 스캔, 포트 열림 시 ACK 전송" → ✗ (RST 전송)</li>
+  <li class="clr">"SSH = TCP 22번, 3가지 프로토콜(전송층·인증·연결)" → ✓</li>
+  <li class="clr">"SSH 전송층 = 서버인증·기밀성·무결성·PFS·압축(옵션)" → ✓</li>
+  <li class="clr">"SYN Flooding = TCP 3-way 취약점 이용, 대응=SYN Cookie" → ✓</li>
+  <li class="clr">"3-way: SYN→SYN+ACK→ACK / 4-way: FIN→ACK→FIN→ACK" → ✓</li>
+</ul>
+
+<div class="ft">
+  <span>정보보안 합격전략 교재 · INHYUK PI</span>
+  <span>SSH · TCP 완전 교재 · 2026 목표</span>
+</div>
+
+</div><!-- /tab-exam -->
+
+</div><!-- /cc -->
+</div><!-- /wrap -->
+
+<script>
+function sw(id){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  event.currentTarget.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>

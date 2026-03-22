@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>인터넷 메일 구조 완전 교재 | INHYUK PI</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --p:#1a2540;--a:#2d5be3;--al:#e8eeff;
+  --r:#c0392b;--rl:#fdf0ef;
+  --g:#1a7a4a;--gl:#edf7f2;
+  --w:#b45309;--wl:#fffbeb;
+  --v:#6d28d9;--vl:#ede9fe;
+  --o:#c2410c;--ol:#fff7ed;
+  --bd:#dde3ec;--bg:#fff;--tx:#1c2331;--tm:#5a6478;
+  --g0:#f8f9fa;--g1:#f0f2f5;
+  --sans:'Noto Sans KR',sans-serif;--serif:'Noto Serif KR',serif;--mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--sans);background:#eef1f8;color:var(--tx);font-size:14px;line-height:1.8;}
+.wrap{max-width:980px;margin:0 auto;padding:28px 14px 70px;}
+
+/* HEADER */
+.hdr{background:linear-gradient(135deg,#0f1f3d 0%,#1a2540 60%,#0d3060 100%);border-radius:14px 14px 0 0;padding:30px 42px 26px;position:relative;overflow:hidden;}
+.hdr::before{content:'✉';position:absolute;right:30px;top:20px;font-size:90px;opacity:.05;}
+.mbr{display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap;}
+.bdg{font-size:9.5px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.06em;text-transform:uppercase;}
+.bdg-ch{background:rgba(255,255,255,.13);color:rgba(255,255,255,.9);}
+.bdg-hot{background:#c0392b;color:white;}
+.bdg-ok{background:#2d5be3;color:white;}
+.ht{font-family:var(--serif);font-size:27px;font-weight:600;color:white;letter-spacing:-.02em;margin-bottom:3px;}
+.hs{color:rgba(255,255,255,.55);font-size:12px;font-weight:300;}
+.hst{display:flex;gap:22px;margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.1);flex-wrap:wrap;}
+.sn{font-size:19px;font-weight:700;color:#7aa2f7;}
+.sl{font-size:9.5px;color:rgba(255,255,255,.5);margin-top:1px;}
+
+/* CONTENT */
+.cc{background:var(--bg);border-radius:0 0 14px 14px;padding:38px 42px;border:1px solid var(--bd);border-top:none;}
+
+/* SECTION HEADER */
+.sh{display:flex;align-items:center;gap:9px;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--g1);margin-top:6px;}
+.sn2{width:30px;height:30px;background:var(--p);color:white;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.st{font-size:17px;font-weight:700;color:var(--p);}
+.slb{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.06em;text-transform:uppercase;}
+.ld{background:var(--al);color:var(--a);}
+.le{background:var(--rl);color:var(--r);}
+.lt{background:var(--wl);color:var(--w);}
+
+/* DEF */
+.dfb{background:var(--p);color:white;border-radius:11px;padding:17px 21px;margin-bottom:15px;position:relative;overflow:hidden;}
+.dfl{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7aa2f7;margin-bottom:6px;}
+.dfb p{font-size:13px;line-height:1.9;color:rgba(255,255,255,.88);}
+.dfb strong{color:#7aa2f7;}
+
+/* DIAGRAM */
+.dw{background:var(--g0);border:1px solid var(--bd);border-radius:12px;padding:18px;margin:14px 0;overflow-x:auto;}
+.dt{font-size:11px;font-weight:700;color:var(--p);margin-bottom:12px;letter-spacing:.03em;}
+
+/* TABLE */
+.tw{overflow-x:auto;margin:12px 0;border-radius:9px;border:1px solid var(--bd);}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead tr{background:var(--p);color:white;}
+thead th{padding:10px 13px;text-align:left;font-weight:600;font-size:11.5px;}
+tbody tr{border-bottom:1px solid var(--g1);}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:#f7f9ff;}
+tbody td{padding:9px 13px;color:var(--tx);vertical-align:top;}
+tbody td:first-child{font-weight:600;color:var(--p);}
+
+/* CARDS */
+.cds{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:10px;margin:12px 0;}
+
+/* AGENT CARD — 핵심 시각 요소 */
+.agent-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:16px 0;}
+.agent-card{border-radius:12px;overflow:hidden;border:2px solid var(--bd);position:relative;}
+.agent-h{padding:14px 12px 10px;text-align:center;}
+.agent-icon{font-size:28px;margin-bottom:6px;}
+.agent-abbr{font-family:var(--mono);font-size:16px;font-weight:700;color:white;}
+.agent-full{font-size:9px;color:rgba(255,255,255,.75);margin-top:2px;line-height:1.4;}
+.agent-b{padding:11px 12px;background:var(--bg);}
+.agent-role{font-size:11.5px;font-weight:700;color:var(--p);margin-bottom:5px;}
+.agent-desc{font-size:11px;color:var(--tm);line-height:1.6;}
+.agent-proto{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;margin-top:6px;}
+
+/* STORY */
+.story-q{background:var(--p);color:white;border-radius:10px;padding:13px 19px;margin:13px 0;font-size:13.5px;line-height:1.8;position:relative;}
+.story-q strong{color:#7aa2f7;}
+.story-q::before{content:'💬';position:absolute;left:-13px;top:10px;font-size:20px;}
+.insight{background:linear-gradient(135deg,#1a2540,#0f3060);border-radius:11px;padding:16px 20px;margin:13px 0;color:white;}
+.ins-t{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7aa2f7;margin-bottom:8px;}
+.insight p{font-size:13px;line-height:1.8;color:rgba(255,255,255,.85);}
+.insight strong{color:#7aa2f7;}
+
+/* TRAP */
+.trap{border-radius:11px;margin:14px 0;overflow:hidden;}
+.th{display:flex;align-items:center;gap:7px;padding:10px 15px;background:var(--r);color:white;}
+.tht{font-size:12px;font-weight:700;}
+.tb{background:var(--rl);padding:13px 17px;border:1px solid #f5c6c2;border-top:none;border-radius:0 0 11px 11px;}
+.tb p{font-size:12.5px;color:#7a1c1c;line-height:1.8;margin-bottom:5px;}
+.tb p:last-child{margin-bottom:0;}
+.tq{background:white;border-left:3px solid var(--r);padding:8px 12px;border-radius:0 7px 7px 0;margin:8px 0;font-size:13px;color:var(--tx);font-style:italic;}
+.vw{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:20px;background:var(--r);color:white;}
+.vr{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:20px;background:var(--g);color:white;}
+
+/* EXAM */
+.ec{border:1px solid var(--bd);border-radius:11px;margin:11px 0;overflow:hidden;}
+.eh{display:flex;align-items:center;justify-content:space-between;padding:9px 15px;background:var(--g0);border-bottom:1px solid var(--bd);}
+.ey{font-size:11.5px;font-weight:700;color:var(--p);}
+.es{color:#e8b000;font-size:12px;letter-spacing:2px;}
+.eb{padding:13px 15px;}
+.eq{font-size:13px;font-weight:600;color:var(--tx);margin-bottom:10px;line-height:1.7;}
+.eo{display:flex;flex-direction:column;gap:4px;}
+.op{font-size:13px;padding:6px 10px;border-radius:6px;border:1px solid transparent;}
+.ow{background:#fdf0ef;border-color:#f5c6c2;color:#7a1c1c;text-decoration:line-through;opacity:.8;}
+.ow::before{content:'✗ ';}
+.or{background:var(--gl);border-color:#a3dbc0;color:#0d4a2a;font-weight:600;}
+.or::before{content:'✓ ';}
+.on{background:var(--g0);border-color:var(--bd);color:var(--tx);}
+.ex{margin-top:10px;padding:10px 12px;background:var(--g0);border-radius:7px;font-size:12px;color:var(--tm);line-height:1.75;border-left:3px solid var(--a);}
+
+/* CHECKLIST */
+.cl{list-style:none;margin:12px 0;display:flex;flex-direction:column;gap:5px;}
+.cl li{display:flex;align-items:flex-start;gap:8px;font-size:13px;padding:7px 12px;border-radius:7px;border:1px solid var(--bd);background:var(--bg);}
+.clw{background:#fdf0ef;border-color:#f5c6c2;}
+.clw::before{content:'⚠';color:var(--r)!important;font-size:12px;flex-shrink:0;margin-top:2px;}
+.clr{background:var(--gl);border-color:#a3dbc0;}
+.clr::before{content:'✓';color:var(--g)!important;font-size:12px;flex-shrink:0;margin-top:2px;}
+
+/* MEM */
+.mem{background:linear-gradient(135deg,#1a2540 0%,#0f3060 100%);border-radius:13px;padding:20px 23px;color:white;margin:14px 0;position:relative;overflow:hidden;}
+.mem::before{content:'💡';position:absolute;right:16px;top:12px;font-size:38px;opacity:.12;}
+.mt{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7aa2f7;margin-bottom:11px;}
+.mi{display:flex;flex-direction:column;gap:8px;}
+.mr{display:flex;gap:10px;align-items:flex-start;}
+.mk{font-family:var(--mono);font-size:10.5px;font-weight:600;background:rgba(122,162,247,.2);color:#7aa2f7;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;}
+.mv{font-size:12.5px;color:rgba(255,255,255,.85);line-height:1.7;}
+.mv strong{color:#7aa2f7;}
+
+/* INFO */
+.inf{background:var(--al);border:1px solid #b8ccff;border-radius:9px;padding:11px 15px;margin:11px 0;font-size:13px;color:#1a2e70;line-height:1.8;}
+
+/* SF */
+.sf{color:#e8b000;}
+.dv{height:1px;background:var(--g1);margin:22px 0;}
+.ft{display:flex;justify-content:space-between;margin-top:28px;padding-top:13px;border-top:1px solid var(--bd);font-size:10.5px;color:var(--tm);}
+
+@media(max-width:640px){
+  .cc,.hdr{padding:20px 16px;}
+  .agent-grid{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="mbr">
+    <span class="bdg bdg-ch">Chapter 08 · 전자우편 보안</span>
+    <span class="bdg bdg-hot">9급 기출</span>
+    <span class="bdg bdg-ok">기출 4문제 수록</span>
+  </div>
+  <div class="ht">인터넷 메일 구조 — MUA · MSA · MTA · MDA · MS</div>
+  <div class="hs">이메일 한 통이 전송되는 전 과정 · 5개 에이전트 역할 · 프로토콜 배치 · 기출 함정 완전 해설</div>
+  <div class="hst">
+    <div><div class="sn">5개</div><div class="sl">메일 에이전트</div></div>
+    <div><div class="sn">SMTP</div><div class="sl">송신 프로토콜</div></div>
+    <div><div class="sn">POP3/IMAP</div><div class="sl">수신 프로토콜</div></div>
+    <div><div class="sn">함정</div><div class="sl">MSA/MS 혼동 주의</div></div>
+  </div>
+</div>
+
+<div class="cc">
+
+<!-- ═══ 1. 이메일이 간다는 것 ═══ -->
+<div class="sh"><div class="sn2">1</div><div class="st">이메일 한 통, 어디를 거쳐 가나?</div><span class="slb ld">흐름 이해</span></div>
+
+<div class="story-q">나(홍길동)가 Outlook에서 김철수에게 이메일을 보낸다. 보내기를 클릭하는 순간 무슨 일이 벌어질까요?</div>
+
+<p style="font-size:13.5px;line-height:1.9;margin-bottom:14px;">이메일은 단순히 A에서 B로 날아가지 않아요. 마치 우체국 시스템처럼 <strong>여러 단계의 중간 처리 주체</strong>를 거쳐 전달됩니다. 이 중간 주체들이 바로 <strong>MUA · MSA · MTA · MDA · MS</strong>입니다.</p>
+
+<!-- 전체 흐름 SVG -->
+<div class="dw">
+  <div class="dt">이메일 전체 전송 흐름 — 송신자에서 수신자까지</div>
+  <svg viewBox="0 0 880 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:880px;display:block;margin:0 auto;">
+
+    <!-- ── 송신 측 ── -->
+    <text x="115" y="16" text-anchor="middle" fill="#5a6478" font-size="10" font-family="sans-serif" font-weight="700">[ 송신자 측 ]</text>
+
+    <!-- MUA (송신) -->
+    <rect x="20" y="26" width="100" height="90" rx="9" fill="#1a2540" stroke="#7aa2f7" stroke-width="2"/>
+    <text x="70" y="55" text-anchor="middle" fill="#7aa2f7" font-size="10" font-family="sans-serif">📧</text>
+    <text x="70" y="72" text-anchor="middle" fill="white" font-size="13" font-family="sans-serif" font-weight="700">MUA</text>
+    <text x="70" y="86" text-anchor="middle" fill="rgba(255,255,255,.75)" font-size="9" font-family="sans-serif">메일 작성</text>
+    <text x="70" y="100" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" font-family="sans-serif">Outlook, Gmail</text>
+    <text x="70" y="114" text-anchor="middle" fill="#7aa2f7" font-size="8" font-family="sans-serif" font-weight="700">송신자</text>
+
+    <!-- MUA→MSA -->
+    <line x1="120" y1="71" x2="158" y2="71" stroke="#2d5be3" stroke-width="2"/>
+    <polygon points="158,67 168,71 158,75" fill="#2d5be3"/>
+    <rect x="122" y="54" width="44" height="16" rx="5" fill="#2d5be3"/>
+    <text x="144" y="65" text-anchor="middle" fill="white" font-size="9" font-family="monospace" font-weight="700">SMTP</text>
+    <text x="144" y="84" text-anchor="middle" fill="#5a6478" font-size="8" font-family="sans-serif">TCP 25/587</text>
+
+    <!-- MSA -->
+    <rect x="168" y="26" width="100" height="90" rx="9" fill="#0f766e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="218" y="55" text-anchor="middle" fill="#99f6e4" font-size="10" font-family="sans-serif">📤</text>
+    <text x="218" y="72" text-anchor="middle" fill="white" font-size="13" font-family="sans-serif" font-weight="700">MSA</text>
+    <text x="218" y="86" text-anchor="middle" fill="rgba(255,255,255,.75)" font-size="9" font-family="sans-serif">제출 에이전트</text>
+    <text x="218" y="100" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" font-family="sans-serif">발신자 인증</text>
+    <text x="218" y="114" text-anchor="middle" fill="#2dd4bf" font-size="8" font-family="sans-serif" font-weight="700">Mail Submission</text>
+
+    <!-- MSA→MTA(S) -->
+    <line x1="268" y1="71" x2="306" y2="71" stroke="#1a7a4a" stroke-width="2"/>
+    <polygon points="306,67 316,71 306,75" fill="#1a7a4a"/>
+    <rect x="270" y="54" width="44" height="16" rx="5" fill="#1a7a4a"/>
+    <text x="292" y="65" text-anchor="middle" fill="white" font-size="9" font-family="monospace" font-weight="700">SMTP</text>
+
+    <!-- MTA (송신 서버) -->
+    <rect x="316" y="26" width="100" height="90" rx="9" fill="#1a7a4a"/>
+    <text x="366" y="55" text-anchor="middle" fill="#86efac" font-size="10" font-family="sans-serif">🔀</text>
+    <text x="366" y="72" text-anchor="middle" fill="white" font-size="13" font-family="sans-serif" font-weight="700">MTA</text>
+    <text x="366" y="86" text-anchor="middle" fill="rgba(255,255,255,.75)" font-size="9" font-family="sans-serif">전송 에이전트</text>
+    <text x="366" y="100" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" font-family="sans-serif">발신 메일 서버</text>
+    <text x="366" y="114" text-anchor="middle" fill="#86efac" font-size="8" font-family="sans-serif" font-weight="700">Mail Transfer</text>
+
+    <!-- 인터넷 경유 -->
+    <rect x="425" y="48" width="80" height="46" rx="8" fill="#374151" stroke="#6b7280" stroke-width="1" stroke-dasharray="4,3"/>
+    <text x="465" y="69" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="10" font-family="sans-serif">🌐</text>
+    <text x="465" y="84" text-anchor="middle" fill="rgba(255,255,255,.5)" font-size="9" font-family="sans-serif">인터넷</text>
+
+    <line x1="416" y1="71" x2="424" y2="71" stroke="#374151" stroke-width="2" stroke-dasharray="3,2"/>
+    <line x1="505" y1="71" x2="513" y2="71" stroke="#374151" stroke-width="2" stroke-dasharray="3,2"/>
+
+    <!-- ── 수신 측 ── -->
+    <text x="660" y="16" text-anchor="middle" fill="#5a6478" font-size="10" font-family="sans-serif" font-weight="700">[ 수신자 측 ]</text>
+
+    <!-- MTA (수신 서버) -->
+    <rect x="514" y="26" width="100" height="90" rx="9" fill="#2d5be3"/>
+    <text x="564" y="55" text-anchor="middle" fill="#bfdbfe" font-size="10" font-family="sans-serif">🔀</text>
+    <text x="564" y="72" text-anchor="middle" fill="white" font-size="13" font-family="sans-serif" font-weight="700">MTA</text>
+    <text x="564" y="86" text-anchor="middle" fill="rgba(255,255,255,.75)" font-size="9" font-family="sans-serif">전송 에이전트</text>
+    <text x="564" y="100" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" font-family="sans-serif">수신 메일 서버</text>
+    <text x="564" y="114" text-anchor="middle" fill="#bfdbfe" font-size="8" font-family="sans-serif" font-weight="700">Mail Transfer</text>
+
+    <!-- MTA→MDA -->
+    <line x1="614" y1="71" x2="652" y2="71" stroke="#6d28d9" stroke-width="2"/>
+    <polygon points="652,67 662,71 652,75" fill="#6d28d9"/>
+    <rect x="616" y="54" width="44" height="16" rx="5" fill="#6d28d9"/>
+    <text x="638" y="65" text-anchor="middle" fill="white" font-size="9" font-family="monospace" font-weight="700">SMTP</text>
+
+    <!-- MDA -->
+    <rect x="662" y="26" width="100" height="90" rx="9" fill="#6d28d9"/>
+    <text x="712" y="55" text-anchor="middle" fill="#ddd6fe" font-size="10" font-family="sans-serif">📬</text>
+    <text x="712" y="72" text-anchor="middle" fill="white" font-size="13" font-family="sans-serif" font-weight="700">MDA</text>
+    <text x="712" y="86" text-anchor="middle" fill="rgba(255,255,255,.75)" font-size="9" font-family="sans-serif">배달 에이전트</text>
+    <text x="712" y="100" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" font-family="sans-serif">MHS→MS 전달</text>
+    <text x="712" y="114" text-anchor="middle" fill="#ddd6fe" font-size="8" font-family="sans-serif" font-weight="700">Mail Delivery</text>
+
+    <!-- MDA→MS -->
+    <line x1="762" y1="71" x2="800" y2="71" stroke="#c0392b" stroke-width="2"/>
+    <polygon points="800,67 810,71 800,75" fill="#c0392b"/>
+    <rect x="764" y="54" width="44" height="16" rx="5" fill="#c0392b"/>
+    <text x="786" y="65" text-anchor="middle" fill="white" font-size="9" font-family="monospace" font-weight="700">로컬</text>
+
+    <!-- MS -->
+    <rect x="810" y="26" width="60" height="90" rx="9" fill="#c0392b"/>
+    <text x="840" y="55" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif">🗄</text>
+    <text x="840" y="70" text-anchor="middle" fill="white" font-size="12" font-family="sans-serif" font-weight="700">MS</text>
+    <text x="840" y="83" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="8" font-family="sans-serif">메시지</text>
+    <text x="840" y="95" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="8" font-family="sans-serif">저장소</text>
+    <text x="840" y="114" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="7" font-family="sans-serif">Mailbox</text>
+
+    <!-- MS에서 MUA(수신) — POP3/IMAP -->
+    <rect x="810" y="145" width="60" height="55" rx="9" fill="#1a2540" stroke="#7aa2f7" stroke-width="1.5"/>
+    <text x="840" y="168" text-anchor="middle" fill="#7aa2f7" font-size="10" font-family="sans-serif">📧</text>
+    <text x="840" y="183" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">MUA</text>
+    <text x="840" y="196" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="8" font-family="sans-serif">수신자</text>
+
+    <!-- MS↓MUA(수신) -->
+    <line x1="840" y1="116" x2="840" y2="143" stroke="#7aa2f7" stroke-width="2" stroke-dasharray="4,3"/>
+    <polygon points="836,143 840,153 844,143" fill="#7aa2f7"/>
+    <rect x="848" y="124" width="32" height="14" rx="4" fill="#7aa2f7" opacity=".2" stroke="#7aa2f7"/>
+    <text x="864" y="134" text-anchor="middle" fill="#2d5be3" font-size="8" font-family="monospace" font-weight="700">POP3</text>
+    <text x="864" y="146" text-anchor="middle" fill="#2d5be3" font-size="8" font-family="monospace">/ IMAP</text>
+  </svg>
+</div>
+
+<div class="inf">
+  <strong>한 줄 요약:</strong> MUA(작성) → <strong>SMTP</strong> → MSA(제출) → <strong>SMTP</strong> → MTA(전송) → 인터넷 → MTA(수신) → <strong>SMTP</strong> → MDA(배달) → MS(저장) → <strong>POP3/IMAP</strong> → MUA(읽기)
+</div>
+
+<div class="dv"></div>
+
+<!-- ═══ 2. 5개 에이전트 상세 ═══ -->
+<div class="sh"><div class="sn2">2</div><div class="st">5개 에이전트 완전 정리</div><span class="slb le">★★★ 핵심</span></div>
+
+<!-- 에이전트 카드 그리드 -->
+<div class="agent-grid">
+
+  <div class="agent-card" style="border-color:#7aa2f7;">
+    <div class="agent-h" style="background:#1a2540;">
+      <div class="agent-icon">📧</div>
+      <div class="agent-abbr">MUA</div>
+      <div class="agent-full">Mail User Agent</div>
+    </div>
+    <div class="agent-b">
+      <div class="agent-role">메시지 사용자 에이전트</div>
+      <div class="agent-desc">사용자 액터(actor)와 사용자 응용프로그램을 대신하여 동작. 이메일 클라이언트 프로그램 자체.</div>
+      <div style="margin-top:7px;font-size:11px;color:var(--tm);">
+        <div>• 작성자: 작성 후 MSA에 제출</div>
+        <div>• 수신자: MS에서 POP3/IMAP으로 가져옴</div>
+      </div>
+      <span class="agent-proto" style="background:#e8eeff;color:#2d5be3;">Outlook, Gmail, Thunderbird</span>
+    </div>
+  </div>
+
+  <div class="agent-card" style="border-color:#2dd4bf;">
+    <div class="agent-h" style="background:#0f766e;">
+      <div class="agent-icon">📤</div>
+      <div class="agent-abbr">MSA</div>
+      <div class="agent-full">Mail Submission Agent</div>
+    </div>
+    <div class="agent-b">
+      <div class="agent-role">메일 제출 에이전트</div>
+      <div class="agent-desc">사용자(MUA)로부터 이메일을 받아 인터넷 상의 MTA로 전달. MUA와 함께 있거나 분리될 수 있음.</div>
+      <div style="margin-top:7px;font-size:11px;color:var(--tm);">
+        <div>• 발신자 인증 수행</div>
+        <div>• MUA → MSA: SMTP 사용</div>
+        <div>• 스팸 방지 역할</div>
+      </div>
+      <span class="agent-proto" style="background:#ccfbf1;color:#0f766e;">SMTP (TCP 587)</span>
+    </div>
+  </div>
+
+  <div class="agent-card" style="border-color:#86efac;">
+    <div class="agent-h" style="background:#1a7a4a;">
+      <div class="agent-icon">🔀</div>
+      <div class="agent-abbr">MTA</div>
+      <div class="agent-full">Mail Transfer Agent</div>
+    </div>
+    <div class="agent-b">
+      <div class="agent-role">메시지 전송 에이전트</div>
+      <div class="agent-desc">응용-레벨 홉에 대해 메시지를 중계(전달). 목적지 MDA까지 여러 MTA를 거쳐 전달됨. 메시지 추적 가능.</div>
+      <div style="margin-top:7px;font-size:11px;color:var(--tm);">
+        <div>• MTA↔MTA: SMTP</div>
+        <div>• MTA↔MSA/MDA: SMTP</div>
+        <div>• "메일 서버"의 핵심</div>
+      </div>
+      <span class="agent-proto" style="background:#edf7f2;color:#1a7a4a;">SMTP (TCP 25)</span>
+    </div>
+  </div>
+
+  <div class="agent-card" style="border-color:#c4b5fd;">
+    <div class="agent-h" style="background:#6d28d9;">
+      <div class="agent-icon">📬</div>
+      <div class="agent-abbr">MDA</div>
+      <div class="agent-full">Mail Delivery Agent</div>
+    </div>
+    <div class="agent-b">
+      <div class="agent-role">메일 배달 에이전트</div>
+      <div class="agent-desc">MHS(Mail Handling System)에서 MS(메시지 저장소)로 메시지를 전달하는 최종 단계 에이전트.</div>
+      <div style="margin-top:7px;font-size:11px;color:var(--tm);">
+        <div>• MTA에서 수신한 메일을</div>
+        <div>  사용자 메일박스(MS)에 넣음</div>
+        <div>• 로컬 배달 담당</div>
+      </div>
+      <span class="agent-proto" style="background:#ede9fe;color:#6d28d9;">로컬 배달</span>
+    </div>
+  </div>
+
+  <div class="agent-card" style="border-color:#fca5a5;">
+    <div class="agent-h" style="background:#c0392b;">
+      <div class="agent-icon">🗄️</div>
+      <div class="agent-abbr">MS</div>
+      <div class="agent-full">Message Store</div>
+    </div>
+    <div class="agent-b">
+      <div class="agent-role">메시지 저장소</div>
+      <div class="agent-desc">수신된 이메일이 최종적으로 저장되는 공간. 사용자의 메일박스. MUA가 POP3 또는 IMAP으로 접근하여 읽음.</div>
+      <div style="margin-top:7px;font-size:11px;color:var(--tm);">
+        <div>• MUA → MS: POP3(110) or IMAP(143)</div>
+        <div>• 서버 메일박스 = MS</div>
+      </div>
+      <span class="agent-proto" style="background:#fdf0ef;color:#c0392b;">POP3 / IMAP</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="dv"></div>
+
+<!-- ═══ 3. 프로토콜 배치 ═══ -->
+<div class="sh"><div class="sn2">3</div><div class="st">어디서 어떤 프로토콜을 쓰나?</div><span class="slb le">★★★</span></div>
+
+<!-- 프로토콜 배치 SVG -->
+<div class="dw">
+  <div class="dt">메일 시스템 구간별 프로토콜 정리</div>
+  <svg viewBox="0 0 820 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:820px;display:block;margin:0 auto;">
+
+    <!-- 각 구간 박스 -->
+    <!-- MUA -->
+    <rect x="10" y="20" width="90" height="50" rx="7" fill="#1a2540"/>
+    <text x="55" y="42" text-anchor="middle" fill="#7aa2f7" font-size="12" font-family="sans-serif" font-weight="700">MUA</text>
+    <text x="55" y="56" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" font-family="sans-serif">작성자</text>
+
+    <!-- 구간 1: SMTP -->
+    <rect x="108" y="30" width="100" height="30" rx="6" fill="#2d5be3"/>
+    <text x="158" y="43" text-anchor="middle" fill="white" font-size="11" font-family="monospace" font-weight="700">SMTP</text>
+    <text x="158" y="56" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="9" font-family="sans-serif">TCP 587</text>
+    <polygon points="205,35 215,45 205,55" fill="#2d5be3"/>
+
+    <!-- MSA -->
+    <rect x="215" y="20" width="90" height="50" rx="7" fill="#0f766e"/>
+    <text x="260" y="42" text-anchor="middle" fill="#2dd4bf" font-size="12" font-family="sans-serif" font-weight="700">MSA</text>
+    <text x="260" y="56" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" font-family="sans-serif">제출</text>
+
+    <!-- 구간 2: SMTP -->
+    <rect x="313" y="30" width="100" height="30" rx="6" fill="#1a7a4a"/>
+    <text x="363" y="43" text-anchor="middle" fill="white" font-size="11" font-family="monospace" font-weight="700">SMTP</text>
+    <text x="363" y="56" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="9" font-family="sans-serif">TCP 25</text>
+    <polygon points="410,35 420,45 410,55" fill="#1a7a4a"/>
+
+    <!-- MTA(S)+인터넷+MTA(R) -->
+    <rect x="420" y="20" width="160" height="50" rx="7" fill="#374151"/>
+    <text x="500" y="38" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="11" font-family="sans-serif" font-weight="700">MTA → 인터넷 → MTA</text>
+    <text x="500" y="53" text-anchor="middle" fill="rgba(255,255,255,.5)" font-size="9" font-family="sans-serif">SMTP로 중계 (여러 MTA 경유 가능)</text>
+
+    <!-- 구간 3: SMTP -->
+    <rect x="588" y="30" width="100" height="30" rx="6" fill="#6d28d9"/>
+    <text x="638" y="43" text-anchor="middle" fill="white" font-size="11" font-family="monospace" font-weight="700">SMTP</text>
+    <text x="638" y="56" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="9" font-family="sans-serif">로컬 배달</text>
+    <polygon points="685,35 695,45 685,55" fill="#6d28d9"/>
+
+    <!-- MDA -->
+    <rect x="695" y="20" width="60" height="50" rx="7" fill="#6d28d9"/>
+    <text x="725" y="42" text-anchor="middle" fill="#ddd6fe" font-size="12" font-family="sans-serif" font-weight="700">MDA</text>
+    <text x="725" y="56" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" font-family="sans-serif">배달</text>
+    <polygon points="755,35 765,45 755,55" fill="#c0392b"/>
+
+    <!-- MS -->
+    <rect x="765" y="20" width="45" height="50" rx="7" fill="#c0392b"/>
+    <text x="787" y="43" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">MS</text>
+    <text x="787" y="56" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" font-family="sans-serif">저장</text>
+
+    <!-- 하단: POP3/IMAP -->
+    <rect x="20" y="90" width="90" height="30" rx="7" fill="#1a2540" opacity=".8"/>
+    <text x="65" y="109" text-anchor="middle" fill="#7aa2f7" font-size="11" font-family="sans-serif" font-weight="700">MUA (수신)</text>
+
+    <rect x="118" y="90" width="640" height="30" rx="7" fill="#7aa2f7" opacity=".15" stroke="#7aa2f7" stroke-width="1"/>
+    <text x="438" y="109" text-anchor="middle" fill="#2d5be3" font-size="11" font-family="sans-serif" font-weight="700">← POP3 (TCP 110) 또는 IMAP (TCP 143) 으로 MS에서 읽기 →</text>
+  </svg>
+</div>
+
+<div class="tw"><table>
+  <thead><tr><th>구간</th><th>사용 프로토콜</th><th>포트</th><th>방향</th></tr></thead>
+  <tbody>
+    <tr><td>MUA → MSA</td><td><strong>SMTP</strong></td><td>TCP <strong>587</strong> (또는 465)</td><td>메일 제출</td></tr>
+    <tr><td>MSA → MTA</td><td><strong>SMTP</strong></td><td>TCP <strong>25</strong></td><td>발신 서버로 전달</td></tr>
+    <tr><td>MTA ↔ MTA</td><td><strong>SMTP</strong></td><td>TCP <strong>25</strong></td><td>서버 간 중계</td></tr>
+    <tr><td>MTA → MDA</td><td><strong>SMTP</strong></td><td>TCP 25 (로컬)</td><td>최종 배달</td></tr>
+    <tr><td>MDA → MS</td><td>로컬 배달</td><td>—</td><td>메일박스에 저장</td></tr>
+    <tr><td>MS → MUA (읽기)</td><td><strong>POP3</strong> 또는 <strong>IMAP</strong></td><td>TCP <strong>110</strong> / <strong>143</strong></td><td>메일 수신</td></tr>
+  </tbody>
+</table></div>
+
+<div class="insight">
+  <div class="ins-t">💡 핵심 암기 — SMTP는 "보내는" 전 구간에 쓰인다</div>
+  <p>SMTP는 MUA→MSA, MSA→MTA, MTA→MTA, MTA→MDA 전 구간에 사용돼요. <strong>메일을 받아서 읽을 때만 POP3 또는 IMAP</strong>을 씁니다. "보내는 건 다 SMTP, 읽는 건 POP3/IMAP"으로 구분하세요.</p>
+</div>
+
+<div class="dv"></div>
+
+<!-- ═══ 4. POP3 vs IMAP ═══ -->
+<div class="sh"><div class="sn2">4</div><div class="st">POP3 vs IMAP — 수신 방식의 차이</div><span class="slb ld">비교</span></div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0;">
+  <div style="border-radius:11px;overflow:hidden;border:1px solid var(--bd);">
+    <div style="padding:12px 16px;background:#2d5be3;font-size:13.5px;font-weight:700;color:white;">POP3 — Post Office Protocol 3</div>
+    <div style="padding:14px 16px;background:var(--bg);">
+      <div style="font-size:11px;font-weight:700;color:var(--tm);margin-bottom:6px;">PORT : TCP 110</div>
+      <div style="font-size:13px;line-height:1.8;color:var(--tx);">서버에서 메일을 <strong>다운로드한 후 삭제</strong>. 로컬에 저장됨. 오프라인 접근 가능. 여러 기기에서 쓰면 한 기기에서만 다운.</div>
+      <div style="margin-top:8px;font-size:12px;color:var(--tm);">비유: 우체국에서 편지를 <strong>가져옴</strong> → 우체국엔 없어짐</div>
+    </div>
+  </div>
+  <div style="border-radius:11px;overflow:hidden;border:1px solid var(--bd);">
+    <div style="padding:12px 16px;background:#6d28d9;font-size:13.5px;font-weight:700;color:white;">IMAP — Internet Message Access Protocol</div>
+    <div style="padding:14px 16px;background:var(--bg);">
+      <div style="font-size:11px;font-weight:700;color:var(--tm);margin-bottom:6px;">PORT : TCP 143</div>
+      <div style="font-size:13px;line-height:1.8;color:var(--tx);">메일이 <strong>서버에 유지</strong>됨. 여러 기기에서 동일한 메일함 접근 가능. 삭제·읽음 상태가 서버에 동기화됨.</div>
+      <div style="margin-top:8px;font-size:12px;color:var(--tm);">비유: 우체국 편지함을 <strong>원격에서 열람</strong> → 편지는 남아 있음</div>
+    </div>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<!-- ═══ 5. 핵심 함정 ═══ -->
+<div class="sh"><div class="sn2">5</div><div class="st">핵심 함정 — MSA와 MS 혼동</div><span class="slb le">★★★ 기출</span></div>
+
+<div class="trap">
+  <div class="th"><span>⚠</span><span class="tht">함정 — "MSA가 POP3/IMAP으로 메시지를 추출한다" (2018 국가직 정보시스템보안)</span></div>
+  <div class="tb">
+    <div class="tq">② "MSA — 원격서버로부터 POP3 또는 IMAP를 사용하여 메시지를 추출한다" → <span class="vw">✗ 오답</span></div>
+    <p>POP3/IMAP으로 원격 서버에서 메시지를 추출하는 것은 <strong>MS(메시지 저장소)</strong>에 접근하는 <strong>MUA</strong>의 역할입니다. MSA는 MUA로부터 이메일을 받아 MTA로 전달하는 <strong>메일 제출 에이전트</strong>예요. MSA ≠ MS를 반드시 구별하세요.</p>
+    <p>정답 선지 확인: ①MUA=사용자 응용프로그램 ✓ / ③MDA=MHS에서 MS로 전달 ✓ / ④MTA=목적지 MDA까지 중계 ✓</p>
+  </div>
+</div>
+
+<div class="trap">
+  <div class="th"><span>⚠</span><span class="tht">함정 — "MTA 역할이 뭐냐" (2024 국가직 정보시스템보안)</span></div>
+  <div class="tb">
+    <div class="tq">메일 클라이언트에서 ( )로 메일을 보낼 때와 ( )에서 ( )로 메일이 중계될 때 SMTP 프로토콜을 사용한다. → <span class="vr">✓ 정답 : MTA</span></div>
+    <p>MTA는 "메일 클라이언트(MUA)가 보내는 첫 서버"이자 "중계 서버(MTA↔MTA)"이기도 해요. 불특정 다수의 스팸 메일 전송·중계를 허용하면 공격자가 MTA를 스팸 도구로 악용할 수 있어요 → Open Relay 문제.</p>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<!-- ═══ 6. 기출문제 ═══ -->
+<div class="sh"><div class="sn2">6</div><div class="st">기출문제 전수 해설</div><span class="slb le">4문제</span></div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2018 국가직 9급 · 정보시스템보안 문17 — 인터넷 메일 구조 오답</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">인터넷 메일 구조의 핵심요소에 대한 설명으로 <u>옳지 않은 것</u>은?</div>
+    <div class="eo">
+      <div class="op on">① MUA — 사용자 액터(actor)와 사용자 응용프로그램을 대신하여 동작한다.</div>
+      <div class="op ow">② MSA — 원격서버로부터 POP3 또는 IMAP를 사용하여 메시지를 추출한다.</div>
+      <div class="op on">③ MDA — 메시지를 MHS에서 MS로 메시지를 전달한다.</div>
+      <div class="op on">④ MTA — 메시지가 목적지 MDA에 도달할 때까지 중계 역할을 한다.</div>
+    </div>
+    <div class="ex"><strong>정답 ②</strong> — POP3/IMAP으로 원격 서버에서 메시지를 추출하는 것은 <strong>MUA가 MS에 접근</strong>하는 방식. MSA(Mail Submission Agent)는 MUA로부터 이메일을 접수하여 인터넷 MTA로 전달하는 메일 제출 에이전트.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2024 국가직 9급 · 정보시스템보안 문9 — MTA 역할</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">○ 메일 클라이언트에서 (가)로 메일을 보낼 때와 (가)에서 (가)로 메일이 중계될 때 SMTP 프로토콜을 사용한다.<br>○ 불특정 다수의 메일 전송 및 중계를 허용하면 공격자는 스팸 메일을 보내는 도구로 (가)를 악용할 수 있다.</div>
+    <div class="eo">
+      <div class="op or">① MTA (Message Transfer Agent)</div>
+      <div class="op ow">② MDA (Mail Delivery Agent)</div>
+      <div class="op ow">③ MUA (Mail User Agent)</div>
+      <div class="op ow">④ MRA (Mail Relay Agent)</div>
+    </div>
+    <div class="ex"><strong>정답 ①</strong> — "클라이언트→(가)" + "(가)↔(가) 중계" + "SMTP" + "스팸 도구로 악용" = <strong>MTA</strong>. MTA는 메일을 라우팅·중계하는 메일 서버. Open Relay(열린 중계) 설정 시 스팸 서버로 악용됨.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2021 군무원 7급 · 정보보호론 문18 — 이메일 보안 기술 구분</span><span class="es">★★</span></div>
+  <div class="eb">
+    <div class="eq">이메일 보안을 위해 사용되는 보안 기술로만 묶인 것으로 가장 옳은 것은?</div>
+    <div class="eo">
+      <div class="op ow">① SET, S/MIME</div>
+      <div class="op or">② PEM, PGP</div>
+      <div class="op ow">③ S/MIME, IDS</div>
+      <div class="op ow">④ PGP, SSO</div>
+    </div>
+    <div class="ex"><strong>정답 ②</strong> — 전자우편 보안 기술: PGP·S/MIME·PEM (3가지). SET은 전자상거래 보안, IDS는 침입탐지시스템, SSO는 단일 로그인. ①의 SET·③의 IDS·④의 SSO는 이메일 보안이 아님.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2019 국가직 정보시스템보안 문5 — PGP 특징</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">전자우편의 암호화에 대한 설명이다. 괄호 안에 들어갈 용어는?<br><br>( )은/는 IDEA 알고리즘과 RSA 알고리즘을 조합하여 만들었다. IDEA 알고리즘은 세션키 암호화, RSA 알고리즘은 사용자 인증을 위한 전자서명에 이용하였다. 이것의 장점으로는 <strong>구현이 쉽고, 특정 기관으로부터 인증서를 발급받지 않아도 된다</strong>는 것이다.</div>
+    <div class="eo">
+      <div class="op or">① PGP</div>
+      <div class="op ow">② PEM</div>
+      <div class="op ow">③ S/MIME</div>
+      <div class="op ow">④ IMAP</div>
+    </div>
+    <div class="ex"><strong>정답 ①</strong> — "IDEA + RSA" + "인증서 불필요" + "CA 없음" = <strong>PGP</strong>. PEM은 IETF 표준 Base64 방식. S/MIME은 X.509 인증서 필요. IMAP는 수신 프로토콜(143번 포트)로 이메일 보안 프로토콜이 아님.</div>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<!-- ═══ 7. 암기 ═══ -->
+<div class="sh"><div class="sn2">7</div><div class="st">핵심 암기 카드</div><span class="slb lt">시험 직전</span></div>
+
+<div class="mem">
+  <div class="mt">💡 인터넷 메일 구조 핵심 암기</div>
+  <div class="mi">
+    <div class="mr"><span class="mk">MUA</span><span class="mv">메일 클라이언트 프로그램. 작성(→MSA) + 수신(←MS via POP3/IMAP). <strong>Outlook, Gmail</strong></span></div>
+    <div class="mr"><span class="mk">MSA</span><span class="mv">MUA에서 받아 MTA로 전달. <strong>발신자 인증</strong>. SMTP TCP 587. (POP3/IMAP과 무관!)</span></div>
+    <div class="mr"><span class="mk">MTA</span><span class="mv">메일 서버 핵심. <strong>SMTP로 중계</strong>. 목적지 MDA까지 여러 MTA 경유 가능.</span></div>
+    <div class="mr"><span class="mk">MDA</span><span class="mv"><strong>MHS에서 MS로</strong> 최종 배달. 사용자 메일박스에 넣는 역할.</span></div>
+    <div class="mr"><span class="mk">MS</span><span class="mv">메시지 저장소(메일박스). <strong>MUA가 POP3(110) 또는 IMAP(143)으로 접근</strong>하여 읽음.</span></div>
+    <div class="mr"><span class="mk">SMTP</span><span class="mv">모든 "보내는" 구간에 사용 (TCP 25/587). 수신 읽기에는 사용 안 함.</span></div>
+    <div class="mr"><span class="mk">POP3 vs IMAP</span><span class="mv">POP3=다운로드 후 삭제(TCP 110) / IMAP=<strong>서버에 유지</strong>(TCP 143)</span></div>
+  </div>
+</div>
+
+<ul class="cl">
+  <li class="clw">"MSA는 POP3/IMAP으로 메시지를 추출한다" → ✗ (MS에 접근하는 MUA의 역할)</li>
+  <li class="clw">"SET, IDS, SSO는 이메일 보안 기술이다" → ✗ (이메일 보안 = PGP·S/MIME·PEM)</li>
+  <li class="clw">"PGP는 X.509 인증서가 필요하다" → ✗ (CA·인증서 없이 Web of Trust)</li>
+  <li class="clr">"SMTP는 MUA→MSA, MSA→MTA, MTA↔MTA, MTA→MDA 전 구간에 사용" → ✓</li>
+  <li class="clr">"MDA는 MHS에서 MS(메시지 저장소)로 메시지를 전달하는 역할" → ✓</li>
+  <li class="clr">"MUA는 MS에서 POP3 또는 IMAP으로 메시지를 읽는다" → ✓</li>
+  <li class="clr">"MTA는 클라이언트→서버, 서버↔서버 중계 시 모두 SMTP 사용" → ✓</li>
+</ul>
+
+<div class="ft">
+  <span>정보보안 합격전략 교재 · INHYUK PI</span>
+  <span>Chapter 08 · 인터넷 메일 구조 · 2026 목표</span>
+</div>
+
+</div><!-- /cc -->
+</div><!-- /wrap -->
+</body>
+</html>
