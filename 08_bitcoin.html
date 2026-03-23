@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>비트코인 · 블록체인 완전 교재 | INHYUK PI</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --p:#1a2540;--a:#2d5be3;--al:#e8eeff;
+  --r:#c0392b;--rl:#fdf0ef;
+  --g:#1a7a4a;--gl:#edf7f2;
+  --w:#b45309;--wl:#fffbeb;
+  --v:#6d28d9;--vl:#ede9fe;
+  --t:#0f766e;--tl:#ccfbf1;
+  --btc:#f7931a;--btcl:#fff7ed;
+  --bd:#dde3ec;--bg:#fff;--tx:#1c2331;--tm:#5a6478;
+  --g0:#f8f9fa;--g1:#f0f2f5;
+  --sans:'Noto Sans KR',sans-serif;--serif:'Noto Serif KR',serif;--mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--sans);background:#eef1f8;color:var(--tx);font-size:14px;line-height:1.8;}
+.wrap{max-width:960px;margin:0 auto;padding:28px 14px 70px;}
+
+.hdr{background:linear-gradient(135deg,#0a1020 0%,#1a2040 40%,#2a1000 100%);border-radius:14px 14px 0 0;padding:30px 42px 26px;position:relative;overflow:hidden;}
+.hdr::before{content:'₿';position:absolute;right:28px;top:10px;font-size:130px;opacity:.05;color:#f7931a;font-family:sans-serif;}
+.mbr{display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap;}
+.bdg{font-size:9.5px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.06em;text-transform:uppercase;}
+.bdg-ch{background:rgba(255,255,255,.13);color:rgba(255,255,255,.9);}
+.bdg-hot{background:#c0392b;color:white;}
+.bdg-btc{background:#f7931a;color:white;}
+.ht{font-family:var(--serif);font-size:27px;font-weight:600;color:white;letter-spacing:-.02em;margin-bottom:3px;}
+.hs{color:rgba(255,255,255,.55);font-size:12px;font-weight:300;}
+.hst{display:flex;gap:22px;margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.1);flex-wrap:wrap;}
+.hn{font-size:18px;font-weight:700;color:#fbbf24;}
+.hl{font-size:9.5px;color:rgba(255,255,255,.5);margin-top:1px;}
+
+.tab-bar{display:flex;background:var(--p);padding:0 42px;gap:2px;flex-wrap:wrap;border-bottom:2px solid rgba(255,255,255,.08);}
+.tab-btn{padding:11px 13px;font-size:11.5px;font-weight:600;color:rgba(255,255,255,.5);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all .18s;white-space:nowrap;}
+.tab-btn:hover{color:rgba(255,255,255,.8);}
+.tab-btn.active{color:#fbbf24;border-bottom-color:#f7931a;}
+
+.cc{background:var(--bg);border-radius:0 0 14px 14px;padding:36px 42px;border:1px solid var(--bd);border-top:none;}
+.tab-pane{display:none;}
+.tab-pane.active{display:block;}
+
+.sh{display:flex;align-items:center;gap:9px;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--g1);margin-top:6px;}
+.sn2{width:30px;height:30px;background:var(--p);color:white;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.st{font-size:17px;font-weight:700;color:var(--p);}
+.slb{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.06em;text-transform:uppercase;}
+.ld{background:var(--al);color:var(--a);}
+.le{background:var(--rl);color:var(--r);}
+.lv{background:var(--vl);color:var(--v);}
+.lt{background:var(--wl);color:var(--w);}
+.lg{background:var(--gl);color:var(--g);}
+.lbtc{background:var(--btcl);color:var(--btc);}
+
+/* STORY */
+.sb{font-size:13.5px;line-height:2;color:var(--tx);}
+.sb p{margin-bottom:14px;}
+.sb strong{color:var(--p);}
+.sq{background:var(--p);color:white;border-radius:10px;padding:13px 20px 13px 32px;margin:16px 0;font-size:13px;line-height:1.85;position:relative;}
+.sq::before{content:'💬';position:absolute;left:-12px;top:10px;font-size:20px;}
+.sq strong{color:#fbbf24;}
+.sdiv{height:1px;background:linear-gradient(90deg,transparent,var(--bd),transparent);margin:28px 0;}
+.stitle{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.stitle .era{font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;background:var(--btcl);color:var(--btc);}
+
+/* INSIGHT */
+.insight{background:linear-gradient(135deg,#1a1500,#2a1a00);border-radius:11px;padding:16px 20px;margin:14px 0;color:white;}
+.ins-t{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px;}
+.insight p{font-size:13px;line-height:1.9;color:rgba(255,255,255,.88);}
+.insight p+p{margin-top:10px;}
+.insight strong{color:#fbbf24;}
+
+/* DEF */
+.dfb{background:var(--p);color:white;border-radius:11px;padding:16px 21px;margin-bottom:14px;}
+.dfl{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fbbf24;margin-bottom:5px;}
+.dfb p{font-size:13px;line-height:1.9;color:rgba(255,255,255,.88);}
+.dfb strong{color:#fbbf24;}
+
+/* TABLE */
+.tw{overflow-x:auto;margin:12px 0;border-radius:9px;border:1px solid var(--bd);}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead tr{background:var(--p);color:white;}
+thead th{padding:10px 13px;text-align:left;font-weight:600;font-size:11.5px;}
+tbody tr{border-bottom:1px solid var(--g1);}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:#fffbf5;}
+tbody td{padding:9px 13px;color:var(--tx);vertical-align:top;}
+tbody td:first-child{font-weight:600;color:var(--p);}
+.tc{text-align:center;}
+
+/* CARDS */
+.cds{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:10px;margin:12px 0;}
+.cd{border:1px solid var(--bd);border-radius:9px;padding:13px 14px;background:var(--g0);}
+.cdt{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--btc);margin-bottom:5px;}
+.cdb{font-size:13px;color:var(--tx);line-height:1.75;}
+.cdb strong{color:var(--p);}
+
+/* DIAGRAM */
+.dw{background:var(--g0);border:1px solid var(--bd);border-radius:12px;padding:18px;margin:14px 0;overflow-x:auto;}
+.dt{font-size:11px;font-weight:700;color:var(--p);margin-bottom:12px;letter-spacing:.03em;}
+
+/* PROC */
+.proc{display:flex;flex-direction:column;gap:0;margin:14px 0;border-radius:11px;overflow:hidden;border:1px solid var(--bd);}
+.proc-step{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;border-bottom:1px solid var(--g1);}
+.proc-step:last-child{border-bottom:none;}
+.proc-step:nth-child(even){background:var(--g0);}
+.pn{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white;flex-shrink:0;margin-top:2px;}
+.pc{flex:1;}
+.pt{font-size:13.5px;font-weight:700;color:var(--p);margin-bottom:4px;}
+.pd{font-size:12.5px;color:var(--tm);line-height:1.8;}
+.pd+.pd{margin-top:8px;}
+.ptag{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:5px;margin-top:6px;}
+
+/* COMPARE */
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0;}
+.cv{border-radius:10px;overflow:hidden;border:1px solid var(--bd);}
+.cvh{padding:10px 15px;font-size:13px;font-weight:700;color:white;}
+.cvb{padding:11px 15px;background:var(--bg);}
+.cvr{display:flex;gap:7px;padding:5px 0;border-bottom:1px solid var(--g1);font-size:12.5px;}
+.cvr:last-child{border-bottom:none;}
+.cvk{color:var(--tm);min-width:58px;font-size:10.5px;padding-top:2px;flex-shrink:0;}
+.cvv{color:var(--tx);font-weight:500;line-height:1.6;}
+
+/* TRAP */
+.trap{border-radius:11px;margin:14px 0;overflow:hidden;}
+.th{display:flex;align-items:center;gap:7px;padding:10px 15px;background:var(--r);color:white;}
+.tht{font-size:12px;font-weight:700;}
+.tb{background:var(--rl);padding:13px 17px;border:1px solid #f5c6c2;border-top:none;border-radius:0 0 11px 11px;}
+.tb p{font-size:12.5px;color:#7a1c1c;line-height:1.85;margin-bottom:7px;}
+.tb p:last-child{margin-bottom:0;}
+.tq{background:white;border-left:3px solid var(--r);padding:8px 12px;border-radius:0 7px 7px 0;margin:8px 0;font-size:13px;color:var(--tx);font-style:italic;}
+.vw{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:20px;background:var(--r);color:white;}
+.vr{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:20px;background:var(--g);color:white;}
+
+/* EXAM */
+.ec{border:1px solid var(--bd);border-radius:11px;margin:11px 0;overflow:hidden;}
+.eh{display:flex;align-items:center;justify-content:space-between;padding:9px 15px;background:var(--g0);border-bottom:1px solid var(--bd);}
+.ey{font-size:11.5px;font-weight:700;color:var(--p);}
+.es{color:#e8b000;font-size:12px;letter-spacing:2px;}
+.eb{padding:13px 15px;}
+.eq{font-size:13px;font-weight:600;color:var(--tx);margin-bottom:10px;line-height:1.75;}
+.eo{display:flex;flex-direction:column;gap:4px;}
+.op{font-size:13px;padding:6px 10px;border-radius:6px;border:1px solid transparent;}
+.ow{background:#fdf0ef;border-color:#f5c6c2;color:#7a1c1c;text-decoration:line-through;opacity:.8;}
+.ow::before{content:'✗ ';}
+.or{background:var(--gl);border-color:#a3dbc0;color:#0d4a2a;font-weight:600;}
+.or::before{content:'✓ ';}
+.on{background:var(--g0);border-color:var(--bd);color:var(--tx);}
+.ex{margin-top:10px;padding:11px 13px;background:var(--g0);border-radius:7px;font-size:12.5px;color:var(--tm);line-height:1.85;border-left:3px solid var(--btc);}
+
+/* MEM */
+.mem{background:linear-gradient(135deg,#0a1020 0%,#1a2540 100%);border-radius:13px;padding:20px 23px;color:white;margin:14px 0;position:relative;overflow:hidden;}
+.mem::before{content:'₿';position:absolute;right:14px;top:8px;font-size:56px;opacity:.08;color:#f7931a;font-family:sans-serif;}
+.mt{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fbbf24;margin-bottom:11px;}
+.mi{display:flex;flex-direction:column;gap:9px;}
+.mr{display:flex;gap:10px;align-items:flex-start;}
+.mk{font-family:var(--mono);font-size:10.5px;font-weight:600;background:rgba(251,191,36,.18);color:#fbbf24;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;}
+.mv{font-size:12.5px;color:rgba(255,255,255,.85);line-height:1.75;}
+.mv strong{color:#fbbf24;}
+
+.cl{list-style:none;margin:12px 0;display:flex;flex-direction:column;gap:5px;}
+.cl li{display:flex;align-items:flex-start;gap:8px;font-size:13px;padding:7px 12px;border-radius:7px;border:1px solid var(--bd);background:var(--bg);}
+.clw{background:#fdf0ef;border-color:#f5c6c2;}
+.clw::before{content:'⚠';color:var(--r)!important;font-size:12px;flex-shrink:0;margin-top:2px;}
+.clr{background:var(--gl);border-color:#a3dbc0;}
+.clr::before{content:'✓';color:var(--g)!important;font-size:12px;flex-shrink:0;margin-top:2px;}
+
+.inf{background:var(--btcl);border:1px solid #fcd34d;border-radius:9px;padding:11px 15px;margin:11px 0;font-size:13px;color:#78350f;line-height:1.8;}
+.inf strong{color:var(--p);}
+.dv{height:1px;background:var(--g1);margin:24px 0;}
+.ft{display:flex;justify-content:space-between;margin-top:28px;padding-top:13px;border-top:1px solid var(--bd);font-size:10.5px;color:var(--tm);}
+@media(max-width:640px){.cc,.hdr{padding:20px 16px;}.tab-bar{padding:0 16px;}.cg{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hdr">
+  <div class="mbr">
+    <span class="bdg bdg-ch">최신 기술 · 블록체인 보안</span>
+    <span class="bdg bdg-hot">9급 빈출</span>
+    <span class="bdg bdg-btc">기출 10문제 수록</span>
+  </div>
+  <div class="ht">비트코인 · 블록체인 완전 교재</div>
+  <div class="hs">탄생 스토리 · 블록 구조 · 머클트리 · 합의 알고리즘(PoW/PoS) · 공개형/사설형 · 기출 전수</div>
+  <div class="hst">
+    <div><div class="hn">2008년</div><div class="hl">사토시 나카모토 논문</div></div>
+    <div><div class="hn">PoW vs PoS</div><div class="hl">합의 알고리즘 ★★★</div></div>
+    <div><div class="hn">머클트리</div><div class="hl">블록 헤더 구조 ★★★</div></div>
+    <div><div class="hn">10문제</div><div class="hl">기출 수록</div></div>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="sw('story')">📖 탄생 스토리</button>
+  <button class="tab-btn" onclick="sw('block')">🧱 블록체인 구조</button>
+  <button class="tab-btn" onclick="sw('consensus')">⚖️ 합의 알고리즘</button>
+  <button class="tab-btn" onclick="sw('bitcoin')">₿ 비트코인 특성</button>
+  <button class="tab-btn" onclick="sw('exam')">📝 기출 10선</button>
+</div>
+
+<div class="cc">
+
+<!-- ════ 스토리 ════ -->
+<div class="tab-pane active" id="tab-story">
+
+<div class="sh"><div class="sn2">1</div><div class="st">2008년, 금융 시스템에 대한 불신</div><div class="stitle"><span class="era">탄생 배경</span></div></div>
+
+<div class="sb">
+<p>2008년 9월, 미국 리먼브라더스 투자은행이 파산을 선언했어요. 세계 금융위기가 시작됐고, 수많은 사람들이 평생 모은 돈을 잃었어요. 원인이 뭐였을까요? <strong>중앙화된 금융 시스템의 실패</strong>였어요. 은행들은 서로 복잡하게 얽혀있었고, 아무도 전체 그림을 제대로 감시하지 못했어요. 은행이 망하면 예금자들이 고스란히 피해를 입었어요.</p>
+
+<p>이때 금융 시스템에 대한 근본적인 의문이 생겼어요. <strong>"왜 우리는 돈을 관리하기 위해 반드시 은행이라는 중앙기관을 믿어야만 하는가?"</strong> 인터넷으로 전 세계가 연결된 세상에서, 굳이 중간에 은행을 끼지 않고 사람과 사람이 직접 돈을 주고받을 방법은 없을까요?</p>
+
+<p>기술적인 문제가 있었어요. 디지털 파일은 복사가 가능해요. 내가 디지털 화폐 1,000원을 A에게 보내고, 같은 파일을 복사해서 B에게도 보낼 수 있어요. 이를 <strong>"이중 지불(Double Spending)"</strong> 문제라고 해요. 기존에는 이 문제를 은행이라는 신뢰할 수 있는 중앙기관이 거래 장부를 관리함으로써 해결했어요.</p>
+
+<p>은행 없이 이 문제를 해결할 수 없을까요? 2008년 10월 31일, <strong>'사토시 나카모토(Satoshi Nakamoto)'</strong>라는 익명의 인물이 논문 한 편을 인터넷에 공개했어요. 제목은 "Bitcoin: A Peer-to-Peer Electronic Cash System". 이 논문이 블록체인과 비트코인의 시작이에요.</p>
+</div>
+
+<div class="sq">
+사토시 나카모토의 핵심 아이디어:<br>
+<strong>"장부를 은행 혼자 관리하지 말고, 네트워크에 참여한 모든 사람이 똑같은 장부를 나눠 가지면 어떨까?"</strong><br>
+한 사람이 장부를 조작하려면 네트워크에 참여한 절반 이상을 동시에 조작해야 해요.<br>
+이건 현실적으로 불가능에 가까워요. → <strong>탈중앙화된 신뢰</strong>
+</div>
+
+<div class="sdiv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">블록체인 — 분산 장부라는 아이디어</div><div class="stitle"><span class="era">핵심 개념</span></div></div>
+
+<div class="sb">
+<p>블록체인(Blockchain)이라는 이름은 말 그대로 <strong>"블록(Block)들이 체인(Chain)처럼 연결된 구조"</strong>에서 왔어요. 거래 내역들을 일정 단위로 묶어 '블록'을 만들고, 각 블록이 직전 블록의 해시값을 포함하여 체인처럼 연결돼요. 마치 링크드 리스트(Linked List)처럼요.</p>
+
+<p>왜 이 구조가 위변조에 강할까요? 만약 누군가 과거 블록의 거래 내역을 바꾸면, 그 블록의 해시값이 바뀌어요. 그러면 그 블록을 참조하는 다음 블록의 해시값도 맞지 않게 되고, 그 다음 블록도, 그 다음 블록도... 연쇄적으로 전부 다시 계산해야 해요. 게다가 네트워크 전체(수천, 수만 개의 노드)의 장부를 동시에 바꿔야 해요. 이건 <strong>사실상 불가능</strong>해요.</p>
+
+<p>2009년 1월 3일, 최초의 블록인 <strong>제네시스 블록(Genesis Block)</strong>이 생성됐어요. 그 안에는 당시 타임스 신문의 헤드라인 "Chancellor on brink of second bailout for banks(은행의 두 번째 구제를 앞둔 재무장관)"이 담겨 있었어요. 중앙 금융시스템에 대한 저항의 메시지였어요.</p>
+
+<p>이 기술은 비트코인을 넘어 다양한 분야로 확장됐어요. 스마트 컨트랙트, 공급망 관리, 의료 기록, 투표 시스템까지. 블록체인은 "신뢰를 코드로 구현하는 기술"이 됐어요.</p>
+</div>
+
+<div class="sdiv"></div>
+
+<div class="sh"><div class="sn2">3</div><div class="st">채굴 — "일을 해야만 발언권을 준다"</div><div class="stitle"><span class="era">PoW 스토리</span></div></div>
+
+<div class="sb">
+<p>분산 장부에 새 거래 내역을 추가하려면 누군가의 승인이 필요해요. 그런데 중앙기관이 없으니 누가 승인권을 가져야 할까요? 아무나 승인할 수 있으면 가짜 거래를 넣을 수 있어요.</p>
+
+<p>사토시 나카모토의 해결책은 기발했어요. <strong>"어려운 수학 문제를 먼저 풀어온 사람에게 블록 추가 권한을 주자."</strong> 이게 바로 <strong>작업증명(Proof of Work, PoW)</strong>이에요. 이 어려운 문제는 단방향 해시 함수의 특성을 이용해요. "이 블록의 해시값이 특정 조건(예: 앞에 0이 20개)을 만족하는 Nonce 값을 찾아라." 정답을 찾는 건 엄청난 연산이 필요하지만, 검증하는 건 1초도 안 걸려요.</p>
+
+<p>문제를 먼저 푼 사람은 새 블록을 네트워크에 전파하고, 보상으로 비트코인을 받아요. 이게 <strong>채굴(Mining)</strong>이에요. 금광에서 금을 캐듯 연산으로 비트코인을 얻는다고 해서 채굴이라는 이름이 붙었어요. 하지만 이 방식은 막대한 전력 소비라는 단점이 있어요. 그래서 등장한 대안이 지분증명(PoS)이에요.</p>
+</div>
+
+</div><!-- /tab-story -->
+
+<!-- ════ 블록체인 구조 ════ -->
+<div class="tab-pane" id="tab-block">
+
+<div class="sh"><div class="sn2">1</div><div class="st">블록체인 전체 구조</div><span class="slb le">★★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">블록체인 정의</div>
+  <p>블록체인(Blockchain)은 거래 데이터를 담은 블록들이 해시로 연결된 <strong>분산 원장(Distributed Ledger)</strong> 기술. 중앙기관 없이 P2P 네트워크의 모든 참여 노드가 동일한 원장을 유지. 해시 연결로 <strong>위변조 사실상 불가능</strong>. 합의 알고리즘으로 신뢰 확보.</p>
+</div>
+
+<!-- 블록체인 연결 구조 SVG -->
+<div class="dw">
+  <div class="dt">블록체인 연결 구조 — 각 블록이 이전 블록의 해시를 포함</div>
+  <svg viewBox="0 0 820 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:820px;display:block;margin:0 auto;">
+
+    <!-- 제네시스 블록 -->
+    <rect x="10" y="20" width="175" height="140" rx="9" fill="#1a2540" stroke="#f7931a" stroke-width="2"/>
+    <text x="97" y="46" text-anchor="middle" fill="#f7931a" font-size="11" font-family="sans-serif" font-weight="700">제네시스 블록 #0</text>
+    <rect x="22" y="55" width="151" height="20" rx="5" fill="#374151"/>
+    <text x="97" y="69" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" font-family="sans-serif">이전 해시: 000000...0</text>
+    <rect x="22" y="80" width="151" height="20" rx="5" fill="#374151"/>
+    <text x="97" y="94" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" font-family="sans-serif">Nonce: 2083236893</text>
+    <rect x="22" y="105" width="151" height="20" rx="5" fill="#2d5be3"/>
+    <text x="97" y="119" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif" font-weight="600">머클 루트: 3ba3...</text>
+    <rect x="22" y="130" width="151" height="22" rx="5" fill="#f7931a" opacity=".8"/>
+    <text x="97" y="145" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif" font-weight="600">블록 해시: 000000004d...</text>
+
+    <!-- 화살표 -->
+    <line x1="185" y1="90" x2="215" y2="90" stroke="#f7931a" stroke-width="2.5"/>
+    <polygon points="215,86 225,90 215,94" fill="#f7931a"/>
+
+    <!-- 블록 #1 -->
+    <rect x="225" y="20" width="175" height="140" rx="9" fill="#1a2540" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="312" y="46" text-anchor="middle" fill="#fbbf24" font-size="11" font-family="sans-serif" font-weight="700">블록 #1</text>
+    <rect x="237" y="55" width="151" height="20" rx="5" fill="#374151"/>
+    <text x="312" y="69" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" font-family="sans-serif">이전 해시: 000000004d...</text>
+    <rect x="237" y="80" width="151" height="20" rx="5" fill="#374151"/>
+    <text x="312" y="94" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" font-family="sans-serif">Nonce: 1924588547</text>
+    <rect x="237" y="105" width="151" height="20" rx="5" fill="#2d5be3"/>
+    <text x="312" y="119" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif" font-weight="600">머클 루트: f4e7...</text>
+    <rect x="237" y="130" width="151" height="22" rx="5" fill="#fbbf24" opacity=".8"/>
+    <text x="312" y="145" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif" font-weight="600">블록 해시: 0000000087...</text>
+
+    <!-- 화살표 -->
+    <line x1="400" y1="90" x2="430" y2="90" stroke="#fbbf24" stroke-width="2.5"/>
+    <polygon points="430,86 440,90 430,94" fill="#fbbf24"/>
+
+    <!-- 블록 #2 -->
+    <rect x="440" y="20" width="175" height="140" rx="9" fill="#1a2540" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="527" y="46" text-anchor="middle" fill="#fbbf24" font-size="11" font-family="sans-serif" font-weight="700">블록 #2</text>
+    <rect x="452" y="55" width="151" height="20" rx="5" fill="#374151"/>
+    <text x="527" y="69" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" font-family="sans-serif">이전 해시: 0000000087...</text>
+    <rect x="452" y="80" width="151" height="20" rx="5" fill="#374151"/>
+    <text x="527" y="94" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" font-family="sans-serif">Nonce: 3458223482</text>
+    <rect x="452" y="105" width="151" height="20" rx="5" fill="#2d5be3"/>
+    <text x="527" y="119" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif" font-weight="600">머클 루트: a9c2...</text>
+    <rect x="452" y="130" width="151" height="22" rx="5" fill="#fbbf24" opacity=".8"/>
+    <text x="527" y="145" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif" font-weight="600">블록 해시: 0000000031...</text>
+
+    <!-- 화살표 -->
+    <line x1="615" y1="90" x2="645" y2="90" stroke="#fbbf24" stroke-width="2"/>
+    <polygon points="645,86 655,90 645,94" fill="#fbbf24"/>
+
+    <rect x="655" y="55" width="155" height="70" rx="8" fill="#374151" opacity=".6"/>
+    <text x="732" y="86" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="11" font-family="sans-serif">블록 #3, #4...</text>
+    <text x="732" y="104" text-anchor="middle" fill="rgba(255,255,255,.4)" font-size="9" font-family="sans-serif">계속 이어짐</text>
+
+    <!-- 핵심 설명 -->
+    <rect x="10" y="168" width="800" height="10" rx="3" fill="#f7931a" opacity=".15"/>
+    <text x="410" y="176" text-anchor="middle" fill="#78350f" font-size="9" font-family="sans-serif" font-weight="700">★ 각 블록은 이전 블록의 해시를 포함 → 하나를 변조하면 이후 전체 재계산 필요 → 위변조 사실상 불가</text>
+  </svg>
+</div>
+
+<div class="sb">
+<p>블록 하나를 조작하면 그 블록의 해시가 바뀌어요. 그 해시를 참조하는 다음 블록도 바꿔야 하고, 그 다음도... 전체 체인을 재계산해야 해요. 게다가 네트워크에 참여한 수만 개의 노드 중 과반수(51%)를 동시에 설득해야 인정받아요. 이걸 <strong>51% 공격</strong>이라 하는데 비트코인 같은 거대 네트워크에서는 사실상 불가능해요.</p>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">블록 헤더 구조 — 시험에서 자주 묻는 항목</div><span class="slb le">★★★</span></div>
+
+<div class="sb">
+<p>블록은 크게 <strong>헤더(Header)</strong>와 <strong>바디(Body, 트랜잭션 목록)</strong>로 나뉘어요. 시험에서는 주로 헤더의 구성 요소를 묻는데, <strong>블록 생성자(채굴자)의 계정 정보는 헤더에 포함되지 않아요.</strong> 이게 가장 자주 출제되는 함정이에요.</p>
+</div>
+
+<div class="tw"><table>
+  <thead><tr><th>헤더 필드</th><th>내용</th><th>크기</th><th>시험 포인트</th></tr></thead>
+  <tbody>
+    <tr><td>버전(Version)</td><td>블록 포맷 버전 정보</td><td class="tc">4 bytes</td><td>-</td></tr>
+    <tr><td><strong>이전 블록 해시</strong></td><td>직전 블록 헤더를 SHA-256 두 번 해시한 값</td><td class="tc">32 bytes</td><td>★ SHA-256 두 번(double hash)</td></tr>
+    <tr><td><strong>머클 루트</strong></td><td>해당 블록의 모든 트랜잭션 해시로 만든 머클트리의 루트</td><td class="tc"><strong>32 bytes</strong></td><td>★★★ 64바이트 아님! 32바이트</td></tr>
+    <tr><td>타임스탬프</td><td>블록 생성 시간 (Unix timestamp)</td><td class="tc">4 bytes</td><td>-</td></tr>
+    <tr><td>난이도 목표(Bits)</td><td>채굴 난이도 설정값</td><td class="tc">4 bytes</td><td>-</td></tr>
+    <tr><td><strong>Nonce</strong></td><td>작업증명 조건을 만족시키기 위해 채굴자가 변경하는 값</td><td class="tc">4 bytes</td><td>★★★ 채굴의 핵심</td></tr>
+    <tr style="background:#fdf0ef;"><td style="color:#c0392b;">블록 생성자 계정</td><td style="color:#c0392b;">→ 헤더에 포함되지 않음!</td><td class="tc" style="color:#c0392b;">-</td><td style="color:#c0392b;">★★★ 함정!</td></tr>
+  </tbody>
+</table></div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">3</div><div class="st">머클 트리(Merkle Tree) — 완전 정리</div><span class="slb le">★★★</span></div>
+
+<div class="sb">
+<p>머클 트리는 블록 내의 모든 거래(트랜잭션)를 효율적으로 검증하기 위한 <strong>이진 해시 트리(Binary Hash Tree)</strong>예요. 각 트랜잭션의 해시를 두 개씩 묶어 부모 노드의 해시를 계산하고, 이를 반복해서 최상위 단일 해시값인 <strong>머클 루트(Merkle Root)</strong>를 만들어요. 비트코인에서는 <strong>SHA-256</strong>을 사용해요.</p>
+
+<p>머클 트리의 핵심 장점은 <strong>특정 거래가 블록에 포함됐는지 빠르게 증명</strong>할 수 있다는 거예요. 모든 거래를 다 검증할 필요 없이, 루트까지 이어지는 경로만 확인하면 돼요. 이걸 <strong>SPV(Simple Payment Verification)</strong>라고 해요. 머클 루트는 블록 헤더에 포함되며 크기는 <strong>32바이트</strong>예요(SHA-256 출력값).</p>
+</div>
+
+<!-- 머클 트리 SVG -->
+<div class="dw">
+  <div class="dt">머클 트리(Merkle Tree) 구조 — 4개 트랜잭션 예시</div>
+  <svg viewBox="0 0 740 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:740px;display:block;margin:0 auto;">
+
+    <!-- 루트 -->
+    <rect x="270" y="8" width="200" height="36" rx="8" fill="#f7931a"/>
+    <text x="370" y="24" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">머클 루트 (Merkle Root)</text>
+    <text x="370" y="38" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="9" font-family="sans-serif">Hash(Hash12 + Hash34) → 32 bytes</text>
+
+    <!-- 중간 노드들 -->
+    <line x1="295" y1="44" x2="185" y2="82" stroke="#f7931a" stroke-width="1.5"/>
+    <line x1="445" y1="44" x2="555" y2="82" stroke="#f7931a" stroke-width="1.5"/>
+
+    <rect x="110" y="82" width="150" height="34" rx="7" fill="#fbbf24"/>
+    <text x="185" y="97" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">Hash12</text>
+    <text x="185" y="110" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="9" font-family="sans-serif">Hash(Hash1 + Hash2)</text>
+
+    <rect x="480" y="82" width="150" height="34" rx="7" fill="#fbbf24"/>
+    <text x="555" y="97" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">Hash34</text>
+    <text x="555" y="110" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="9" font-family="sans-serif">Hash(Hash3 + Hash4)</text>
+
+    <!-- 잎 노드들 -->
+    <line x1="150" y1="116" x2="80" y2="148" stroke="#fbbf24" stroke-width="1.5"/>
+    <line x1="220" y1="116" x2="290" y2="148" stroke="#fbbf24" stroke-width="1.5"/>
+    <line x1="520" y1="116" x2="450" y2="148" stroke="#fbbf24" stroke-width="1.5"/>
+    <line x1="590" y1="116" x2="660" y2="148" stroke="#fbbf24" stroke-width="1.5"/>
+
+    <rect x="20" y="148" width="120" height="30" rx="6" fill="#2d5be3"/>
+    <text x="80" y="164" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">Hash1</text>
+    <text x="80" y="174" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="8" font-family="sans-serif">SHA256(Tx1)</text>
+
+    <rect x="150" y="148" width="120" height="30" rx="6" fill="#2d5be3"/>
+    <text x="210" y="164" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">Hash2</text>
+    <text x="210" y="174" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="8" font-family="sans-serif">SHA256(Tx2)</text>
+
+    <rect x="390" y="148" width="120" height="30" rx="6" fill="#2d5be3"/>
+    <text x="450" y="164" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">Hash3</text>
+    <text x="450" y="174" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="8" font-family="sans-serif">SHA256(Tx3)</text>
+
+    <rect x="520" y="148" width="120" height="30" rx="6" fill="#2d5be3"/>
+    <text x="580" y="164" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">Hash4</text>
+    <text x="580" y="174" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="8" font-family="sans-serif">SHA256(Tx4)</text>
+
+    <!-- 트랜잭션들 -->
+    <line x1="80" y1="178" x2="80" y2="192" stroke="#5a6478" stroke-width="1"/>
+    <line x1="210" y1="178" x2="210" y2="192" stroke="#5a6478" stroke-width="1"/>
+    <line x1="450" y1="178" x2="450" y2="192" stroke="#5a6478" stroke-width="1"/>
+    <line x1="580" y1="178" x2="580" y2="192" stroke="#5a6478" stroke-width="1"/>
+    <text x="80" y="204" text-anchor="middle" fill="#5a6478" font-size="9" font-family="sans-serif">트랜잭션1</text>
+    <text x="210" y="204" text-anchor="middle" fill="#5a6478" font-size="9" font-family="sans-serif">트랜잭션2</text>
+    <text x="450" y="204" text-anchor="middle" fill="#5a6478" font-size="9" font-family="sans-serif">트랜잭션3</text>
+    <text x="580" y="204" text-anchor="middle" fill="#5a6478" font-size="9" font-family="sans-serif">트랜잭션4</text>
+  </svg>
+</div>
+
+<div class="cds">
+  <div class="cd"><div class="cdt">머클 루트 크기</div><div class="cdb">SHA-256 출력 = <strong>32 bytes (256 bits)</strong>. ⚠ 64바이트 아님!</div></div>
+  <div class="cd"><div class="cdt">해시 알고리즘</div><div class="cdb">비트코인 = <strong>SHA-256</strong> 사용</div></div>
+  <div class="cd"><div class="cdt">트리 구조</div><div class="cdb"><strong>이진 트리(Binary Tree)</strong>. 리프 노드 = 각 트랜잭션 해시</div></div>
+  <div class="cd"><div class="cdt">장점</div><div class="cdb">특정 거래 포함 여부를 전체 다운로드 없이 빠르게 검증 가능 (SPV)</div></div>
+</div>
+
+<div class="trap">
+  <div class="th"><span>⚠</span><span class="tht">핵심 함정 — 머클 루트 필드 크기 (2022 국가직 9급)</span></div>
+  <div class="tb">
+    <div class="tq">"비트코인 블록 헤더의 머클 루트 필드 크기는 64바이트이다" → <span class="vw">✗ 오답</span></div>
+    <p>SHA-256의 출력 크기는 <strong>256 bits = 32 bytes</strong>. 절대 64바이트가 아니에요. 64는 16진수 문자열로 표현할 때의 문자 수예요 (32 bytes × 2 = 64 hex chars). 저장되는 실제 데이터는 32바이트.</p>
+    <div class="tq">"블록 헤더에 블록 생성자(miner)의 계정이 포함된다" → <span class="vw">✗ 오답</span></div>
+    <p>블록 헤더 구성: 버전·이전블록해시·머클루트·타임스탬프·난이도목표·Nonce. <strong>생성자 계정은 포함되지 않아요.</strong> 채굴자 보상은 블록 바디의 코인베이스 트랜잭션에 기록돼요.</p>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">4</div><div class="st">공개형 vs 사설형 블록체인</div><span class="slb le">★★</span></div>
+
+<div class="tw"><table>
+  <thead><tr><th>구분</th><th>공개형 (Public Blockchain)</th><th>사설형 (Private/Consortium)</th></tr></thead>
+  <tbody>
+    <tr><td>다른 이름</td><td>Permissionless Blockchain</td><td>Permissioned Blockchain, Consortium Chain</td></tr>
+    <tr><td>참여자</td><td><strong>누구나</strong> 참여 가능</td><td><strong>허가된 참여자만</strong> 참여</td></tr>
+    <tr><td>노드 간 신뢰</td><td><strong>낮음</strong> (익명 참여)</td><td><strong>높음</strong> (신원 확인)</td></tr>
+    <tr><td>합의 알고리즘</td><td>PoW, PoS 주로 사용</td><td>PBFT, PoA 등 사용 가능</td></tr>
+    <tr><td>속도</td><td>느림</td><td>빠름</td></tr>
+    <tr><td>대표 사례</td><td>비트코인, 이더리움</td><td>하이퍼레저 패브릭(Hyperledger Fabric)</td></tr>
+    <tr><td>투명성</td><td>모두 공개</td><td>참여자 내에서만 공개</td></tr>
+  </tbody>
+</table></div>
+
+<div class="sb">
+<p>공개형 블록체인은 누구나 노드로 참여해 거래를 검증하고 블록을 생성할 수 있어요. 완전한 탈중앙화가 장점이지만, 익명 참여자들의 신뢰를 확보하기 위해 PoW·PoS 같은 무거운 합의 과정이 필요하고 속도가 느려요. 사설형은 특정 기관들이 컨소시엄을 구성하는 방식으로, 노드 간 신뢰도가 높아 가벼운 합의 방식을 쓸 수 있고 속도가 빨라요.</p>
+
+<p>중요한 함정: <strong>공개형(Public) 블록체인은 누구나 참여 가능하다는 게 핵심이에요.</strong> "공개키 암호를 사용하기 때문에 권한 있는 피어만 참여 가능하다"는 설명은 틀렸어요. 공개키 암호 사용 여부와 참여 제한은 전혀 별개의 개념이에요.</p>
+</div>
+
+</div><!-- /tab-block -->
+
+<!-- ════ 합의 알고리즘 ════ -->
+<div class="tab-pane" id="tab-consensus">
+
+<div class="sh"><div class="sn2">1</div><div class="st">합의 알고리즘이란?</div><span class="slb le">★★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">합의 알고리즘 정의</div>
+  <p>합의(Consensus) 알고리즘은 분산 시스템에서 <strong>네트워크의 독립적인 참여자들이 동일한 블록체인 원장을 유지할 수 있도록 원장에 포함할 블록을 결정하는 방식</strong>. 중앙기관 없이 신뢰를 확보하는 핵심 메커니즘.</p>
+</div>
+
+<div class="sb">
+<p>분산 원장 시스템에서는 여러 노드 중 어떤 노드가 새 블록을 추가할 권한을 갖는지 결정해야 해요. 중앙 서버가 없으니, 노드들 스스로 규칙에 따라 합의에 이르러야 해요. 합의 알고리즘은 네트워크에 악의적인 참여자나 오작동 노드가 있어도 전체 시스템이 일관성을 유지하도록 설계돼요.</p>
+</div>
+
+<!-- 합의 알고리즘 비교 SVG -->
+<div class="dw">
+  <div class="dt">주요 합의 알고리즘 비교 — PoW vs PoS vs PoA</div>
+  <svg viewBox="0 0 760 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px;display:block;margin:0 auto;">
+
+    <!-- PoW -->
+    <rect x="10" y="10" width="230" height="140" rx="9" fill="#1a2540" stroke="#f7931a" stroke-width="2"/>
+    <text x="125" y="36" text-anchor="middle" fill="#f7931a" font-size="13" font-family="sans-serif" font-weight="700">PoW (작업증명)</text>
+    <text x="125" y="52" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="10" font-family="sans-serif">Proof of Work</text>
+    <text x="25" y="72" fill="#fbbf24" font-size="10" font-family="sans-serif">• 어려운 해시 연산 경쟁</text>
+    <text x="25" y="88" fill="rgba(255,255,255,.7)" font-size="10" font-family="sans-serif">• 먼저 푼 노드가 블록 생성</text>
+    <text x="25" y="104" fill="rgba(255,255,255,.7)" font-size="10" font-family="sans-serif">• 비트코인, 이더리움1.0 사용</text>
+    <text x="25" y="120" fill="#fca5a5" font-size="10" font-family="sans-serif">✗ 막대한 전력 소비</text>
+    <text x="25" y="136" fill="#86efac" font-size="10" font-family="sans-serif">✓ 공개형·신뢰↓ 환경에 적합</text>
+
+    <!-- PoS -->
+    <rect x="265" y="10" width="230" height="140" rx="9" fill="#1a2540" stroke="#6d28d9" stroke-width="2"/>
+    <text x="380" y="36" text-anchor="middle" fill="#c4b5fd" font-size="13" font-family="sans-serif" font-weight="700">PoS (지분증명)</text>
+    <text x="380" y="52" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="10" font-family="sans-serif">Proof of Stake</text>
+    <text x="280" y="72" fill="#c4b5fd" font-size="10" font-family="sans-serif">• 보유 지분으로 선정 기회 결정</text>
+    <text x="280" y="88" fill="rgba(255,255,255,.7)" font-size="10" font-family="sans-serif">• 지분 多 → 블록 생성 확률↑</text>
+    <text x="280" y="104" fill="rgba(255,255,255,.7)" font-size="10" font-family="sans-serif">• 이더리움2.0, Cardano 사용</text>
+    <text x="280" y="120" fill="#86efac" font-size="10" font-family="sans-serif">✓ 전력 소비 절감</text>
+    <text x="280" y="136" fill="#86efac" font-size="10" font-family="sans-serif">✓ PoW 대안으로 등장</text>
+
+    <!-- PoA -->
+    <rect x="520" y="10" width="230" height="140" rx="9" fill="#1a2540" stroke="#1a7a4a" stroke-width="2"/>
+    <text x="635" y="36" text-anchor="middle" fill="#86efac" font-size="13" font-family="sans-serif" font-weight="700">PoA (권한증명)</text>
+    <text x="635" y="52" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="10" font-family="sans-serif">Proof of Authority</text>
+    <text x="535" y="72" fill="#86efac" font-size="10" font-family="sans-serif">• 신뢰 노드만 블록 생성 권한</text>
+    <text x="535" y="88" fill="rgba(255,255,255,.7)" font-size="10" font-family="sans-serif">• 디지털 서명으로 정당성 확인</text>
+    <text x="535" y="104" fill="rgba(255,255,255,.7)" font-size="10" font-family="sans-serif">• 사설 블록체인에서 주로 사용</text>
+    <text x="535" y="120" fill="#86efac" font-size="10" font-family="sans-serif">✓ 빠른 속도</span></text>
+    <text x="535" y="136" fill="#fca5a5" font-size="10" font-family="sans-serif">✗ 탈중앙화 정도 낮음</text>
+  </svg>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">합의 알고리즘 전체 비교</div><span class="slb le">★★★</span></div>
+
+<div class="tw"><table>
+  <thead><tr><th>알고리즘</th><th>영문</th><th>선정 기준</th><th>사용 환경</th><th>대표 사례</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>PoW</strong><br>작업증명</td>
+      <td>Proof of Work</td>
+      <td>특정 조건을 만족하는 해시 연산을 먼저 완료한 노드. <strong>단방향 해시 함수의 특성 이용</strong>. Nonce를 바꿔가며 해시값이 목표 난이도 이하가 되는 값을 탐색.</td>
+      <td>공개형. <strong>노드 간 신뢰가 낮은</strong> 환경.</td>
+      <td>비트코인, 이더리움 1.0</td>
+    </tr>
+    <tr>
+      <td><strong>PoS</strong><br>지분증명</td>
+      <td>Proof of Stake</td>
+      <td>보유 지분(코인 수량, 거래량 등)에 따라 차등적으로 블록 생성 기회 부여. PoW의 과도한 자원 소비 문제 해결 대안으로 등장.</td>
+      <td>공개형. 노드 간 신뢰가 낮은 환경.</td>
+      <td>이더리움 2.0, Cardano</td>
+    </tr>
+    <tr>
+      <td><strong>DPoS</strong><br>위임지분증명</td>
+      <td>Delegated Proof of Stake</td>
+      <td>코인 보유자들이 대표자(Witness)를 선출하고 대표자들이 블록 생성. PoS의 변형.</td>
+      <td>공개형.</td>
+      <td>EOS, Tron</td>
+    </tr>
+    <tr>
+      <td><strong>PoA</strong><br>권한증명</td>
+      <td>Proof of Authority</td>
+      <td>신뢰할 수 있는 일부 노드(1개 이상의 기관)에만 권한 부여. 디지털 서명으로 정당한 기관 여부 확인.</td>
+      <td>사설형. <strong>노드 간 신뢰가 높은</strong> 환경.</td>
+      <td>기업용 블록체인</td>
+    </tr>
+    <tr>
+      <td><strong>PBFT</strong><br>실용적 비잔틴</td>
+      <td>Practical Byzantine Fault Tolerance</td>
+      <td>비잔틴 장애 허용 합의. 일부 노드에 오류나 악의가 있어도 합의 가능. 네트워크 참여자 수가 많지 않은 환경에 적합.</td>
+      <td>사설/컨소시엄형.</td>
+      <td>하이퍼레저 패브릭</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<div class="trap">
+  <div class="th"><span>⚠</span><span class="tht">함정 ★★★ — PoW와 PoS 설명이 바뀐 문제 (2021 군무원 9급)</span></div>
+  <div class="tb">
+    <div class="tq">"지분증명(PoS)은 블록을 생성하는 노드가 특정 조건을 충족해야 하는 해시 연산 등 높은 비용/자원이 필요한 작업을 통해 스스로의 신뢰성을 증명하는 합의 방식이다" → <span class="vw">✗ 오답</span></div>
+    <p>이 설명은 <strong>PoW(작업증명)</strong>의 정의예요. 해시 연산, 높은 자원 = PoW. <strong>PoS(지분증명)</strong>는 보유 지분(코인 보유량)으로 블록 생성 기회를 차등 부여하는 방식이에요. PoW와 PoS의 설명이 교차로 나오는 문제가 매년 출제됩니다.</p>
+    <div class="tq">"비트코인, 모네로 채굴은 대부분 지분증명(PoS) 방식을 사용한다" → <span class="vw">✗ 오답</span></div>
+    <p>비트코인의 채굴(Mining) = <strong>PoW(작업증명)</strong>. "채굴"이라는 단어 자체가 해시 연산으로 블록 추가 권한을 얻는 PoW의 개념이에요. PoS에서는 "채굴"이 아닌 "검증(Validation)"이라는 표현을 써요.</p>
+  </div>
+</div>
+
+</div><!-- /tab-consensus -->
+
+<!-- ════ 비트코인 특성 ════ -->
+<div class="tab-pane" id="tab-bitcoin">
+
+<div class="sh"><div class="sn2">1</div><div class="st">비트코인의 핵심 특성</div><span class="slb le">★★★</span></div>
+
+<div class="sb">
+<p>비트코인은 블록체인 기술을 기반으로 한 세계 최초의 암호화폐(Cryptocurrency)예요. 누구나 참여 가능한 <strong>공개형(Public) 블록체인</strong>이에요. 중앙 서버나 발행 기관이 없고, 전 세계에 분산된 노드들이 P2P 네트워크를 형성해요.</p>
+
+<p>비트코인의 거래는 <strong>공개키 기반 주소</strong>를 사용해요. 공개키를 해시해서 만든 주소가 지갑 주소가 되고, 이 주소를 통해 코인을 주고받아요. 거래(트랜잭션)에는 <strong>ECDSA(타원곡선 디지털 서명 알고리즘)</strong>로 전자서명을 붙여 소유권을 증명하고 이중 지불을 방지해요.</p>
+
+<p>중요한 사실: 비트코인은 <strong>"익명성(Anonymity)"이 아닌 "가명성(Pseudonymity)"</strong>을 제공해요. 트랜잭션이 암호화되어 전송되는 게 아니라, 블록체인에 공개적으로 기록돼요. 다만 실명이 아닌 공개키 해시(주소)로 표시되기 때문에 직접적인 신원 확인이 어려울 뿐이에요. 정보기관이 충분한 정보를 갖고 있으면 추적이 가능해요.</p>
+
+<p>또한 블록체인의 <strong>원장(장부)을 수정하는 것은 개인키가 아니라 51% 공격</strong>이에요. 개인키는 자신의 코인에 대한 전자서명 권한을 갖는 것이지, 과거 블록체인 원장 자체를 수정하는 건 아니에요. 원장 수정은 사실상 불가능하도록 설계되어 있어요.</p>
+</div>
+
+<div class="cds">
+  <div class="cd"><div class="cdt">유형</div><div class="cdb">공개형(Public) 블록체인 — <strong>누구나</strong> 참여 가능</div></div>
+  <div class="cd"><div class="cdt">합의 방식</div><div class="cdb"><strong>PoW(작업증명)</strong> — SHA-256 해시 연산 기반 채굴</div></div>
+  <div class="cd"><div class="cdt">전자서명</div><div class="cdb"><strong>ECDSA</strong>(타원곡선 디지털 서명 알고리즘) — 거래 검증</div></div>
+  <div class="cd"><div class="cdt">주소 생성</div><div class="cdb"><strong>공개키의 해시값</strong>이 지갑 주소로 사용됨</div></div>
+  <div class="cd"><div class="cdt">익명성</div><div class="cdb">완전 익명 ✗ → <strong>가명성(Pseudonymity)</strong>. 추적 가능.</div></div>
+  <div class="cd"><div class="cdt">이중지불 방지</div><div class="cdb">전자서명 + 블록체인 원장 공유 + <strong>The Longest Chain Wins</strong></div></div>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">비트코인의 익명성 — 가장 자주 출제되는 함정</div><span class="slb le">★★★</span></div>
+
+<div class="sb">
+<p>비트코인이 익명성을 보장한다는 말은 절반만 맞아요. 정확히는 <strong>가명성(Pseudonymity)</strong>을 제공해요. 비트코인 블록체인의 모든 거래 내역은 전 세계 누구나 볼 수 있도록 <strong>공개적으로 기록</strong>돼요. 다만 거래 당사자가 실명이 아닌 '주소(공개키 해시)'로 표시될 뿐이에요.</p>
+
+<p>트랜잭션을 "암호화하여 전송"한다는 표현도 부정확해요. 비트코인 트랜잭션은 암호화(Encryption)되어 전송되는 게 아니라, 전자서명(Digital Signature)이 붙어서 위변조 방지를 확인할 수 있도록 전송돼요. 트랜잭션 내용 자체는 네트워크에서 평문으로 전파되고, 블록체인에 영구 기록돼요.</p>
+
+<p>따라서 "비트코인은 트랜잭션을 암호화하여 전송하기 때문에 익명성이 보장된다"라는 선지는 <strong>두 가지가 모두 틀렸어요</strong>. 암호화 전송 → 틀림(전자서명이지 암호화가 아님). 익명성 보장 → 틀림(가명성이고 추적 가능).</p>
+</div>
+
+<div class="trap">
+  <div class="th"><span>⚠</span><span class="tht">비트코인 3대 함정 — 기출에서 반복 출제</span></div>
+  <div class="tb">
+    <div class="tq">① "비트코인은 트랜잭션을 암호화하여 전송하기 때문에 익명성이 보장된다" → <span class="vw">✗</span></div>
+    <p>트랜잭션 = 암호화 전송 ✗ (전자서명 부착). 익명성 ✗ (가명성. 추적 가능). 블록체인에 거래 내역 공개 기록됨.</p>
+    <div class="tq">② "블록체인 내의 원장을 수정하기 위해서는 개인키를 사용해야 한다" → <span class="vw">✗</span></div>
+    <p>개인키는 자신의 코인에 대한 거래 서명 권한. 원장 자체 수정은 51% 공격이 필요하며 사실상 불가능하도록 설계됨.</p>
+    <div class="tq">③ "공개형 블록체인은 공개키 암호를 사용하기 때문에 권한 있는 피어만 참여 가능하다" → <span class="vw">✗</span></div>
+    <p>공개형(Public) = <strong>누구나 참여 가능</strong>. 권한 있는 피어만 참여 = 사설형(Permissioned). 공개키 암호 사용 여부와 참여 제한은 별개.</p>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">3</div><div class="st">블록체인 주요 용어 정리</div><span class="slb ld">개념</span></div>
+
+<div class="tw"><table>
+  <thead><tr><th>용어</th><th>정의</th></tr></thead>
+  <tbody>
+    <tr><td>제네시스 블록</td><td>블록체인의 가장 첫 번째 블록. 이전 블록 해시 = 0으로 시작.</td></tr>
+    <tr><td>노드(Node)</td><td>분산 원장을 생성·운영하기 위해 참여하는 원장 구성 단위.</td></tr>
+    <tr><td>완전 노드(Full Node)</td><td>블록체인 전체를 저장하는 노드. 전체 유효성 확인·합의 수행.</td></tr>
+    <tr><td>경량 노드(Light Node)</td><td>블록체인 전체를 저장 안 함. 헤더만 저장하거나 완전 노드에 의존.</td></tr>
+    <tr><td>채굴(Mining)</td><td>PoW에서 해시 연산으로 Nonce를 찾아 새 블록 추가 권한을 얻는 행위.</td></tr>
+    <tr><td>앵커링(Anchoring)</td><td>거래 무결성 입증을 위해 위변조가 불가능한 외부 체인에 해시를 기록.</td></tr>
+    <tr><td>이중 지불 방지</td><td>전자서명 + 블록체인 공유 원장 + The Longest Chain Wins 메커니즘.</td></tr>
+    <tr><td>하드 포크</td><td>블록체인 프로토콜 규칙이 비호환적으로 변경되어 체인이 분리.</td></tr>
+    <tr><td>스마트 컨트랙트</td><td>블록체인 위에서 자동 실행되는 코드. 이더리움의 핵심 기능.</td></tr>
+  </tbody>
+</table></div>
+
+</div><!-- /tab-bitcoin -->
+
+<!-- ════ 기출 ════ -->
+<div class="tab-pane" id="tab-exam">
+
+<div class="sh"><div class="sn2">📝</div><div class="st">기출문제 전수 해설 — 10문제</div><span class="slb le">연도순</span></div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2018 국회직 9급 · 블록체인 보안 기술 오답</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">블록체인(Blockchain) 관련 보안 기술에 대한 설명으로 <u>옳지 않은 것</u>은?</div>
+    <div class="eo">
+      <div class="op on">① 블록체인은 해시 함수를 사용하여 데이터에 대한 무결성을 보장한다.</div>
+      <div class="op on">② 블록체인 기술은 데이터의 신뢰성 및 투명성을 제공한다.</div>
+      <div class="op ow">③ 공개형 블록체인 기술은 공개키 암호를 사용하기 때문에 <u>권한이 있는 피어만 참여</u>할 수 있다.</div>
+      <div class="op on">④ 하이퍼레저 패브릭에서는 공개키 인증서를 이용하여 피어에 대한 신원 정보를 제공한다.</div>
+      <div class="op on">⑤ 블록체인 기술에서는 작업 증명이나 지분 증명 등과 같은 합의 알고리즘을 사용한다.</div>
+    </div>
+    <div class="ex"><strong>정답 ③</strong> — 공개형(Public/Permissionless) 블록체인은 <strong>누구나 참여 가능</strong>. "권한 있는 피어만 참여" = 사설형(Private/Permissioned) 설명. 공개키 암호 사용 여부는 참여 제한과 무관. ④ 하이퍼레저 패브릭은 사설형 블록체인으로 X.509 인증서로 참여자 신원을 확인함.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2019 경찰 시스템네트워크보안 문20 · 비트코인 익명성</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">다음 설명 중 가장 <u>적절하지 않은 것</u>은?</div>
+    <div class="eo">
+      <div class="op on">① 비트코인(Bitcoin)은 블록체인(blockchain) 기반 암호화폐(cryptocurrency)이다.</div>
+      <div class="op ow">② 비트코인은 공개키 기반 주소를 사용하고 트랜잭션(transaction)을 암호화하여 전송하기 때문에 <u>익명성이 보장</u>된다.</div>
+      <div class="op on">③ 비트코인 블록체인의 작업증명(Proof-of-Work)은 단방향 해시 함수의 특성을 이용한다.</div>
+      <div class="op on">④ 비트코인 블록체인은 누구나 참여할 수 있는 공개형 블록체인이다.</div>
+    </div>
+    <div class="ex"><strong>정답 ②</strong> — 두 가지 모두 틀림. 첫째, 비트코인 트랜잭션은 암호화(Encryption) 전송이 아니라 <strong>전자서명(ECDSA)</strong>을 부착하여 전송. 둘째, 익명성(Anonymity) 보장 ✗ → <strong>가명성(Pseudonymity)</strong>. 블록체인에 거래 내역이 공개 기록되며 추적 가능.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2019 국가직 7급 · 비트코인 블록 헤더 구성요소</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">암호 화폐인 비트코인이 채택한 블록체인의 블록 헤더에 포함되는 구성 요소가 <u>아닌 것</u>은?</div>
+    <div class="eo">
+      <div class="op on">① 이전 블록의 헤더를 두 번 연속 해시한 값</div>
+      <div class="op on">② 해당 블록에 포함된 모든 트랜잭션의 해시로부터 추출된 merkle root 해시값</div>
+      <div class="op on">③ 작업증명(proof of work) 조건을 만족하는 nonce 값</div>
+      <div class="op ow">④ 블록 생성자(miner)의 계정</div>
+    </div>
+    <div class="ex"><strong>정답 ④</strong> — 블록 헤더 = 버전·이전블록해시·머클루트·타임스탬프·난이도·Nonce. <strong>블록 생성자(채굴자) 계정은 헤더 미포함</strong>. ① "두 번 연속 해시" = 비트코인의 double SHA-256 방식. 채굴자 보상 기록은 블록 바디의 코인베이스 트랜잭션에 있음.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2019 국가직 9급 · 블록체인 기술 오답</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">블록체인(Blockchain) 기술과 암호화폐(Cryptocurrency) 시스템에 대한 설명으로 <u>옳지 않은 것</u>은?</div>
+    <div class="eo">
+      <div class="op on">① 블록체인에서는 각 트랜잭션에 한 개씩 전자서명이 부여된다.</div>
+      <div class="op on">② 암호학적 해시를 이용한 어려운 문제의 해를 계산하여 블록체인에 새로운 블록을 추가할 수 있고 일정량의 암호화폐로 보상받을 수도 있다.</div>
+      <div class="op ow">③ 블록체인의 과거 블록 내용을 <u>조작하는 것은 쉽다</u>.</div>
+      <div class="op on">④ 블록체인은 작업증명(Proof-of-work)과 같은 기법을 이용하여 합의에 이른다.</div>
+    </div>
+    <div class="ex"><strong>정답 ③</strong> — 블록체인의 과거 블록 조작은 <strong>사실상 불가능</strong>. 한 블록을 바꾸면 이후 모든 블록의 해시를 재계산해야 하고, 전체 네트워크 노드 과반수(51% 이상)를 동시에 설득해야 해요. 이게 블록체인의 핵심 보안 특성.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2020 지방직 9급 · 블록체인 합의 알고리즘 (PoS)</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">다음에서 설명하는 블록체인 합의 알고리즘은?<br>○ 비트코인에서 사용하는 방식이 채굴 경쟁으로 과도한 자원 소비를 발생시킨다는 문제를 해결하기 위한 대안으로 등장하였다.<br>○ 채굴 성공 기회를 참여자에 따라 차등적으로 부여한다.<br>○ 다수결로 의사 결정을 해서 블록을 추가하는 방식이 아니므로 불특정 다수가 참여하는 환경에서 유효하다.</div>
+    <div class="eo">
+      <div class="op ow">① Paxos</div>
+      <div class="op ow">② PoW(Proof of Work)</div>
+      <div class="op or">③ PoS(Proof of Stake)</div>
+      <div class="op ow">④ PBFT(Practical Byzantine Fault Tolerance)</div>
+    </div>
+    <div class="ex"><strong>정답 ③</strong> — 키워드: "PoW 자원 소비 문제 해결 대안", "차등적 기회 부여", "불특정 다수 환경" = <strong>PoS(지분증명)</strong>. Paxos = 분산 합의 알고리즘(블록체인 전용 아님). PBFT = 비잔틴 장애 허용, 소수 신뢰 노드 환경용.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2020 국회직 9급 · 암호화폐 블록체인 오답</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">암호화폐를 주고 받는 블록체인 네트워크에 대한 설명으로 <u>옳지 않은 것</u>은?</div>
+    <div class="eo">
+      <div class="op on">① 거래 내역들의 최상위 해시값은 머클 루트(Merkle Root)로서 블록 헤더에 포함된다.</div>
+      <div class="op on">② 채굴(Mining)은 주어진 난이도에 따라 해시값의 역상을 구하는 과정이다.</div>
+      <div class="op on">③ 공개키의 해시값이 암호화폐를 주고 받는 주소값으로 사용된다.</div>
+      <div class="op ow">④ 블록체인 내의 원장을 수정하기 위해서는 <u>개인키를 사용해야 한다</u>.</div>
+      <div class="op on">⑤ 이중 지불을 방지하기 위해 송신자는 자신의 주소값에 대응하는 전자서명을 생성한다.</div>
+    </div>
+    <div class="ex"><strong>정답 ④</strong> — 개인키는 자신의 코인에 대한 거래 서명 권한. <strong>블록체인 원장 자체를 수정하는 건 51% 공격</strong>이 필요하며 사실상 불가능. ② 해시의 역상을 구하는 것 = PoW 채굴의 핵심 설명.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2021 군무원 9급 · 합의 알고리즘 PoS vs PoW 혼동</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">블록체인 합의 알고리즘에 대한 설명으로 <u>옳지 않은 것</u>은?</div>
+    <div class="eo">
+      <div class="op on">① 분산 시스템에서 합의란 네트워크에 존재하는 독립적인 참여자들이 동일한 블록체인 원장을 유지할 수 있도록 원장에 포함할 블록을 결정하는 방식이다.</div>
+      <div class="op on">② PoW, PoS, DPoS 등이 존재한다.</div>
+      <div class="op ow">③ <u>지분증명</u>은 블록을 생성하는 노드가 작업(예: 특정 조건을 충족해야하는 해시 연산 등 높은 비용/자원이 필요한 작업)을 통해 스스로의 신뢰성을 증명하는 합의 방식이다.</div>
+      <div class="op on">④ 분산원장 시스템 내의 모든 노드가 일관성 있는 분산원장을 보유할 수 있도록 새로운 기록의 공유, 검증 및 추가에 대한 전체의 동의를 이끌어 내는 알고리즘이다.</div>
+    </div>
+    <div class="ex"><strong>정답 ③</strong> — 해시 연산, 높은 비용/자원 = <strong>PoW(작업증명)</strong> 설명. <strong>PoS(지분증명)</strong>은 보유 지분(코인 보유량)에 비례하여 블록 생성 기회를 부여하는 방식이에요. 시험에서 가장 자주 뒤바뀌어 나오는 함정.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2022 국가직 9급 · 머클 루트 필드 크기</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">비트코인 블록 헤더의 구조에서 머클 루트에 대한 설명으로 <u>옳지 않은 것</u>은?</div>
+    <div class="eo">
+      <div class="op on">① 머클 트리 루트의 해시값이다.</div>
+      <div class="op on">② 머클 트리는 이진트리 형태이다.</div>
+      <div class="op on">③ SHA-256으로 해시값을 계산한다.</div>
+      <div class="op ow">④ 필드의 크기는 <u>64바이트</u>이다.</div>
+    </div>
+    <div class="ex"><strong>정답 ④</strong> — SHA-256 출력값 = 256 bits = <strong>32 bytes</strong>. 64는 16진수 문자열(hex string)로 표현할 때의 문자 수(32 × 2 = 64 characters)이지, 실제 데이터 크기가 아님. 저장되는 머클 루트 필드 크기 = 32 bytes.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2022 경찰간부 · 비트코인 채굴 방식</span><span class="es">★★</span></div>
+  <div class="eb">
+    <div class="eq">블록체인(Blockchain) 기반 기술에 대한 설명으로 가장 <u>적절하지 않은 것</u>은?</div>
+    <div class="eo">
+      <div class="op on">① 분산 네트워크의 경우 블록체인 정보는 네트워크에 참여하는 노드들이 가지고 있으며 동일한 거래 내역이 분산 저장되어 관리된다.</div>
+      <div class="op on">② 암호 기술의 경우 개인 간 거래 시 생성되는 전자서명을 검증하여 거래내역이 변경되지 않았음을 입증하는데 ECDSA 전자서명 알고리즘을 이용한다.</div>
+      <div class="op on">③ 이중 거래 방지의 경우 악의적인 목적으로 동시에 두 곳 이상의 계좌로 송금하는 행위를 방지하기 위해서 총 통화량과 The Longest Chain Wins 메커니즘을 이용한다.</div>
+      <div class="op ow">④ 비트코인, 모네로 등의 채굴은 대부분 <u>지분증명(PoS)</u> 방식을 사용한다.</div>
+    </div>
+    <div class="ex"><strong>정답 ④</strong> — 비트코인의 채굴(Mining) = <strong>PoW(작업증명)</strong>. "채굴"이라는 개념 자체가 해시 연산으로 Nonce를 찾는 PoW 방식이에요. PoS는 "채굴"이 아닌 "검증(Validation)"이라 부름. 모네로(Monero)도 PoW 기반.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2025 군무원 9급 · 블록체인 구성 기술</span><span class="es">★★</span></div>
+  <div class="eb">
+    <div class="eq">블록체인을 구성하는 주요 기술로 가장 <u>적절하지 않은 것</u>은?</div>
+    <div class="eo">
+      <div class="op on">① 비대칭 암호화</div>
+      <div class="op ow">② 하이퍼 프록시(Hyper Proxy)</div>
+      <div class="op on">③ P2P 커뮤니케이션 프로토콜</div>
+      <div class="op on">④ 작업증명(PoW)</div>
+    </div>
+    <div class="ex"><strong>정답 ②</strong> — <strong>하이퍼 프록시(Hyper Proxy)</strong>는 블록체인 구성 기술이 아닌 존재하지 않는 용어. 블록체인 핵심 기술: 비대칭 암호화(전자서명·주소 생성), P2P 프로토콜(분산 네트워크), 합의 알고리즘(PoW/PoS), 해시 함수(무결성), 분산 원장 등.</div>
+  </div>
+</div>
+
+<!-- 암기 카드 -->
+<div class="dv"></div>
+<div class="mem">
+  <div class="mt">💡 비트코인 · 블록체인 핵심 암기</div>
+  <div class="mi">
+    <div class="mr"><span class="mk">PoW vs PoS</span><span class="mv">PoW = <strong>해시 연산·채굴·전력소비</strong> / PoS = <strong>지분 비례 선정·PoW 대안</strong></span></div>
+    <div class="mr"><span class="mk">블록 헤더</span><span class="mv">버전·이전블록해시·머클루트·타임스탬프·난이도·Nonce. <strong>생성자 계정 없음</strong>.</span></div>
+    <div class="mr"><span class="mk">머클루트</span><span class="mv">SHA-256 출력 = <strong>32 bytes</strong> (64 hex 문자 ≠ 64 bytes)</span></div>
+    <div class="mr"><span class="mk">비트코인 익명성</span><span class="mv">익명성(Anonymity) ✗ → <strong>가명성(Pseudonymity)</strong>. 트랜잭션 블록체인 공개 기록.</span></div>
+    <div class="mr"><span class="mk">트랜잭션</span><span class="mv">암호화 전송 ✗ → <strong>ECDSA 전자서명</strong> 부착 후 전송</span></div>
+    <div class="mr"><span class="mk">원장 수정</span><span class="mv">개인키로 수정 ✗ → <strong>51% 공격</strong> 필요 (사실상 불가)</span></div>
+    <div class="mr"><span class="mk">공개형 블록체인</span><span class="mv"><strong>누구나 참여 가능</strong>. 공개키 사용 여부와 참여 제한은 별개.</span></div>
+    <div class="mr"><span class="mk">제네시스 블록</span><span class="mv">최초 블록. 이전 블록 해시 = 000...0</span></div>
+    <div class="mr"><span class="mk">비트코인 서명</span><span class="mv"><strong>ECDSA</strong>(타원곡선 디지털 서명). 이중지불 방지.</span></div>
+    <div class="mr"><span class="mk">블록체인 구성기술</span><span class="mv">비대칭 암호화·해시함수·P2P 프로토콜·합의 알고리즘. <strong>하이퍼 프록시 아님</strong>.</span></div>
+  </div>
+</div>
+
+<ul class="cl">
+  <li class="clw">"지분증명(PoS) = 해시 연산·높은 자원 필요" → ✗ (PoW 설명)</li>
+  <li class="clw">"비트코인 채굴 = PoS 방식" → ✗ (채굴 = PoW)</li>
+  <li class="clw">"머클 루트 필드 크기 = 64바이트" → ✗ (32바이트, SHA-256 출력)</li>
+  <li class="clw">"블록 헤더에 블록 생성자(miner) 계정 포함" → ✗ (헤더 미포함)</li>
+  <li class="clw">"비트코인 트랜잭션 암호화 전송 → 익명성 보장" → ✗ (전자서명, 가명성)</li>
+  <li class="clw">"블록체인 원장 수정 = 개인키 사용" → ✗ (51% 공격 필요)</li>
+  <li class="clw">"공개형 블록체인 = 권한 있는 피어만 참여" → ✗ (누구나 참여)</li>
+  <li class="clr">"PoW = 해시 연산으로 Nonce 탐색, 비트코인에서 사용" → ✓</li>
+  <li class="clr">"PoS = PoW의 자원 소비 문제 대안, 지분 비례 기회 부여" → ✓</li>
+  <li class="clr">"머클 루트 = 이진 해시 트리 루트, SHA-256, 32 bytes" → ✓</li>
+  <li class="clr">"비트코인 = 공개형 블록체인, ECDSA 전자서명, 가명성" → ✓</li>
+</ul>
+
+<div class="ft">
+  <span>정보보안 합격전략 교재 · INHYUK PI</span>
+  <span>비트코인 · 블록체인 완전 교재 · 2026 목표</span>
+</div>
+
+</div><!-- /tab-exam -->
+
+</div><!-- /cc -->
+</div><!-- /wrap -->
+
+<script>
+function sw(id){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b=>{
+    if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'"+id+"'")){
+      b.classList.add('active');
+    }
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
