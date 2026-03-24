@@ -85,7 +85,7 @@ body{font-family:var(--sans);background:#eef1f8;color:var(--tx);min-height:100vh
   <div class="htitle">INHYUK PI 정보보안 교재</div>
   <div class="hsub">2026 지방직 · 군무원 · 해경 · 국회직 대비</div>
   <div class="hinfo">
-    <div class="hi"><div class="hi-n">9</div><div class="hi-l">교재 수</div></div>
+    <div class="hi"><div class="hi-n">10</div><div class="hi-l">교재 수</div></div>
     <div class="hi"><div class="hi-n">Ch.08</div><div class="hi-l">웹보안 · 전자우편 · FTP</div></div>
     <div class="hi"><div class="hi-n">스토리</div><div class="hi-l">+ 기출 수록</div></div>
   </div>
@@ -250,6 +250,23 @@ body{font-family:var(--sans);background:#eef1f8;color:var(--tx);min-height:100vh
       </div>
     </a>
 
+    <!-- 10 -->
+    <a class="card c5" href="08_sw_security.html">
+      <div class="card-top">
+        <div class="card-num" style="color:#0f766e;">10 · 소프트웨어 보안</div>
+        <div class="card-title">시큐어코딩 · MS-SDL · OWASP TOP10 · CVE/CWE</div>
+        <div class="card-desc">시큐어코딩 정의 · MS-SDL·Seven Touchpoints·CLASP · 보안 약점 7유형 · OWASP TOP10 연도별 변화(2013→2017→2021) · CVE 형식</div>
+      </div>
+      <div class="card-bottom">
+        <div class="card-tags">
+          <span class="tag t-t">OWASP 연도변화 ★</span>
+          <span class="tag t-g">CVE 형식 ★</span>
+          <span class="tag t-b">약점 7유형 ★</span>
+        </div>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
   </div>
 
   <!-- 빠른 참고 -->
@@ -294,6 +311,14 @@ body{font-family:var(--sans);background:#eef1f8;color:var(--tx);min-height:100vh
       <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;">
         <span style="font-family:monospace;font-size:10.5px;font-weight:700;background:#ede9fe;color:#6d28d9;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;">BOF 원인 구분</span>
         <span style="color:var(--tx);">버퍼 오버플로 = 데이터 <strong>길이</strong> / 포맷 스트링 = 데이터 <strong>형태</strong> / 레이스 컨디션 = <strong>자원 경쟁</strong></span>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;">
+        <span style="font-family:monospace;font-size:10.5px;font-weight:700;background:#ccfbf1;color:#0f766e;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;">OWASP 변화</span>
+        <span style="color:var(--tx);">2013 A1=인젝션 → 2021 A1=<strong>취약한 접근제어</strong>·A10=<strong>SSRF</strong>(신규) / Abuse of Cloud Computing = 없는 항목</span>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;">
+        <span style="font-family:monospace;font-size:10.5px;font-weight:700;background:#ccfbf1;color:#0f766e;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;">CVE 형식</span>
+        <span style="color:var(--tx);">CVE-<strong>[연도]</strong>-<strong>[일련번호]</strong> (예: CVE-2022-34993) / CVSS=심각도 점수</span>
       </div>
     </div>
   </div>

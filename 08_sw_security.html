@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>소프트웨어 보안 완전 교재 | INHYUK PI</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --p:#1a2540;--a:#2d5be3;--al:#e8eeff;
+  --r:#c0392b;--rl:#fdf0ef;
+  --g:#1a7a4a;--gl:#edf7f2;
+  --w:#b45309;--wl:#fffbeb;
+  --v:#6d28d9;--vl:#ede9fe;
+  --t:#0f766e;--tl:#ccfbf1;
+  --o:#c2410c;--ol:#fff7ed;
+  --bd:#dde3ec;--bg:#fff;--tx:#1c2331;--tm:#5a6478;
+  --g0:#f8f9fa;--g1:#f0f2f5;
+  --sans:'Noto Sans KR',sans-serif;--serif:'Noto Serif KR',serif;--mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--sans);background:#eef1f8;color:var(--tx);font-size:14px;line-height:1.8;}
+.wrap{max-width:960px;margin:0 auto;padding:28px 14px 70px;}
+
+.hdr{background:linear-gradient(135deg,#051020 0%,#0d1a30 50%,#0d1a10 100%);border-radius:14px 14px 0 0;padding:30px 42px 26px;position:relative;overflow:hidden;}
+.hdr::before{content:'🔒';position:absolute;right:28px;top:10px;font-size:110px;opacity:.06;}
+.mbr{display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap;}
+.bdg{font-size:9.5px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.06em;text-transform:uppercase;}
+.bdg-ch{background:rgba(255,255,255,.13);color:rgba(255,255,255,.9);}
+.bdg-hot{background:#c0392b;color:white;}
+.bdg-ok{background:#0f766e;color:white;}
+.ht{font-family:var(--serif);font-size:27px;font-weight:600;color:white;letter-spacing:-.02em;margin-bottom:3px;}
+.hs{color:rgba(255,255,255,.55);font-size:12px;font-weight:300;}
+.hst{display:flex;gap:22px;margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.1);flex-wrap:wrap;}
+.hn{font-size:18px;font-weight:700;color:#6ee7b7;}
+.hl{font-size:9.5px;color:rgba(255,255,255,.5);margin-top:1px;}
+
+.tab-bar{display:flex;background:var(--p);padding:0 42px;gap:2px;flex-wrap:wrap;border-bottom:2px solid rgba(255,255,255,.08);}
+.tab-btn{padding:11px 13px;font-size:11.5px;font-weight:600;color:rgba(255,255,255,.5);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all .18s;white-space:nowrap;}
+.tab-btn:hover{color:rgba(255,255,255,.8);}
+.tab-btn.active{color:#6ee7b7;border-bottom-color:#0f766e;}
+
+.cc{background:var(--bg);border-radius:0 0 14px 14px;padding:36px 42px;border:1px solid var(--bd);border-top:none;}
+.tab-pane{display:none;}.tab-pane.active{display:block;}
+
+.sh{display:flex;align-items:center;gap:9px;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--g1);margin-top:6px;}
+.sn2{width:30px;height:30px;background:var(--p);color:white;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.st{font-size:17px;font-weight:700;color:var(--p);}
+.slb{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.06em;text-transform:uppercase;}
+.le{background:var(--rl);color:var(--r);}
+.ld{background:var(--al);color:var(--a);}
+.lv{background:var(--vl);color:var(--v);}
+.lw{background:var(--wl);color:var(--w);}
+.lg{background:var(--gl);color:var(--g);}
+.lt{background:var(--tl);color:var(--t);}
+
+.sb{font-size:13.5px;line-height:2.1;color:var(--tx);}
+.sb p{margin-bottom:14px;}
+.sb strong{color:var(--p);}
+.sb em{color:var(--t);font-style:normal;font-weight:700;}
+.sq{background:var(--p);color:white;border-radius:10px;padding:14px 22px 14px 34px;margin:16px 0;font-size:13.5px;line-height:1.9;position:relative;}
+.sq::before{content:'💬';position:absolute;left:-12px;top:12px;font-size:20px;}
+.sq strong{color:#6ee7b7;}
+.sdiv{height:1px;background:linear-gradient(90deg,transparent,var(--bd),transparent);margin:28px 0;}
+
+.dfb{background:var(--p);color:white;border-radius:11px;padding:16px 21px;margin-bottom:14px;}
+.dfl{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6ee7b7;margin-bottom:6px;}
+.dfb p{font-size:13.5px;line-height:1.95;color:rgba(255,255,255,.9);}
+.dfb strong{color:#6ee7b7;}
+.dfb code{font-family:var(--mono);font-size:11px;background:rgba(110,231,183,.15);color:#6ee7b7;padding:1px 5px;border-radius:3px;}
+
+.tw{overflow-x:auto;margin:12px 0;border-radius:9px;border:1px solid var(--bd);}
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+thead tr{background:var(--p);color:white;}
+thead th{padding:10px 13px;text-align:left;font-weight:600;font-size:11.5px;}
+tbody tr{border-bottom:1px solid var(--g1);}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:#f0fff8;}
+tbody td{padding:9px 13px;color:var(--tx);vertical-align:top;line-height:1.7;}
+tbody td:first-child{font-weight:600;color:var(--p);}
+.tc{text-align:center;}
+.r2021{background:#edf7f2!important;}
+.r2017{background:#e8eeff!important;}
+.r2013{background:#fffbeb!important;}
+
+.cds{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:10px;margin:12px 0;}
+.cd{border:1px solid var(--bd);border-radius:9px;padding:13px 15px;background:var(--g0);}
+.cdt{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--t);margin-bottom:6px;}
+.cdb{font-size:13px;color:var(--tx);line-height:1.75;}
+.cdb strong{color:var(--p);}
+
+.dw{background:var(--g0);border:1px solid var(--bd);border-radius:12px;padding:18px;margin:14px 0;overflow-x:auto;}
+.dt{font-size:11px;font-weight:700;color:var(--p);margin-bottom:12px;letter-spacing:.03em;}
+
+/* 7가지 유형 카드 */
+.wbox{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0;}
+.wc{border-radius:10px;border:1px solid var(--bd);overflow:hidden;}
+.wch{padding:9px 14px;font-size:12px;font-weight:700;color:white;}
+.wcb{padding:11px 14px;background:var(--bg);}
+.wcr{font-size:12.5px;color:var(--tx);padding:3px 0;line-height:1.7;}
+.wcr strong{color:var(--p);}
+.wce{font-size:11px;color:var(--tm);margin-top:4px;line-height:1.6;}
+
+/* OWASP 연도별 강조 셀 */
+.h2021{background:#edf7f2;color:#0d4a2a;font-weight:700;}
+.h2017{background:#e8eeff;color:#1a2540;font-weight:700;}
+.h2013{background:#fffbeb;color:#78350f;font-weight:700;}
+
+.trap{border-radius:11px;margin:16px 0;overflow:hidden;}
+.th{display:flex;align-items:center;gap:8px;padding:11px 16px;background:var(--r);color:white;}
+.tht{font-size:12.5px;font-weight:700;}
+.tb{background:var(--rl);padding:14px 18px;border:1px solid #f5c6c2;border-top:none;border-radius:0 0 11px 11px;}
+.tb p{font-size:13px;color:#7a1c1c;line-height:1.9;margin-bottom:8px;}
+.tb p:last-child{margin-bottom:0;}
+.tq{background:white;border-left:3px solid var(--r);padding:9px 13px;border-radius:0 7px 7px 0;margin:9px 0;font-size:13px;color:var(--tx);line-height:1.75;}
+.vw{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:20px;background:var(--r);color:white;}
+.vr{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:20px;background:var(--g);color:white;}
+
+.ec{border:1px solid var(--bd);border-radius:11px;margin:11px 0;overflow:hidden;}
+.eh{display:flex;align-items:center;justify-content:space-between;padding:9px 15px;background:var(--g0);border-bottom:1px solid var(--bd);}
+.ey{font-size:11.5px;font-weight:700;color:var(--p);}
+.es{color:#e8b000;font-size:12px;letter-spacing:2px;}
+.eb{padding:14px 16px;}
+.eq{font-size:13.5px;font-weight:600;color:var(--tx);margin-bottom:11px;line-height:1.75;}
+.eo{display:flex;flex-direction:column;gap:5px;}
+.op{font-size:13px;padding:7px 11px;border-radius:6px;border:1px solid transparent;line-height:1.6;}
+.ow{background:#fdf0ef;border-color:#f5c6c2;color:#7a1c1c;text-decoration:line-through;opacity:.8;}
+.ow::before{content:'✗ ';}
+.or{background:var(--gl);border-color:#a3dbc0;color:#0d4a2a;font-weight:600;}
+.or::before{content:'✓ ';}
+.on{background:var(--g0);border-color:var(--bd);color:var(--tx);}
+.ex{margin-top:11px;padding:12px 14px;background:var(--g0);border-radius:7px;font-size:13px;color:var(--tm);line-height:1.9;border-left:3px solid var(--t);}
+
+.mem{background:linear-gradient(135deg,#051020 0%,#1a2540 100%);border-radius:13px;padding:22px 25px;color:white;margin:14px 0;position:relative;overflow:hidden;}
+.mem::before{content:'🔒';position:absolute;right:14px;top:8px;font-size:52px;opacity:.07;}
+.mt{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6ee7b7;margin-bottom:12px;}
+.mi{display:flex;flex-direction:column;gap:9px;}
+.mr{display:flex;gap:10px;align-items:flex-start;}
+.mk{font-family:var(--mono);font-size:10.5px;font-weight:600;background:rgba(110,231,183,.18);color:#6ee7b7;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;}
+.mv{font-size:13px;color:rgba(255,255,255,.85);line-height:1.75;}
+.mv strong{color:#6ee7b7;}
+
+.cl{list-style:none;margin:12px 0;display:flex;flex-direction:column;gap:5px;}
+.cl li{display:flex;align-items:flex-start;gap:8px;font-size:13px;padding:8px 13px;border-radius:7px;border:1px solid var(--bd);background:var(--bg);line-height:1.65;}
+.clw{background:#fdf0ef;border-color:#f5c6c2;}
+.clw::before{content:'⚠';color:var(--r)!important;font-size:12px;flex-shrink:0;margin-top:2px;}
+.clr{background:var(--gl);border-color:#a3dbc0;}
+.clr::before{content:'✓';color:var(--g)!important;font-size:12px;flex-shrink:0;margin-top:2px;}
+
+.inf-t{background:var(--tl);border:1px solid #a7f3d0;border-radius:9px;padding:12px 16px;margin:12px 0;font-size:13px;color:#064e3b;line-height:1.85;}
+.inf-t strong{color:#065f46;}
+.dv{height:1px;background:var(--g1);margin:26px 0;}
+.ft{display:flex;justify-content:space-between;margin-top:28px;padding-top:13px;border-top:1px solid var(--bd);font-size:10.5px;color:var(--tm);}
+@media(max-width:640px){.cc,.hdr{padding:22px 16px;}.tab-bar{padding:0 16px;}.wbox{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hdr">
+  <div class="mbr">
+    <span class="bdg bdg-ch">Chapter 08 · 소프트웨어 보안</span>
+    <span class="bdg bdg-hot">9급 최빈출</span>
+    <span class="bdg bdg-ok">기출 10문제 수록</span>
+  </div>
+  <div class="ht">소프트웨어 보안 완전 교재</div>
+  <div class="hs">시큐어코딩 · MS-SDL · Seven Touchpoints · CLASP · 보안 약점 7유형 · OWASP TOP10 연도별 변화 · CVE/CWE</div>
+  <div class="hst">
+    <div><div class="hn">보안 약점 7종</div><div class="hl">유형별 완전 정리</div></div>
+    <div><div class="hn">OWASP</div><div class="hl">2013→2017→2021 변화</div></div>
+    <div><div class="hn">CVE 형식</div><div class="hl">연도-일련번호 ★★★</div></div>
+    <div><div class="hn">10문제</div><div class="hl">기출 수록</div></div>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="sw('story')">📖 탄생 스토리</button>
+  <button class="tab-btn" onclick="sw('sdl')">🏗 개발보안 방법론</button>
+  <button class="tab-btn" onclick="sw('weak')">🧩 보안 약점 7유형</button>
+  <button class="tab-btn" onclick="sw('owasp')">📊 OWASP TOP10</button>
+  <button class="tab-btn" onclick="sw('cve')">🏷 CVE · CWE</button>
+  <button class="tab-btn" onclick="sw('exam')">📝 기출 10선</button>
+</div>
+
+<div class="cc">
+
+<!-- ════ 스토리 ════ -->
+<div class="tab-pane active" id="tab-story">
+
+<div class="sh"><div class="sn2">1</div><div class="st">왜 만든 후에 고치는 게 아니라, 만들면서 보안을 넣어야 할까?</div></div>
+<div class="sb">
+<p>소프트웨어 보안에는 유명한 법칙이 있어요. <strong>"설계 단계에서 보안 결함을 고치는 비용이 1이라면, 배포 후 고치는 비용은 100배"</strong>라는 거예요. 완성된 건물에서 기둥을 바꾸는 게 설계도 단계에서 바꾸는 것보다 훨씬 어렵고 비싼 것과 같아요.</p>
+
+<p>과거에는 개발팀과 보안팀이 따로 움직였어요. 개발팀이 소프트웨어를 완성하면, 보안팀이 마지막에 "침투 테스트"를 해서 취약점을 발견하는 방식이었어요. 그런데 이 방식에는 치명적인 문제가 있었어요. 취약점이 발견됐을 때는 이미 구조를 바꾸기 너무 늦은 시점이에요. 고치려면 엄청난 비용과 시간이 들거나, 그냥 출시하는 경우도 많았어요.</p>
+
+<p>2002년, 마이크로소프트는 이 문제를 정면으로 직시했어요. Windows XP가 출시된 직후, MS 소프트웨어에서 보안 취약점이 쏟아지기 시작했고 엄청난 비판을 받았어요. 빌 게이츠가 직접 "신뢰할 수 있는 컴퓨팅(Trustworthy Computing)" 메시지를 전사에 보냈어요. 그리고 <strong>SDL(Secure Development Lifecycle)</strong>이라는 체계가 탄생했어요. "보안을 나중에 붙이는 게 아니라 개발 전 과정에 녹여 넣자."</p>
+
+<p>SDL이 적용된 소프트웨어는 이전에 비해 <strong>취약점이 50% 이상 감소</strong>했어요. 이후 Seven Touchpoints, CLASP 같은 다양한 소프트웨어 보안 방법론이 나왔어요. 그리고 이런 접근의 핵심 실천 활동이 <strong>시큐어코딩(Secure Coding)</strong>이에요. 소스코드에 잠재된 보안 취약점을 처음부터 제거하면서 개발하는 방식이에요.</p>
+</div>
+
+<div class="sq">
+소프트웨어 보안의 핵심 원칙:<br>
+<strong>"보안은 나중에 붙이는 게 아니라 개발 전 과정에 녹여 넣어야 한다."</strong><br>
+설계 → 구현 → 테스트 → 배포 모든 단계에서 보안을 고려하는 것 = SDLC 보안 (Security in SDLC)
+</div>
+
+</div><!-- /tab-story -->
+
+<!-- ════ 개발보안 방법론 ════ -->
+<div class="tab-pane" id="tab-sdl">
+
+<div class="sh"><div class="sn2">1</div><div class="st">시큐어코딩 (Secure Coding)</div><span class="slb lt">★★★ 정의 암기</span></div>
+
+<div class="dfb">
+  <div class="dfl">시큐어코딩 정의</div>
+  <p>시큐어코딩(Secure Coding)이란 <strong>안전한 소프트웨어 개발을 위해 소스코드 등에 존재할 수 있는 잠재적인 보안 취약점을 제거하고, 보안을 고려하여 기능을 설계 및 구현하는 등 소프트웨어 개발 과정에서 지켜야 할 보안 활동</strong>이다. 단순히 코딩 규칙을 지키는 것을 넘어, 개발 전 단계에서 보안을 내재화하는 접근 방식.</p>
+</div>
+
+<div class="sb">
+<p>시큐어코딩의 핵심 키워드를 기억해야 해요. <strong>"소스코드의 잠재적인 보안 취약점 제거"</strong>, <strong>"개발 과정에서 지켜야 할 보안 활동"</strong>이에요. 시험에서 "스캐빈징(Scavenging)", "살라미(Salami)", "웨어하우스" 등과 함께 혼동하도록 선지에 나와요.</p>
+</div>
+
+<div class="trap">
+  <div class="th"><span>⚠</span><span class="tht">함정 — 시큐어코딩 정의 혼동 (2017 서울시 A·B형 동일 출제)</span></div>
+  <div class="tb">
+    <div class="tq">"안전한 소프트웨어 개발을 위해 소스코드 등에 존재할 수 있는 잠재적인 보안 취약점을 제거하고, 보안을 고려하여 기능을 설계 및 구현하는 등 소프트웨어 개발 과정에서 지켜야 할 보안 활동" → <span class="vr">✓ 시큐어코딩</span></div>
+    <p>혼동 유발 선지: 스캐빈징(Scavenging) = 저장 매체에서 지워진 데이터를 복구하는 행위. 살라미(Salami) = 소액 반복 사기. 웨어하우스 = 데이터 창고. 전혀 다른 개념이에요.</p>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">소프트웨어 개발 보안 3대 방법론</div><span class="slb lt">★★★</span></div>
+
+<div class="cds">
+  <div class="cd">
+    <div class="cdt">MS-SDL</div>
+    <div class="cdb"><strong>Microsoft Secure Development Lifecycle</strong>. MS가 보안 취약점 감소를 위해 도입. SDL 적용 후 이전 대비 <strong>취약점 50% 이상 감소</strong>. 소프트웨어 개발 전 단계(요구사항→설계→구현→테스트→배포)에 보안 활동 통합.</div>
+  </div>
+  <div class="cd">
+    <div class="cdt">Seven Touchpoints</div>
+    <div class="cdb"><strong>실용적 소프트웨어 보안을 위한 7가지 모범 사례</strong>. 공통 취약점을 파악하고 해결하며, 하고 외부 소프트웨어에 대해 리뷰하고 객관적인 분석 및 위험 분석을 거쳐 안전한 제품을 만드는 방법. 개발 동안 소프트웨어 보안을 위험에 따라 관리.</div>
+  </div>
+  <div class="cd">
+    <div class="cdt">CLASP</div>
+    <div class="cdb"><strong>Comprehensive, Lightweight Application Security Process</strong>. 활동 중심 프로세스 (Activity-Driven Process). 소프트웨어 개발 초기 단계에 보안을 통합. <strong>이미 운영 중인 시스템에 적용하기 좋음</strong>. 역할·활동·평가·취약점으로 구성.</div>
+  </div>
+</div>
+
+<div class="tw"><table>
+  <thead><tr><th>방법론</th><th>개발사/제안자</th><th>핵심 특징</th><th>시험 키워드</th></tr></thead>
+  <tbody>
+    <tr><td><strong>MS-SDL</strong></td><td>Microsoft</td><td>소프트웨어 개발 전 단계에 보안 활동 통합. 적용 후 취약점 50% 이상 감소.</td><td>취약점 50% 감소</td></tr>
+    <tr><td><strong>Seven Touchpoints</strong></td><td>Gary McGraw</td><td>보안을 위한 7가지 모범 사례. 공통 취약점 파악·해결 중심. 소프트웨어 보안 위험에 따라 관리.</td><td>7가지 모범 사례</td></tr>
+    <tr><td><strong>CLASP</strong></td><td>OWASP</td><td>활동 중심 경량 프로세스. <strong>운영 중인 시스템에 적용 용이</strong>. 역할·활동·평가·취약점 4구성.</td><td>이미 운영 중인 시스템 적합</td></tr>
+  </tbody>
+</table></div>
+
+</div><!-- /tab-sdl -->
+
+<!-- ════ 보안 약점 7유형 ════ -->
+<div class="tab-pane" id="tab-weak">
+
+<div class="sh"><div class="sn2">1</div><div class="st">소프트웨어 보안 약점 7가지 유형</div><span class="slb le">★★★ 유형·설명 교차 출제</span></div>
+
+<div class="sb">
+<p>소프트웨어 보안 약점은 행정안전부·KISA가 정한 <strong>7가지 유형</strong>으로 분류돼요. 시험에서는 유형 이름과 설명이 바뀌어 나오거나, 어느 유형에 속하는지 묻는 형태가 많아요. 특히 <strong>보안 기능 ↔ 코드 오류 ↔ API 오용</strong>의 구분이 핵심 함정 포인트예요.</p>
+</div>
+
+<div class="wbox">
+  <div class="wc">
+    <div class="wch" style="background:#c0392b;">① 입력 데이터 검증 및 표현</div>
+    <div class="wcb">
+      <div class="wcr"><strong>정의:</strong> 프로그램 입력값에 대한 검증 누락 또는 부적절한 검증, 데이터의 잘못된 형식 지정으로 인해 발생.</div>
+      <div class="wce">예시: SQL 삽입, XSS, XQuery 삽입, LDAP 삽입, 운영체제 명령어 삽입, XML 삽입, 버퍼 오버플로, 포맷 스트링</div>
+    </div>
+  </div>
+  <div class="wc">
+    <div class="wch" style="background:#6d28d9;">② 보안 기능</div>
+    <div class="wcb">
+      <div class="wcr"><strong>정의:</strong> 인증, 접근제어, 암호화, 권한 관리 등의 기능을 <strong>부적절하게 구현</strong>할 때 발생.</div>
+      <div class="wce">예시: 부적절한 인가, 하드코드된 암호화 키, 취약한 암호화 알고리즘 사용, 적절하지 않은 난수 생성</div>
+    </div>
+  </div>
+  <div class="wc">
+    <div class="wch" style="background:#b45309;">③ 시간 및 상태</div>
+    <div class="wcb">
+      <div class="wcr"><strong>정의:</strong> 동시 또는 거의 동시 수행을 지원하는 병렬 시스템·프로세스 간 <strong>자원(시간, 상태) 관리</strong> 미흡.</div>
+      <div class="wce">예시: <strong>레이스 컨디션(TOCTOU)</strong>, 종료되지 않은 반복문/재귀 함수</div>
+    </div>
+  </div>
+  <div class="wc">
+    <div class="wch" style="background:#0f766e;">④ 에러 처리</div>
+    <div class="wcb">
+      <div class="wcr"><strong>정의:</strong> 에러를 처리하지 않거나, 불필요한 정보를 에러 메시지로 외부에 노출.</div>
+      <div class="wce">예시: 오류 메시지에 시스템 정보 포함, 부적절한 예외 처리, 오류 상황 무시</div>
+    </div>
+  </div>
+  <div class="wc">
+    <div class="wch" style="background:#1a2540;">⑤ 코드 오류</div>
+    <div class="wcb">
+      <div class="wcr"><strong>정의:</strong> 개발자가 실수로 발생시킨 코드 오류. <strong>의도하지 않은 방법으로 API를 사용</strong>하거나 보안에 취약한 API를 사용.</div>
+      <div class="wce">예시: <strong>DNS lookup에 의존한 보안 결정</strong>, 잘못된 형변환, Null 포인터 역참조</div>
+    </div>
+  </div>
+  <div class="wc">
+    <div class="wch" style="background:#2d5be3;">⑥ 캡슐화</div>
+    <div class="wcb">
+      <div class="wcr"><strong>정의:</strong> 중요한 데이터 또는 기능성을 <strong>불충분하게 캡슐화</strong>하였을 때, 인가되지 않은 사용자에게 데이터 누출 가능.</div>
+      <div class="wce">예시: <strong>잘못된 세션에 의한 데이터 노출</strong>, 시스템 데이터 정보 노출, Public 메서드로 민감정보 접근 허용</div>
+    </div>
+  </div>
+  <div class="wc" style="grid-column:1/-1;">
+    <div class="wch" style="background:#1a7a4a;">⑦ API 오용</div>
+    <div class="wcb">
+      <div class="wcr"><strong>정의:</strong> 의도된 사용에 반하는 방법으로 API를 사용하거나, 보안에 취약한 API를 사용. ⑤ 코드 오류와 혼동 주의.</div>
+      <div class="wce">예시: DNS lookup에 의존한 보안 결정(→사실 코드 오류 예시), Socket 통신에서 취약한 함수 사용, 취약한 암호화 API 직접 호출</div>
+    </div>
+  </div>
+</div>
+
+<div class="trap">
+  <div class="th"><span>⚠</span><span class="tht">함정 ★★★ — 보안 약점 유형 설명 교차 (2021 서울시 7급)</span></div>
+  <div class="tb">
+    <div class="tq">선지 ①: "코드 오류 — 의도하지 않은 방법으로 API를 사용하거나 보안에 취약한 API를 사용 (예: DNS lookup에 의존한 보안결정)" → <span class="vw">✗ 오답</span></div>
+    <p>DNS lookup에 의존한 보안결정은 <strong>코드 오류</strong>의 예시이지만, 이 선지의 설명 자체는 <strong>API 오용</strong>의 설명이에요. 교재마다 경계가 모호한 부분이어서 시험에 자주 출제돼요. ①은 오답이에요.</p>
+    <div class="tq">선지 ④: "보안 기능 — 인증, 접근제어, 암호화 등의 기능을 부적절하게 구현 시 발생 (예: 부적절한 인가, 하드코드된 암호화키)" → <span class="vr">✓ 정답</span></div>
+    <p>보안 기능 유형의 정확한 설명. 인증·접근제어·암호화 = 보안 기능. 부적절한 인가·하드코드된 암호화키 = 보안 기능 약점 예시.</p>
+  </div>
+</div>
+
+<div class="sb">
+<p>7가지 유형을 빠르게 구분하는 핵심 키워드를 정리하면, <strong>①입력검증</strong>=SQL삽입·XSS, <strong>②보안기능</strong>=인증·접근제어·암호화 부적절 구현, <strong>③시간상태</strong>=레이스컨디션, <strong>④에러처리</strong>=오류 메시지 정보 노출, <strong>⑤코드오류</strong>=잘못된 형변환·Null 역참조, <strong>⑥캡슐화</strong>=세션 데이터 노출, <strong>⑦API오용</strong>=취약한 API 사용이에요.</p>
+</div>
+
+</div><!-- /tab-weak -->
+
+<!-- ════ OWASP TOP10 ════ -->
+<div class="tab-pane" id="tab-owasp">
+
+<div class="sh"><div class="sn2">1</div><div class="st">OWASP 개요</div><span class="slb lt">★★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">OWASP 정의</div>
+  <p>OWASP(Open Web Application Security Project)는 <strong>2001년에 설립된 웹 및 모바일 애플리케이션 보안에 관한 방법론, 문서, 도구를 만들고 관련 기술을 연구하는 개발자 커뮤니티</strong>. 상위 10개 위험 목록(TOP 10)을 개발자 커뮤니티 안에서 주기적으로 업데이트. <strong>비영리 단체</strong>.</p>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">OWASP TOP 10 연도별 변화 — 완전 정리</div><span class="slb le">★★★ 연도별 차이 출제</span></div>
+
+<div class="sb">
+<p>OWASP TOP 10은 가장 자주 출제되는 주제예요. 단순 암기보다 <strong>연도별 변화 트렌드</strong>를 이해해야 해요. 특히 2013→2017/2020→2021/2022의 A1·A3 위치 변화, 새로 등장한 항목(XXE·SSRF), 사라진 항목(CSRF·Unvalidated Redirects)이 시험에 자주 나와요.</p>
+</div>
+
+<div class="tw"><table>
+  <thead><tr><th class="tc">순위</th><th>2013</th><th>2017/2020</th><th>2021/2022</th></tr></thead>
+  <tbody>
+    <tr><td class="tc">A1</td><td class="h2013">인젝션 (Injection)</td><td class="h2017">인젝션 (Injection)</td><td class="h2021">취약한 접근제어 (Broken Access Control)</td></tr>
+    <tr><td class="tc">A2</td><td>인증 및 세션 관리 취약점</td><td>취약한 인증 (Broken Authentication)</td><td>암호화 결함 (Cryptographic Failures)</td></tr>
+    <tr><td class="tc">A3</td><td class="h2013">XSS</td><td>민감데이터 노출</td><td class="h2021">인젝션 (Injection)</td></tr>
+    <tr><td class="tc">A4</td><td>취약한 직접 객체 참조</td><td class="h2017">XML 외부개체 (XXE) ← 신규</td><td>불안전한 설계 (Insecure Design)</td></tr>
+    <tr><td class="tc">A5</td><td>보안 설정 오류</td><td>취약한 접근제어</td><td>보안 설정오류 (Security Misconfiguration)</td></tr>
+    <tr><td class="tc">A6</td><td>민감한 데이터 노출</td><td>보안설정 오류</td><td>취약한 오래된 컴포넌트 사용</td></tr>
+    <tr><td class="tc">A7</td><td>기능 수준의 접근통제 누락</td><td>XSS</td><td>취약한 인증 (Identification and Authentication Failures)</td></tr>
+    <tr><td class="tc">A8</td><td>CSRF</td><td class="h2017">안전하지 않은 역직렬화 (Deserialization) ← 신규</td><td>소프트웨어·데이터 무결성 결함</td></tr>
+    <tr><td class="tc">A9</td><td>알려진 취약점이 있는 컴포넌트 사용</td><td>알려진 취약점 컴포넌트</td><td>보안 로깅·모니터링 결함</td></tr>
+    <tr><td class="tc">A10</td><td>검증되지 않은 리다이렉트 및 포워드</td><td>불충분한 로깅·모니터링</td><td class="h2021">SSRF (서버사이드 요청 위조) ← 신규</td></tr>
+  </tbody>
+</table></div>
+
+<div class="sb">
+<p><strong>핵심 변화 포인트 3가지:</strong></p>
+<p>① 2013년 A1=인젝션이었다가 2021년에는 <strong>A1=취약한 접근제어</strong>로 밀려났어요. 인젝션은 A3로 내려갔어요.</p>
+<p>② 2017년에 <strong>XXE(XML 외부개체)</strong>가 A4로 새로 등장했어요. 2013년까지는 없던 항목이에요.</p>
+<p>③ 2021년에 <strong>SSRF(서버사이드 요청 위조)</strong>가 A10으로 새로 등장했어요. CSRF는 2017년부터 이미 TOP 10에서 사라졌고, 2021에도 없어요.</p>
+</div>
+
+<!-- OWASP 2021 10항목 SVG -->
+<div class="dw">
+  <div class="dt">OWASP TOP 10 — 2021/2022 전체 항목 (시험 기준 최신)</div>
+  <svg viewBox="0 0 820 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:820px;display:block;margin:0 auto;">
+    <defs>
+      <style>.ot{font-family:sans-serif;}</style>
+    </defs>
+    <!-- 5개씩 2줄 -->
+    <!-- 줄 1 -->
+    <rect x="5" y="5" width="155" height="50" rx="6" fill="#c0392b"/>
+    <text x="82" y="23" text-anchor="middle" fill="white" font-size="9" font-weight="700" class="ot">A1</text>
+    <text x="82" y="37" text-anchor="middle" fill="rgba(255,255,255,.9)" font-size="8.5" class="ot">취약한 접근제어</text>
+    <text x="82" y="49" text-anchor="middle" fill="rgba(255,255,255,.65)" font-size="7.5" class="ot">Broken Access Control</text>
+
+    <rect x="168" y="5" width="155" height="50" rx="6" fill="#374151"/>
+    <text x="245" y="23" text-anchor="middle" fill="white" font-size="9" font-weight="700" class="ot">A2</text>
+    <text x="245" y="37" text-anchor="middle" fill="rgba(255,255,255,.9)" font-size="8.5" class="ot">암호화 결함</text>
+    <text x="245" y="49" text-anchor="middle" fill="rgba(255,255,255,.65)" font-size="7.5" class="ot">Cryptographic Failures</text>
+
+    <rect x="331" y="5" width="155" height="50" rx="6" fill="#c0392b" opacity=".75"/>
+    <text x="408" y="23" text-anchor="middle" fill="white" font-size="9" font-weight="700" class="ot">A3</text>
+    <text x="408" y="37" text-anchor="middle" fill="rgba(255,255,255,.9)" font-size="8.5" class="ot">인젝션 (Injection)</text>
+    <text x="408" y="49" text-anchor="middle" fill="rgba(255,255,255,.65)" font-size="7.5" class="ot">SQL·LDAP·XSS 포함</text>
+
+    <rect x="494" y="5" width="155" height="50" rx="6" fill="#2d5be3"/>
+    <text x="571" y="23" text-anchor="middle" fill="white" font-size="9" font-weight="700" class="ot">A4</text>
+    <text x="571" y="37" text-anchor="middle" fill="rgba(255,255,255,.9)" font-size="8.5" class="ot">불안전한 설계</text>
+    <text x="571" y="49" text-anchor="middle" fill="rgba(255,255,255,.65)" font-size="7.5" class="ot">Insecure Design</text>
+
+    <rect x="657" y="5" width="158" height="50" rx="6" fill="#374151" opacity=".7"/>
+    <text x="736" y="23" text-anchor="middle" fill="white" font-size="9" font-weight="700" class="ot">A5</text>
+    <text x="736" y="37" text-anchor="middle" fill="rgba(255,255,255,.9)" font-size="8.5" class="ot">보안 설정오류</text>
+    <text x="736" y="49" text-anchor="middle" fill="rgba(255,255,255,.65)" font-size="7.5" class="ot">Security Misconfiguration</text>
+
+    <!-- 줄 2 -->
+    <rect x="5" y="63" width="155" height="50" rx="6" fill="#374151" opacity=".6"/>
+    <text x="82" y="81" text-anchor="middle" fill="white" font-size="9" font-weight="700" class="ot">A6</text>
+    <text x="82" y="95" text-anchor="middle" fill="rgba(255,255,255,.9)" font-size="8.5" class="ot">취약한 오래된 컴포넌트</text>
+    <text x="82" y="107" text-anchor="middle" fill="rgba(255,255,255,.65)" font-size="7" class="ot">Vulnerable Outdated Components</text>
+
+    <rect x="168" y="63" width="155" height="50" rx="6" fill="#374151" opacity=".55"/>
+    <text x="245" y="81" text-anchor="middle" fill="white" font-size="9" font-weight="700" class="ot">A7</text>
+    <text x="245" y="95" text-anchor="middle" fill="rgba(255,255,255,.9)" font-size="8.5" class="ot">취약한 인증</text>
+    <text x="245" y="107" text-anchor="middle" fill="rgba(255,255,255,.65)" font-size="7" class="ot">Identification & Auth Failures</text>
+
+    <rect x="331" y="63" width="155" height="50" rx="6" fill="#374151" opacity=".5"/>
+    <text x="408" y="81" text-anchor="middle" fill="white" font-size="9" font-weight="700" class="ot">A8</text>
+    <text x="408" y="95" text-anchor="middle" fill="rgba(255,255,255,.9)" font-size="8.5" class="ot">SW·데이터 무결성 결함</text>
+    <text x="408" y="107" text-anchor="middle" fill="rgba(255,255,255,.65)" font-size="7" class="ot">Software & Data Integrity</text>
+
+    <rect x="494" y="63" width="155" height="50" rx="6" fill="#374151" opacity=".45"/>
+    <text x="571" y="81" text-anchor="middle" fill="white" font-size="9" font-weight="700" class="ot">A9</text>
+    <text x="571" y="95" text-anchor="middle" fill="rgba(255,255,255,.9)" font-size="8.5" class="ot">보안 로깅·모니터링 결함</text>
+    <text x="571" y="107" text-anchor="middle" fill="rgba(255,255,255,.65)" font-size="7" class="ot">Security Logging & Monitoring</text>
+
+    <rect x="657" y="63" width="158" height="50" rx="6" fill="#1a7a4a"/>
+    <text x="736" y="81" text-anchor="middle" fill="white" font-size="9" font-weight="700" class="ot">A10 ★ 신규</text>
+    <text x="736" y="95" text-anchor="middle" fill="rgba(255,255,255,.9)" font-size="8.5" class="ot">SSRF</text>
+    <text x="736" y="107" text-anchor="middle" fill="rgba(255,255,255,.65)" font-size="7" class="ot">Server-Side Request Forgery</text>
+  </svg>
+</div>
+
+<div class="trap">
+  <div class="th"><span>⚠</span><span class="tht">함정 모음 — 연도별 OWASP 출제 패턴</span></div>
+  <div class="tb">
+    <div class="tq">OWASP 2013 상위 3개 아닌 것: ① Injection ② Cross-Site Scripting ③ Unvalidated Redirects and Forwards ④ Broken Authentication → <span class="vw">정답 ③</span> (2016 국가직)</div>
+    <p>2013 TOP3 = <strong>Injection(A1) · 인증세션(A2) · XSS(A3)</strong>. Unvalidated Redirects는 A10. 상위 3개에 속하지 않음.</p>
+    <div class="tq">OWASP 2020 속하지 않는 것: ① Abuse of Cloud Computing ② Injection ③ XML External Entities ④ Broken Authentication → <span class="vw">정답 ①</span> (2020 국회직)</div>
+    <p><strong>Abuse of Cloud Computing(클라우드 컴퓨팅 남용)</strong>은 OWASP TOP 10 어느 연도에도 포함된 적 없는 항목. XXE는 2017/2020에 A4. 혼동 주의.</p>
+    <div class="tq">OWASP 2017 Injection 설명: "신뢰할 수 없는 데이터가 명령어나 쿼리문의 일부분으로서 인터프리터로 보내질 때 발생, 예기치 않은 명령 실행 가능" → <span class="vr">✓ Injection</span> (2023 국가직)</div>
+    <div class="tq">OWASP 2021 A10: "서버가 적절한 검증 절차를 거치지 않은 요청을 처리하여 내부 데이터 탈취" → <span class="vr">✓ SSRF</span> (2025 국가직)</div>
+  </div>
+</div>
+
+</div><!-- /tab-owasp -->
+
+<!-- ════ CVE · CWE ════ -->
+<div class="tab-pane" id="tab-cve">
+
+<div class="sh"><div class="sn2">1</div><div class="st">CVE · CWE · CVSS — 취약점 표준 체계</div><span class="slb le">★★★ CVE 형식 출제</span></div>
+
+<div class="dfb">
+  <div class="dfl">CVE 정의</div>
+  <p>CVE(Common Vulnerabilities and Exposures)는 <strong>공개적으로 알려진 소프트웨어의 보안 취약점을 가리키는 고유 표기</strong>. 정보 보안 취약점의 표준 코드. 장치·시스템·프로그램 해킹에 악용될 수 있는 컴퓨터 보안 취약 시스템에 부여됨. <strong>CVE 형식: CVE-[취약점이 발견된 연도]-[일련번호]</strong>. 예: CVE-2022-34993.</p>
+</div>
+
+<div class="sb">
+<p>CVE 형식은 시험에 자주 나와요. <strong>CVE-[연도]-[일련번호]</strong> 순서를 반드시 외워야 해요. 2023 국가직에서 "(가) 연도, (나) 일련번호"가 정답으로 출제됐어요.</p>
+</div>
+
+<div class="tw"><table>
+  <thead><tr><th>표준</th><th>Full Name</th><th>정의</th><th>시험 키워드</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>CVE</strong></td>
+      <td>Common Vulnerabilities and Exposures</td>
+      <td>공개적으로 알려진 보안 취약점의 고유 식별 코드. 형식: <strong>CVE-[연도]-[일련번호]</strong>. MITRE에서 관리.</td>
+      <td>★ 연도-일련번호 순서</td>
+    </tr>
+    <tr>
+      <td><strong>CWE</strong></td>
+      <td>Common Weakness Enumeration</td>
+      <td>소프트웨어 보안 약점 유형 목록. CVE가 특정 취약점 인스턴스라면, CWE는 취약점 패턴/유형. 예: CWE-79=XSS.</td>
+      <td>취약점 유형(패턴)</td>
+    </tr>
+    <tr>
+      <td><strong>CVSS</strong></td>
+      <td>Common Vulnerability Scoring System</td>
+      <td>취약점의 심각도를 0~10 점수로 평가하는 표준. 실제 발생한 취약점 등급 매기는 공개 프레임워크. 2024 국가직 기출.</td>
+      <td>취약점 심각도 점수</td>
+    </tr>
+    <tr>
+      <td><strong>NVD</strong></td>
+      <td>National Vulnerability Database</td>
+      <td>미국 NIST가 운영하는 취약점 데이터베이스. CVE 기반 취약점 정보 검색 가능.</td>
+      <td>NIST, 취약점 DB</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<div class="trap">
+  <div class="th"><span>⚠</span><span class="tht">함정 ★★★ — CVE vs CVSS vs CWE 구분 (2023·2024 국가직)</span></div>
+  <div class="tb">
+    <div class="tq">CVE 취약점명 형식: "CVE-[연도]-[일련번호]" → (가)=연도, (나)=일련번호 → <span class="vr">✓ 정답 ④</span> (2023 국가직)</div>
+    <p>예: CVE-<strong>2022</strong>-<strong>34993</strong> → 2022년 발견, 일련번호 34993. 연도가 앞, 번호가 뒤.</p>
+    <div class="tq">"보안 취약점으로 인해 실제 발생한 취약점의 등급을 매기는 공개 프레임워크" → <span class="vr">✓ CVSS</span> (2024 국가직)</div>
+    <p>CVE = 취약점 식별. CVSS = 취약점 심각도 점수. CWE = 취약점 유형 분류. NVD = 취약점 데이터베이스.</p>
+  </div>
+</div>
+
+</div><!-- /tab-cve -->
+
+<!-- ════ 기출 10선 ════ -->
+<div class="tab-pane" id="tab-exam">
+
+<div class="sh"><div class="sn2">📝</div><div class="st">기출문제 전수 해설 — 10문제</div><span class="slb le">연도순</span></div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2016 국가직 9급 · OWASP 2013 상위 3개 아닌 것</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">OWASP에서 발표한 2013년도 10대 웹 애플리케이션 보안 위험 중 발생 빈도가 높은 상위 3개에 속하지 않는 것은?</div>
+    <div class="eo">
+      <div class="op on">① Injection</div>
+      <div class="op on">② Cross-Site Scripting</div>
+      <div class="op ow">③ Unvalidated Redirects and Forwards</div>
+      <div class="op on">④ Broken Authentication and Session Management</div>
+    </div>
+    <div class="ex"><strong>정답 ③</strong> — 2013년 TOP3: A1=Injection, A2=인증 및 세션 관리 취약점, A3=XSS. Unvalidated Redirects and Forwards는 A10(맨 아래). 상위 3개에 속하지 않아요.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2017 서울시 A·B형 · 시큐어코딩 정의</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">다음의 지문은 무엇을 설명한 것인가?<br>"안전한 소프트웨어 개발을 위해 소스코드 등에 존재할 수 있는 잠재적인 보안 취약점을 제거하고, 보안을 고려하여 기능을 설계 및 구현하는 등 소프트웨어 개발 과정에서 지켜야 할 보안 활동이다."</div>
+    <div class="eo">
+      <div class="op or">① 시큐어코딩(Secure Coding)</div>
+      <div class="op ow">② 스캐빈징(Scavenging)</div>
+      <div class="op ow">③ 웨어하우스(Warehouse)</div>
+      <div class="op ow">④ 살라미(Salami)</div>
+    </div>
+    <div class="ex"><strong>정답 ①</strong> — 키워드: "소스코드의 잠재적인 보안 취약점 제거", "개발 과정에서 지켜야 할 보안 활동" = 시큐어코딩. 스캐빈징=저장매체 데이터 복구. 살라미=소액 반복 사기. A·B형 모두 동일하게 출제됐어요.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2017 국회직 9급 · OWASP 2013 속하지 않는 것</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">OWASP에서 2013년에 발표한 10대 웹 취약점에 속하지 않는 것은?</div>
+    <div class="eo">
+      <div class="op on">① 인젝션</div>
+      <div class="op on">② 크로스 사이트 요청 변조 (CSRF)</div>
+      <div class="op ow">③ 취약한 간접 객체 참조</div>
+      <div class="op on">④ 검증되지 않은 리다이렉트 및 포워드</div>
+    </div>
+    <div class="ex"><strong>정답 ③</strong> — 2013 TOP 10에는 <strong>취약한 직접 객체 참조(Insecure Direct Object Reference, A4)</strong>가 있어요. "간접 객체 참조"는 OWASP TOP 10에 없는 용어. CSRF는 A8로 포함됨.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2020 국회직 9급 · OWASP 2020 속하지 않는 것</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">OWASP(Open Web Application Security Project) 2020에서 발표된 10가지 보안 위협에 속하지 않는 것은?</div>
+    <div class="eo">
+      <div class="op ow">① Abuse of Cloud Computing</div>
+      <div class="op on">② Injection</div>
+      <div class="op on">③ XML External Entities</div>
+      <div class="op on">④ Broken Authentication</div>
+      <div class="op on">⑤ Sensitive Data Exposure</div>
+    </div>
+    <div class="ex"><strong>정답 ①</strong> — <strong>Abuse of Cloud Computing(클라우드 컴퓨팅 남용)</strong>은 OWASP TOP 10에 포함된 적 없는 항목. 2017/2020 TOP 10: A1=Injection, A4=XXE, A2=Broken Authentication, A3=Sensitive Data Exposure 모두 포함돼 있어요.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2021 서울시 7급 · 소프트웨어 보안 약점 유형 옳은 것</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">소프트웨어 보안 약점 유형에 대한 설명으로 가장 옳은 것은?</div>
+    <div class="eo">
+      <div class="op ow">① 코드 오류: 의도하지 않은 방법으로 API를 사용하거나 보안에 취약한 API를 사용 (예: DNS lookup에 의존한 보안결정)</div>
+      <div class="op ow">② 에러 처리: 프로그램 입력값에 대한 검증 누락 또는 부적절한 검증, 잘못된 형식지정 (예: SQL 삽입, XQuery 삽입)</div>
+      <div class="op ow">③ 시간 및 상태: 중요한 데이터를 불충분하게 캡슐화하여 인가되지 않은 사용자에게 데이터 누출 가능 (예: 잘못된 세션에 의한 정보 노출)</div>
+      <div class="op or">④ 보안 기능: 인증, 접근제어, 암호화 등의 기능을 부적절하게 구현 시 발생 (예: 부적절한 인가, 하드코드된 암호화키)</div>
+    </div>
+    <div class="ex"><strong>정답 ④</strong> — ①코드 오류 설명이 맞지만 예시(DNS lookup)는 코드 오류에 속함. ②의 설명은 <strong>입력 데이터 검증 및 표현</strong> 유형. ③의 설명은 <strong>캡슐화</strong> 유형. ④만 보안 기능 = 인증·접근제어·암호화 부적절 구현이 정확함.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2023 국가직 정보시스템보안 · OWASP 2017 Injection 정의</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">2017년에 발표된 OWASP TOP 10의 항목 중 (가)에 해당되는 것은?<br>"(가)은(는) 신뢰할 수 없는 데이터가 명령어나 쿼리문의 일부분으로서, 인터프리터로 보내질 때 발생한다. 공격자의 악의적인 데이터는 예기치 않은 명령을 실행하거나 올바른 권한 없이 데이터에 접근하도록 인터프리터를 속일 수 있다."</div>
+    <div class="eo">
+      <div class="op ow">① Broken Access Control</div>
+      <div class="op ow">② Broken Authentication</div>
+      <div class="op ow">③ Sensitive Data Exposure</div>
+      <div class="op or">④ Injection</div>
+    </div>
+    <div class="ex"><strong>정답 ④</strong> — 키워드: "신뢰할 수 없는 데이터", "명령어나 쿼리문", "인터프리터로 전송", "예기치 않은 명령 실행" = <strong>Injection(인젝션)</strong>. 2017 OWASP A1. SQL Injection·OS Injection·LDAP Injection 포함.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2023 국가직 정보시스템보안 · CVE 형식</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">○ CVE(Common Vulnerabilities and Exposure)는 공개적으로 알려진 소프트웨어의 보안취약점을 가리키는 고유 표기를 의미한다.<br>○ 취약점명은 CVE－(가)－(나) 형식으로 구성되어 있다.</div>
+    <div class="eo">
+      <div class="op ow">① (가)일련번호 (나)소프트웨어 버전</div>
+      <div class="op ow">② (가)연도 (나)소프트웨어 버전</div>
+      <div class="op ow">③ (가)일련번호 (나)연도</div>
+      <div class="op or">④ (가)연도 (나)일련번호</div>
+    </div>
+    <div class="ex"><strong>정답 ④</strong> — CVE 형식: <strong>CVE-[취약점 발견 연도]-[일련번호]</strong>. 예: CVE-2022-34993 → 2022년 발견, 일련번호 34993. (가)=연도, (나)=일련번호. 소프트웨어 버전은 CVE 형식에 없어요.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2024 국가직 정보시스템보안 · CVSS 정의</span><span class="es">★★</span></div>
+  <div class="eb">
+    <div class="eq">보안 취약점으로 인해 실제 발생한 취약점의 등급을 매기는 공개 프레임워크는?</div>
+    <div class="eo">
+      <div class="op ow">① CVE</div>
+      <div class="op or">② CVSS</div>
+      <div class="op ow">③ CWE</div>
+      <div class="op ow">④ NVD</div>
+    </div>
+    <div class="ex"><strong>정답 ②</strong> — CVSS(Common Vulnerability Scoring System) = 취약점 심각도를 0~10 점수로 매기는 공개 표준. CVE=취약점 고유 식별. CWE=취약점 유형 분류. NVD=미국 NIST 취약점 DB.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2025 국가직 정보시스템보안 · OWASP 2021 SSRF</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">2021년에 발표된 OWASP Top 10의 항목 중, 서버가 적절한 검증 절차를 거치지 않은 요청을 처리하여, 접근통제를 우회하는 방식으로 서버의 내부 데이터가 탈취될 수 있는 취약점은?</div>
+    <div class="eo">
+      <div class="op ow">① XXE</div>
+      <div class="op or">② SSRF</div>
+      <div class="op ow">③ Cryptographic Failures</div>
+      <div class="op ow">④ Insufficient Logging & Monitoring</div>
+    </div>
+    <div class="ex"><strong>정답 ②</strong> — <strong>SSRF(Server-Side Request Forgery, 서버사이드 요청 위조)</strong> = 서버가 사용자가 제공한 URL을 확인하지 않고 서버 측 쿼리를 수행. VPN·방화벽·ACL에 의해 보호되는 내부에도 위조 요청 전송 가능. 2021 OWASP A10(신규). XXE는 2017/2020에 있었지만 2021에서 사라짐.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2019 국가직 SW 개발보안 가이드 · 분석·설계 단계 오답</span><span class="es">★★</span></div>
+  <div class="eb">
+    <div class="eq">전자정부 SW 개발·운영자를 위한 소프트웨어 개발보안 가이드 상 분석·설계 단계 보안요구항목과 설명으로 옳지 않은 것은?</div>
+    <div class="eo">
+      <div class="op on">① 인증 수행 제한 — 인증 반복시도 제한 및 인증실패 등에 대한 인증제한 기능 설계</div>
+      <div class="op on">② 암호키 관리 — 암호키 생성, 분배, 접근, 파기 등 안전하게 암호키 생명주기 관리 방법 설계</div>
+      <div class="op ow">③ 예외 처리 — <u>보안기능 동작을 위해 사용되는 입력값과 함수의 외부입력값 및 수행결과에 대한 처리방법 설계</u></div>
+      <div class="op on">④ 시스템 자원 접근 및 명령어 수행 입력값 검증 — 시스템 자원접근·명령어 수행에 사용되는 입력값에 대한 유효성 검증방법 설계</div>
+    </div>
+    <div class="ex"><strong>정답 ③</strong> — ③의 설명은 <strong>입력 데이터 검증</strong> 단계 보안요구항목이에요. 예외 처리(Error Handling)는 에러 발생 시 불필요한 시스템 정보가 외부로 노출되지 않도록 하는 활동이에요. 설명이 뒤바뀌었어요.</div>
+  </div>
+</div>
+
+<!-- 암기 카드 -->
+<div class="dv"></div>
+<div class="mem">
+  <div class="mt">💡 소프트웨어 보안 핵심 암기</div>
+  <div class="mi">
+    <div class="mr"><span class="mk">시큐어코딩</span><span class="mv">소스코드의 잠재적 보안 취약점 제거 + <strong>개발 과정에서 지켜야 할 보안 활동</strong></span></div>
+    <div class="mr"><span class="mk">MS-SDL</span><span class="mv">Microsoft. 적용 후 취약점 <strong>50% 이상 감소</strong>. 개발 전 단계 보안 통합.</span></div>
+    <div class="mr"><span class="mk">CLASP</span><span class="mv">활동 중심 경량 프로세스. <strong>이미 운영 중인 시스템에 적용 용이</strong>.</span></div>
+    <div class="mr"><span class="mk">보안 약점 7유형</span><span class="mv">①입력검증·②보안기능·③시간상태·④에러처리·⑤코드오류·⑥캡슐화·⑦API오용</span></div>
+    <div class="mr"><span class="mk">보안기능 예시</span><span class="mv">인증·접근제어·암호화 부적절 구현. <strong>부적절한 인가, 하드코드된 암호화키</strong></span></div>
+    <div class="mr"><span class="mk">OWASP 2013 TOP3</span><span class="mv">A1=<strong>Injection</strong> · A2=인증세션 · A3=<strong>XSS</strong></span></div>
+    <div class="mr"><span class="mk">OWASP 2021 변화</span><span class="mv">A1=취약한 접근제어 · A3=인젝션 · <strong>A10=SSRF(신규)</strong></span></div>
+    <div class="mr"><span class="mk">OWASP 2020 함정</span><span class="mv"><strong>Abuse of Cloud Computing</strong> = TOP 10에 없음</span></div>
+    <div class="mr"><span class="mk">CVE 형식</span><span class="mv">CVE-<strong>[연도]</strong>-<strong>[일련번호]</strong>. 예: CVE-2022-34993</span></div>
+    <div class="mr"><span class="mk">CVSS</span><span class="mv">취약점 <strong>심각도 점수(0~10)</strong> 매기는 공개 프레임워크. CVE(식별)·CWE(유형)와 구분.</span></div>
+  </div>
+</div>
+
+<ul class="cl">
+  <li class="clw">"Unvalidated Redirects and Forwards = 2013 OWASP 상위 3개" → ✗ (A10, 하위)</li>
+  <li class="clw">"Abuse of Cloud Computing = OWASP 2020에 포함" → ✗ (어느 연도에도 없음)</li>
+  <li class="clw">"시큐어코딩 = 스캐빈징" → ✗ (전혀 다른 개념)</li>
+  <li class="clw">"취약한 간접 객체 참조 = OWASP 2013 포함" → ✗ (직접 객체 참조(A4)가 맞음)</li>
+  <li class="clw">"CVE 형식: CVE-[일련번호]-[연도]" → ✗ (CVE-[연도]-[일련번호])</li>
+  <li class="clw">"CVSS = 취약점 식별 코드" → ✗ (CVE가 식별, CVSS는 심각도 점수)</li>
+  <li class="clr">"시큐어코딩 = 소스코드 잠재적 취약점 제거 + 개발 과정 보안 활동" → ✓</li>
+  <li class="clr">"CLASP = 이미 운영 중인 시스템 적용에 적합" → ✓</li>
+  <li class="clr">"보안 기능 약점 = 인증·접근제어·암호화 부적절 구현, 부적절한 인가·하드코드된 암호화키" → ✓</li>
+  <li class="clr">"OWASP 2021 A1=취약한 접근제어, A10=SSRF" → ✓</li>
+  <li class="clr">"CVE-2022-34993 = 2022년 발견, 일련번호 34993" → ✓</li>
+</ul>
+
+<div class="ft">
+  <span>정보보안 합격전략 교재 · INHYUK PI</span>
+  <span>Chapter 08 · 소프트웨어 보안 완전 교재 · 2026 목표</span>
+</div>
+
+</div><!-- /tab-exam -->
+
+</div><!-- /cc -->
+</div><!-- /wrap -->
+
+<script>
+function sw(id){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b=>{
+    if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'"+id+"'")){
+      b.classList.add('active');
+    }
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
