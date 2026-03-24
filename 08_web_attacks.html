@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>웹 취약점 공격 완전 교재 | INHYUK PI</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --p:#1a2540;--a:#2d5be3;--al:#e8eeff;
+  --r:#c0392b;--rl:#fdf0ef;
+  --g:#1a7a4a;--gl:#edf7f2;
+  --w:#b45309;--wl:#fffbeb;
+  --v:#6d28d9;--vl:#ede9fe;
+  --t:#0f766e;--tl:#ccfbf1;
+  --o:#c2410c;--ol:#fff7ed;
+  --bd:#dde3ec;--bg:#fff;--tx:#1c2331;--tm:#5a6478;
+  --g0:#f8f9fa;--g1:#f0f2f5;
+  --sans:'Noto Sans KR',sans-serif;--serif:'Noto Serif KR',serif;--mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--sans);background:#eef1f8;color:var(--tx);font-size:14px;line-height:1.8;}
+.wrap{max-width:960px;margin:0 auto;padding:28px 14px 70px;}
+
+.hdr{background:linear-gradient(135deg,#0f0a1a 0%,#1a1030 50%,#200a0a 100%);border-radius:14px 14px 0 0;padding:30px 42px 26px;position:relative;overflow:hidden;}
+.hdr::before{content:'🕷';position:absolute;right:28px;top:10px;font-size:110px;opacity:.06;}
+.mbr{display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap;}
+.bdg{font-size:9.5px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.06em;text-transform:uppercase;}
+.bdg-ch{background:rgba(255,255,255,.13);color:rgba(255,255,255,.9);}
+.bdg-hot{background:#c0392b;color:white;}
+.bdg-ok{background:#1a7a4a;color:white;}
+.ht{font-family:var(--serif);font-size:27px;font-weight:600;color:white;letter-spacing:-.02em;margin-bottom:3px;}
+.hs{color:rgba(255,255,255,.55);font-size:12px;font-weight:300;}
+.hst{display:flex;gap:22px;margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.1);flex-wrap:wrap;}
+.hn{font-size:18px;font-weight:700;color:#fca5a5;}
+.hl{font-size:9.5px;color:rgba(255,255,255,.5);margin-top:1px;}
+
+.tab-bar{display:flex;background:var(--p);padding:0 42px;gap:2px;flex-wrap:wrap;border-bottom:2px solid rgba(255,255,255,.08);}
+.tab-btn{padding:11px 13px;font-size:11.5px;font-weight:600;color:rgba(255,255,255,.5);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all .18s;white-space:nowrap;}
+.tab-btn:hover{color:rgba(255,255,255,.8);}
+.tab-btn.active{color:#fca5a5;border-bottom-color:#c0392b;}
+
+.cc{background:var(--bg);border-radius:0 0 14px 14px;padding:36px 42px;border:1px solid var(--bd);border-top:none;}
+.tab-pane{display:none;}.tab-pane.active{display:block;}
+
+.sh{display:flex;align-items:center;gap:9px;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--g1);margin-top:6px;}
+.sn2{width:30px;height:30px;background:var(--p);color:white;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.st{font-size:17px;font-weight:700;color:var(--p);}
+.slb{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.06em;text-transform:uppercase;}
+.le{background:var(--rl);color:var(--r);}
+.ld{background:var(--al);color:var(--a);}
+.lv{background:var(--vl);color:var(--v);}
+.lw{background:var(--wl);color:var(--w);}
+.lg{background:var(--gl);color:var(--g);}
+.lo{background:var(--ol);color:var(--o);}
+
+/* STORY */
+.sb{font-size:13.5px;line-height:2.1;color:var(--tx);}
+.sb p{margin-bottom:14px;}
+.sb strong{color:var(--p);}
+.sb em{color:var(--r);font-style:normal;font-weight:700;}
+.sq{background:var(--p);color:white;border-radius:10px;padding:14px 22px 14px 34px;margin:16px 0;font-size:13.5px;line-height:1.9;position:relative;}
+.sq::before{content:'💬';position:absolute;left:-12px;top:12px;font-size:20px;}
+.sq strong{color:#fca5a5;}
+.sdiv{height:1px;background:linear-gradient(90deg,transparent,var(--bd),transparent);margin:28px 0;}
+
+/* DEF BOX */
+.dfb{background:var(--p);color:white;border-radius:11px;padding:16px 21px;margin-bottom:14px;}
+.dfl{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fca5a5;margin-bottom:6px;}
+.dfb p{font-size:13.5px;line-height:1.95;color:rgba(255,255,255,.9);}
+.dfb strong{color:#fca5a5;}
+.dfb code{font-family:var(--mono);font-size:11px;background:rgba(252,165,165,.15);color:#fca5a5;padding:1px 5px;border-radius:3px;}
+
+/* TABLE */
+.tw{overflow-x:auto;margin:12px 0;border-radius:9px;border:1px solid var(--bd);}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead tr{background:var(--p);color:white;}
+thead th{padding:10px 13px;text-align:left;font-weight:600;font-size:11.5px;}
+tbody tr{border-bottom:1px solid var(--g1);}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:#fff8f8;}
+tbody td{padding:9px 13px;color:var(--tx);vertical-align:top;line-height:1.7;}
+tbody td:first-child{font-weight:600;color:var(--p);}
+
+/* CARDS */
+.cds{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:10px;margin:12px 0;}
+.cd{border:1px solid var(--bd);border-radius:9px;padding:13px 14px;background:var(--g0);}
+.cdt{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--r);margin-bottom:6px;}
+.cdb{font-size:13px;color:var(--tx);line-height:1.75;}
+.cdb strong{color:var(--p);}
+
+/* DIAGRAM */
+.dw{background:var(--g0);border:1px solid var(--bd);border-radius:12px;padding:18px;margin:14px 0;overflow-x:auto;}
+.dt{font-size:11px;font-weight:700;color:var(--p);margin-bottom:12px;letter-spacing:.03em;}
+
+/* PROC */
+.proc{display:flex;flex-direction:column;gap:0;margin:14px 0;border-radius:11px;overflow:hidden;border:1px solid var(--bd);}
+.ps{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;border-bottom:1px solid var(--g1);}
+.ps:last-child{border-bottom:none;}
+.ps:nth-child(even){background:var(--g0);}
+.pn{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white;flex-shrink:0;margin-top:2px;}
+.pc{flex:1;}
+.pt{font-size:13.5px;font-weight:700;color:var(--p);margin-bottom:4px;}
+.pd{font-size:13px;color:var(--tm);line-height:1.8;}
+.pd+.pd{margin-top:8px;}
+.ptag{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:5px;margin-top:6px;}
+
+/* COMPARE */
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0;}
+.cv{border-radius:10px;overflow:hidden;border:1px solid var(--bd);}
+.cvh{padding:10px 15px;font-size:13px;font-weight:700;color:white;}
+.cvb{padding:11px 15px;background:var(--bg);}
+.cvr{display:flex;gap:8px;padding:5px 0;border-bottom:1px solid var(--g1);font-size:12.5px;}
+.cvr:last-child{border-bottom:none;}
+.cvk{color:var(--tm);min-width:58px;font-size:10.5px;padding-top:2px;flex-shrink:0;}
+.cvv{color:var(--tx);font-weight:500;line-height:1.65;}
+
+/* TRAP */
+.trap{border-radius:11px;margin:16px 0;overflow:hidden;}
+.th{display:flex;align-items:center;gap:8px;padding:11px 16px;background:var(--r);color:white;}
+.tht{font-size:12.5px;font-weight:700;}
+.tb{background:var(--rl);padding:14px 18px;border:1px solid #f5c6c2;border-top:none;border-radius:0 0 11px 11px;}
+.tb p{font-size:13px;color:#7a1c1c;line-height:1.9;margin-bottom:8px;}
+.tb p:last-child{margin-bottom:0;}
+.tq{background:white;border-left:3px solid var(--r);padding:9px 13px;border-radius:0 7px 7px 0;margin:9px 0;font-size:13px;color:var(--tx);font-style:italic;line-height:1.75;}
+.vw{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:20px;background:var(--r);color:white;}
+.vr{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:20px;background:var(--g);color:white;}
+
+/* INFO */
+.inf{border-radius:9px;padding:12px 16px;margin:12px 0;font-size:13px;line-height:1.85;}
+.inf-r{background:var(--rl);border:1px solid #f5c6c2;color:#7a1c1c;}
+.inf-g{background:var(--gl);border:1px solid #a3dbc0;color:#0d3321;}
+.inf-b{background:var(--al);border:1px solid #b0c4f5;color:#1a2540;}
+.inf strong{color:var(--p);}
+.inf code{font-family:var(--mono);font-size:11px;background:rgba(0,0,0,.07);padding:1px 5px;border-radius:3px;}
+
+/* CODE BLOCK */
+.cb{background:#1e1e2e;border-radius:9px;padding:14px 18px;margin:12px 0;font-family:var(--mono);font-size:12px;line-height:1.8;overflow-x:auto;}
+.cb .com{color:#6c7a8d;}
+.cb .kw{color:#c792ea;}
+.cb .str{color:#c3e88d;}
+.cb .bad{color:#f07178;}
+.cb .ok{color:#89ddff;}
+
+/* EXAM */
+.ec{border:1px solid var(--bd);border-radius:11px;margin:11px 0;overflow:hidden;}
+.eh{display:flex;align-items:center;justify-content:space-between;padding:9px 15px;background:var(--g0);border-bottom:1px solid var(--bd);}
+.ey{font-size:11.5px;font-weight:700;color:var(--p);}
+.es{color:#e8b000;font-size:12px;letter-spacing:2px;}
+.eb{padding:14px 16px;}
+.eq{font-size:13.5px;font-weight:600;color:var(--tx);margin-bottom:11px;line-height:1.75;}
+.eo{display:flex;flex-direction:column;gap:5px;}
+.op{font-size:13px;padding:7px 11px;border-radius:6px;border:1px solid transparent;line-height:1.6;}
+.ow{background:#fdf0ef;border-color:#f5c6c2;color:#7a1c1c;text-decoration:line-through;opacity:.8;}
+.ow::before{content:'✗ ';}
+.or{background:var(--gl);border-color:#a3dbc0;color:#0d4a2a;font-weight:600;}
+.or::before{content:'✓ ';}
+.on{background:var(--g0);border-color:var(--bd);color:var(--tx);}
+.ex{margin-top:11px;padding:12px 14px;background:var(--g0);border-radius:7px;font-size:13px;color:var(--tm);line-height:1.9;border-left:3px solid var(--r);}
+
+/* MEM */
+.mem{background:linear-gradient(135deg,#0f0a1a 0%,#1a2540 100%);border-radius:13px;padding:22px 25px;color:white;margin:14px 0;position:relative;overflow:hidden;}
+.mem::before{content:'🕷';position:absolute;right:14px;top:8px;font-size:52px;opacity:.08;}
+.mt{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fca5a5;margin-bottom:12px;}
+.mi{display:flex;flex-direction:column;gap:9px;}
+.mr{display:flex;gap:10px;align-items:flex-start;}
+.mk{font-family:var(--mono);font-size:10.5px;font-weight:600;background:rgba(252,165,165,.18);color:#fca5a5;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;}
+.mv{font-size:13px;color:rgba(255,255,255,.85);line-height:1.75;}
+.mv strong{color:#fca5a5;}
+
+.cl{list-style:none;margin:12px 0;display:flex;flex-direction:column;gap:5px;}
+.cl li{display:flex;align-items:flex-start;gap:8px;font-size:13px;padding:8px 13px;border-radius:7px;border:1px solid var(--bd);background:var(--bg);line-height:1.65;}
+.clw{background:#fdf0ef;border-color:#f5c6c2;}
+.clw::before{content:'⚠';color:var(--r)!important;font-size:12px;flex-shrink:0;margin-top:2px;}
+.clr{background:var(--gl);border-color:#a3dbc0;}
+.clr::before{content:'✓';color:var(--g)!important;font-size:12px;flex-shrink:0;margin-top:2px;}
+
+.dv{height:1px;background:var(--g1);margin:26px 0;}
+.ft{display:flex;justify-content:space-between;margin-top:28px;padding-top:13px;border-top:1px solid var(--bd);font-size:10.5px;color:var(--tm);}
+@media(max-width:640px){.cc,.hdr{padding:22px 16px;}.tab-bar{padding:0 16px;}.cg{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hdr">
+  <div class="mbr">
+    <span class="bdg bdg-ch">Chapter 08 · 웹 보안 취약점</span>
+    <span class="bdg bdg-hot">9급 최빈출</span>
+    <span class="bdg bdg-ok">기출 12문제 수록</span>
+  </div>
+  <div class="ht">웹 취약점 공격 완전 교재</div>
+  <div class="hs">XSS · SQL Injection · CSRF · 경로조작 · 파일업로드 · 웹쉘 · 리버스텔넷 · 인증/인가 취약점</div>
+  <div class="hst">
+    <div><div class="hn">XSS 3종</div><div class="hl">Stored·Reflected·DOM</div></div>
+    <div><div class="hn">CSRF</div><div class="hl">XSS와 차이 ★★★</div></div>
+    <div><div class="hn">웹쉘</div><div class="hl">업로드→실행→침투</div></div>
+    <div><div class="hn">12문제</div><div class="hl">기출 수록</div></div>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="sw('story')">📖 탄생 스토리</button>
+  <button class="tab-btn" onclick="sw('xss')">🔴 XSS · CSRF</button>
+  <button class="tab-btn" onclick="sw('sql')">💉 SQL Injection</button>
+  <button class="tab-btn" onclick="sw('auth')">🔐 인증·인가·경로조작</button>
+  <button class="tab-btn" onclick="sw('upload')">📁 파일업로드·웹쉘·리버스텔넷</button>
+  <button class="tab-btn" onclick="sw('exam')">📝 기출 12선</button>
+</div>
+
+<div class="cc">
+
+<!-- ════ 스토리 ════ -->
+<div class="tab-pane active" id="tab-story">
+
+<div class="sh"><div class="sn2">1</div><div class="st">웹이 열리던 날, 보안의 구멍도 함께 열렸다</div></div>
+<div class="sb">
+<p>1990년대 중반, 웹(WWW)이 폭발적으로 보급되면서 기업들은 앞다투어 홈페이지를 만들었어요. 초기 웹 개발자들의 관심은 오직 <strong>"어떻게 하면 더 많은 정보를 빠르게 보여줄 수 있을까"</strong>였어요. 보안은 나중 문제였죠. 이 틈에서 공격자들은 웹의 구조적 특성을 악용하는 방법을 하나씩 발견하기 시작했어요.</p>
+
+<p>웹의 근본적인 취약점은 단순해요. <strong>사용자가 입력한 데이터를 서버가 신뢰한다는 점</strong>이에요. 웹 폼에 이름을 입력하면 서버는 그 값이 정말 이름인지, 아니면 악성 코드인지 검증하지 않고 처리하는 경우가 많아요. 이 하나의 설계 실수에서 XSS, SQL Injection, CSRF 등 수많은 공격이 탄생했어요.</p>
+
+<p>1995년, 처음으로 웹 스크립트 삽입 공격이 보고됐어요. 공격자가 게시판에 악성 스크립트를 심고, 다른 사용자가 그 글을 읽으면 스크립트가 실행된다는 사실이 발견됐어요. 이게 <em>XSS(Cross-Site Scripting)</em>의 시작이에요. 2001년에는 SQL 쿼리 조작으로 DB 인증을 우회하는 <em>SQL Injection</em>이 널리 알려졌고, 2001년 CSRF도 학계에 처음 보고됐어요.</p>
+
+<p>이 공격들이 특히 위험한 이유가 있어요. 방화벽이나 IDS가 막아주지 못해요. 왜냐하면 공격 트래픽이 <strong>합법적인 HTTP 80번 포트</strong>를 통해 들어오거든요. 네트워크 관점에서는 정상 웹 요청이에요. 이 때문에 웹 전용 보안 장비인 <strong>WAF(Web Application Firewall)</strong>가 필요해졌어요.</p>
+</div>
+
+<div class="sq">
+웹 보안 취약점의 공통 원인:<br>
+<strong>"사용자 입력값을 검증(Validation)·이스케이프(Escape)하지 않고 그대로 사용한다."</strong><br><br>
+XSS → 입력값을 HTML에 그대로 출력 → 스크립트 실행<br>
+SQL Injection → 입력값을 SQL 쿼리에 그대로 삽입 → DB 조작<br>
+경로 조작 → 입력값을 파일 경로에 그대로 사용 → 시스템 파일 접근
+</div>
+
+<div class="sdiv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">공격자의 침투 경로 — 웹쉘과 리버스 텔넷</div></div>
+<div class="sb">
+<p>공격자가 서버 권한을 탈취하려면 단계가 있어요. <strong>취약점 발견 → 파일 업로드 → 웹쉘 설치 → 리버스 텔넷으로 원격 제어</strong>가 일반적인 공격 경로예요. 각 단계는 앞 단계의 성공을 전제로 해요.</p>
+
+<p><strong>파일 업로드 취약점</strong>은 문이에요. 확장자나 내용 검증 없이 파일을 업로드할 수 있다면, 공격자는 PHP·JSP·ASP 같은 서버 사이드 스크립트 파일을 올릴 수 있어요. 이게 <strong>웹쉘(Web Shell)</strong>이에요. 웹쉘은 HTTP를 통해 서버 OS 명령어를 실행할 수 있게 해주는 악성 스크립트예요. 브라우저에서 웹쉘 URL을 접근하면 서버에서 임의의 명령이 실행돼요.</p>
+
+<p>그런데 문제가 있어요. 방화벽이 외부에서 서버로 들어오는(인바운드) 연결을 차단하면, 공격자가 서버에 직접 접속하기 어려워요. 이때 쓰는 게 <strong>리버스 텔넷(Reverse Telnet)</strong>이에요. 서버가 먼저 공격자 PC로 연결을 시도해요. 방화벽 입장에서는 서버에서 나가는(아웃바운드) 연결이니까 차단하지 않아요. 80번(HTTP) 포트를 이용하면 더욱 탐지하기 어려워요.</p>
+
+<p>이 흐름을 이해하면 대응책도 자연스럽게 이해돼요. 파일 업로드 제한(확장자 화이트리스트) → 웹쉘 차단. 아웃바운드 트래픽도 차단 → 리버스 텔넷 차단. 업로드 디렉터리 실행 권한 제거 → 웹쉘 실행 차단. 모든 대응이 하나로 연결되는 구조예요.</p>
+</div>
+
+</div><!-- /tab-story -->
+
+<!-- ════ XSS · CSRF ════ -->
+<div class="tab-pane" id="tab-xss">
+
+<div class="sh"><div class="sn2">1</div><div class="st">XSS — Cross-Site Scripting</div><span class="slb le">★★★ 최빈출</span></div>
+
+<div class="dfb">
+  <div class="dfl">XSS 정의</div>
+  <p>XSS(Cross-Site Scripting)는 공격자가 작성한 <strong>악성 스크립트가 다른 사용자의 브라우저에서 실행</strong>되는 취약점. 웹 브라우저에서 사용자가 입력하는 값에 대한 유효성을 검증하지 않고 그대로 웹 서버에 전송할 때 발생. 공격자의 의도적인 악성 스크립트를 웹 서버에 저장하는 것이 1차 목적. 다른 사용자 브라우저에서 적절한 검증 없이 실행되므로 세션을 탈취하거나, 웹 사이트를 변조하거나, 악의적인 사이트로 이동시킬 수 있음.</p>
+</div>
+
+<div class="sb">
+<p>XSS의 핵심은 <strong>"공격자가 쓴 코드가 피해자의 브라우저에서 실행된다"</strong>는 점이에요. 공격자가 직접 피해자를 공격하는 게 아니라, 취약한 웹 서버를 매개체로 사용해요. 자바스크립트가 브라우저에서 실행된다는 특성을 악용하기 때문에, 서버 측이 아닌 <strong>클라이언트 측 공격</strong>이에요. 하지만 공격 코드를 심는 행위는 서버(게시판 등)를 통해 이뤄져요.</p>
+
+<p>XSS로 무엇을 할 수 있을까요? 가장 흔한 목적은 <strong>쿠키·세션 탈취</strong>예요. 브라우저에 저장된 세션 쿠키를 자바스크립트로 읽어 공격자 서버에 전송하면, 공격자가 피해자로 로그인할 수 있어요. 또한 피싱 페이지로 이동 유도, 키로거(키 입력 가로채기), 악성코드 다운로드 등에도 활용돼요.</p>
+</div>
+
+<!-- XSS 3종 SVG -->
+<div class="dw">
+  <div class="dt">XSS 3가지 유형 — 공격 흐름 비교</div>
+  <svg viewBox="0 0 820 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:820px;display:block;margin:0 auto;">
+
+    <!-- Stored XSS -->
+    <rect x="8" y="8" width="254" height="184" rx="9" fill="#fdf0ef" stroke="#c0392b" stroke-width="1.5"/>
+    <text x="135" y="30" text-anchor="middle" fill="#c0392b" font-size="12" font-family="sans-serif" font-weight="700">① Stored XSS (저장형)</text>
+    <rect x="20" y="42" width="100" height="24" rx="6" fill="#c0392b"/>
+    <text x="70" y="58" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="600">공격자</text>
+    <line x1="120" y1="54" x2="165" y2="54" stroke="#c0392b" stroke-width="1.5"/>
+    <polygon points="165,50 175,54 165,58" fill="#c0392b"/>
+    <rect x="175" y="42" width="75" height="24" rx="6" fill="#374151"/>
+    <text x="212" y="58" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif">웹서버</text>
+    <text x="142" y="40" text-anchor="middle" fill="#c0392b" font-size="9" font-family="sans-serif">① 악성스크립트 저장</text>
+
+    <rect x="20" y="88" width="100" height="24" rx="6" fill="#374151" opacity=".6"/>
+    <text x="70" y="104" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif">일반 사용자</text>
+    <line x1="120" y1="100" x2="165" y2="100" stroke="#374151" stroke-width="1.5"/>
+    <polygon points="165,96 175,100 165,104" fill="#374151"/>
+    <text x="142" y="92" text-anchor="middle" fill="#374151" font-size="9" font-family="sans-serif">② 페이지 요청</text>
+    <line x1="175" y1="114" x2="120" y2="114" stroke="#c0392b" stroke-width="2"/>
+    <polygon points="120,110 110,114 120,118" fill="#c0392b"/>
+    <text x="142" y="130" text-anchor="middle" fill="#c0392b" font-size="9" font-family="sans-serif">③ 스크립트 포함 응답</text>
+
+    <rect x="20" y="144" width="225" height="36" rx="6" fill="white" stroke="#c0392b" stroke-width="1"/>
+    <text x="132" y="160" text-anchor="middle" fill="#c0392b" font-size="10" font-family="sans-serif" font-weight="600">④ 브라우저에서 실행 → 쿠키 탈취</text>
+    <text x="132" y="174" text-anchor="middle" fill="#5a6478" font-size="9" font-family="sans-serif">게시판·DB에 스크립트 영구 저장</text>
+
+    <!-- Reflected XSS -->
+    <rect x="282" y="8" width="254" height="184" rx="9" fill="#fdf0ef" stroke="#b45309" stroke-width="1.5"/>
+    <text x="409" y="30" text-anchor="middle" fill="#b45309" font-size="12" font-family="sans-serif" font-weight="700">② Reflected XSS (반사형)</text>
+    <rect x="294" y="42" width="100" height="24" rx="6" fill="#b45309"/>
+    <text x="344" y="58" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="600">공격자</text>
+    <line x1="394" y1="54" x2="430" y2="54" stroke="#b45309" stroke-width="1.5" stroke-dasharray="4,2"/>
+    <text x="411" y="48" text-anchor="middle" fill="#b45309" font-size="8" font-family="sans-serif">URL 포함 악성 링크</text>
+    <rect x="430" y="42" width="95" height="24" rx="6" fill="#374151" opacity=".6"/>
+    <text x="477" y="58" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif">일반 사용자</text>
+
+    <rect x="294" y="88" width="95" height="24" rx="6" fill="#374151"/>
+    <text x="341" y="104" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif">웹서버</text>
+    <line x1="389" y1="100" x2="430" y2="100" stroke="#b45309" stroke-width="2"/>
+    <polygon points="430,96 440,100 430,104" fill="#b45309"/>
+    <text x="412" y="92" text-anchor="middle" fill="#b45309" font-size="9" font-family="sans-serif">스크립트 즉시 반사</text>
+
+    <rect x="294" y="144" width="225" height="36" rx="6" fill="white" stroke="#b45309" stroke-width="1"/>
+    <text x="406" y="160" text-anchor="middle" fill="#b45309" font-size="10" font-family="sans-serif" font-weight="600">URL 클릭 즉시 실행 (비저장)</text>
+    <text x="406" y="174" text-anchor="middle" fill="#5a6478" font-size="9" font-family="sans-serif">이메일·링크로 피해자 유인 필요</text>
+
+    <!-- DOM XSS -->
+    <rect x="556" y="8" width="254" height="184" rx="9" fill="#ede9fe" stroke="#6d28d9" stroke-width="1.5"/>
+    <text x="683" y="30" text-anchor="middle" fill="#6d28d9" font-size="12" font-family="sans-serif" font-weight="700">③ DOM 기반 XSS</text>
+    <rect x="568" y="42" width="100" height="24" rx="6" fill="#6d28d9"/>
+    <text x="618" y="58" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="600">공격자</text>
+    <line x1="668" y1="54" x2="705" y2="54" stroke="#6d28d9" stroke-width="1.5" stroke-dasharray="4,2"/>
+    <rect x="705" y="42" width="95" height="24" rx="6" fill="#374151" opacity=".6"/>
+    <text x="752" y="58" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif">일반 사용자</text>
+
+    <rect x="568" y="88" width="225" height="50" rx="6" fill="white" stroke="#6d28d9" stroke-width="1"/>
+    <text x="680" y="108" text-anchor="middle" fill="#6d28d9" font-size="10" font-family="sans-serif" font-weight="700">서버 응답 없이</text>
+    <text x="680" y="124" text-anchor="middle" fill="#6d28d9" font-size="10" font-family="sans-serif">브라우저 DOM에서 직접 실행</text>
+
+    <rect x="568" y="150" width="225" height="36" rx="6" fill="white" stroke="#6d28d9" stroke-width="1"/>
+    <text x="680" y="166" text-anchor="middle" fill="#6d28d9" font-size="10" font-family="sans-serif" font-weight="600">서버 로그에 안 남을 수 있음</text>
+    <text x="680" y="180" text-anchor="middle" fill="#5a6478" font-size="9" font-family="sans-serif">2005년 Amit Klein이 최초 발견</text>
+  </svg>
+</div>
+
+<div class="sb">
+<p>XSS는 공격 방식에 따라 세 가지로 나뉘어요. <strong>Stored XSS(저장형)</strong>는 가장 위험한 유형이에요. 게시판·댓글 등에 악성 스크립트를 저장해 두면, 그 페이지를 읽는 모든 사용자에게 계속 공격이 가해져요. 1번 올리면 무한히 작동해요. <strong>Reflected XSS(반사형)</strong>는 URL 파라미터에 스크립트를 삽입해 피해자에게 클릭하도록 유도하는 방식이에요. 서버에 저장되지 않아요. <strong>DOM 기반 XSS</strong>는 서버와 관계없이 클라이언트 브라우저의 DOM을 조작해 실행돼요.</p>
+
+<p>XSS 방어의 핵심은 <strong>입출력 값 필터링·이스케이프</strong>예요. <code>&lt;</code>를 <code>&amp;lt;</code>로, <code>&gt;</code>를 <code>&amp;gt;</code>로 변환하면 HTML 태그로 해석되지 않아요. 서버 측 검증 + 클라이언트 측 검증 모두 필요해요. Content Security Policy(CSP) 헤더 설정도 효과적이에요.</p>
+</div>
+
+<div class="tw"><table>
+  <thead><tr><th>XSS 유형</th><th>저장 여부</th><th>공격 방식</th><th>특징</th></tr></thead>
+  <tbody>
+    <tr><td>Stored XSS</td><td>✅ DB 영구 저장</td><td>게시판·댓글에 삽입 후 열람 유도</td><td>가장 위험. 1회 삽입으로 다수 피해.</td></tr>
+    <tr><td>Reflected XSS</td><td>❌ 미저장</td><td>URL 파라미터에 삽입 → 링크 전송</td><td>피해자가 직접 링크 클릭 필요.</td></tr>
+    <tr><td>DOM 기반 XSS</td><td>❌ 미저장</td><td>DOM API 조작(클라이언트 측)</td><td>서버 응답 없이 실행. 탐지 어려움.</td></tr>
+  </tbody>
+</table></div>
+
+<div class="trap">
+  <div class="th"><span>⚠</span><span class="tht">함정 — XSS 유형명 혼동 (2017 국가직 정보시스템보안)</span></div>
+  <div class="tb">
+    <div class="tq">"Cross Site Scripting(XSS) 공격 유형: ① Reflash XSS 공격 ② Reflected XSS 공격 ③ DOM 기반 XSS 공격 ④ Stored XSS 공격 — 해당하지 않는 것은?" → 정답: <span class="vw">① Reflash XSS</span></div>
+    <p>"Reflash"는 존재하지 않는 명칭이에요. 올바른 유형명은 <strong>Reflected(반사형)</strong>이에요. "Flash"와 "Reflected"를 헷갈리도록 만든 함정. XSS 3종 = <strong>Stored / Reflected / DOM 기반</strong>만 기억하면 돼요.</p>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">CSRF — Cross-Site Request Forgery</div><span class="slb le">★★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">CSRF 정의</div>
+  <p>CSRF(Cross-Site Request Forgery)는 <strong>로그인한 사용자의 세션을 이용해 공격자가 의도한 행위(수정·삭제·등록·송금)를 특정 웹사이트에 요청하게 만드는 공격</strong>. 불특정 다수를 대상으로 하며, 사용자는 자신의 의지와는 무관하게 요청을 보내게 됨. <strong>특정 웹사이트가 사용자의 웹브라우저를 신뢰하는 상태</strong>를 악용.</p>
+</div>
+
+<div class="sb">
+<p>CSRF를 이해하려면 쿠키 기반 세션의 동작 방식을 알아야 해요. 사용자가 은행 사이트에 로그인하면 브라우저에 세션 쿠키가 저장돼요. 이후 해당 은행 사이트에 요청을 보낼 때마다 브라우저는 <strong>자동으로 쿠키를 함께 보내요</strong>. 공격자는 이 자동 전송 메커니즘을 악용해요.</p>
+
+<p>공격 시나리오를 살펴볼게요. 피해자가 은행 사이트(bank.com)에 로그인한 상태에서, 공격자가 만든 악성 페이지(evil.com)를 열었어요. 그 악성 페이지에는 <code>&lt;img src="https://bank.com/transfer?to=attacker&amount=1000000"&gt;</code>가 숨어 있어요. 브라우저는 이 img 태그를 처리하면서 bank.com에 자동으로 요청을 보내고, 이때 bank.com 세션 쿠키도 자동으로 함께 전송돼요. 은행 서버는 정상 요청으로 판단하고 송금을 처리해 버려요.</p>
+
+<p>CSRF는 XSS와 매우 유사해 보이지만 <strong>방향이 정반대예요</strong>. XSS는 악성 스크립트가 <em>클라이언트(브라우저)</em>에서 실행되는 공격이고, CSRF는 악성 요청이 <em>서버</em>로 전송되는 공격이에요. XSS는 사용자를 공격하고, CSRF는 서버(웹사이트)를 공격해요.</p>
+
+<p>CSRF 방어의 핵심은 <strong>CSRF 토큰(Anti-CSRF Token)</strong>이에요. 서버가 세션마다 고유한 토큰을 발급하고, 중요한 요청에서 이 토큰 값이 올바른지 검증해요. 공격자는 피해자의 세션 쿠키는 자동으로 얻을 수 있지만, 토큰 값은 알 수 없어요. 추가적으로 중요한 요청에는 사용자 재인증(패스워드 재확인)을 요구하는 방법도 있어요.</p>
+</div>
+
+<!-- XSS vs CSRF 비교 -->
+<div class="cg">
+  <div class="cv">
+    <div class="cvh" style="background:#c0392b;">XSS (사이트 간 스크립팅)</div>
+    <div class="cvb">
+      <div class="cvr"><span class="cvk">피해 대상</span><span class="cvv"><strong>사용자(클라이언트)</strong> — 사용자 브라우저가 피해</span></div>
+      <div class="cvr"><span class="cvk">실행 위치</span><span class="cvv"><strong>클라이언트 측</strong> (사용자 브라우저)</span></div>
+      <div class="cvr"><span class="cvk">공격 방법</span><span class="cvv">악성 스크립트를 웹 서버에 삽입</span></div>
+      <div class="cvr"><span class="cvk">목적</span><span class="cvv">쿠키 탈취, 페이지 변조, 악성코드 배포</span></div>
+      <div class="cvr"><span class="cvk">서버 관점</span><span class="cvv">서버는 피해자 역할이 아님 (매개체)</span></div>
+    </div>
+  </div>
+  <div class="cv">
+    <div class="cvh" style="background:#6d28d9;">CSRF (사이트 간 요청 위조)</div>
+    <div class="cvb">
+      <div class="cvr"><span class="cvk">피해 대상</span><span class="cvv"><strong>서버(웹사이트)</strong> — 서버가 위조 요청 처리</span></div>
+      <div class="cvr"><span class="cvk">실행 위치</span><span class="cvv"><strong>서버 측</strong> (서버가 요청을 처리)</span></div>
+      <div class="cvr"><span class="cvk">공격 방법</span><span class="cvv">로그인된 사용자의 세션을 이용한 위조 요청</span></div>
+      <div class="cvr"><span class="cvk">목적</span><span class="cvv">계정 정보 변경, 송금, 게시물 등록·삭제</span></div>
+      <div class="cvr"><span class="cvk">서버 관점</span><span class="cvv">서버는 정상 요청으로 오인하여 처리</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="trap">
+  <div class="th"><span>⚠</span><span class="tht">함정 ★★★ — CSRF와 세션 하이재킹 혼동 (2020 국가직 정보시스템보안)</span></div>
+  <div class="tb">
+    <div class="tq">"CSRF는 서버와 클라이언트에 각각 잘못된 시퀀스 넘버를 사용하여 연결된 세션에 혼란을 줌으로써 공격자가 서버와의 연결을 획득하는 방법이다" → <span class="vw">✗ 오답</span></div>
+    <p>이 설명은 <strong>세션 하이재킹(Session Hijacking)</strong>이에요. TCP 시퀀스 번호를 이용한 세션 탈취 공격이죠. CSRF는 시퀀스 번호와 전혀 무관해요. CSRF = 로그인된 사용자를 이용해 위조 요청을 서버에 전송하는 공격.</p>
+    <div class="tq">"CSRF와 XSS의 차이 — XSS 공격에서는 악성 스크립트가 클라이언트에서 실행되는 반면, CSRF 공격은 악성 스크립트를 서버에 요청한다는 차이가 있다" → <span class="vr">✓ 정답</span></div>
+  </div>
+</div>
+
+</div><!-- /tab-xss -->
+
+<!-- ════ SQL Injection ════ -->
+<div class="tab-pane" id="tab-sql">
+
+<div class="sh"><div class="sn2">1</div><div class="st">SQL Injection 완전 정리</div><span class="slb le">★★★ 최빈출</span></div>
+
+<div class="dfb">
+  <div class="dfl">SQL Injection 정의</div>
+  <p>SQL Injection은 <strong>공격자가 입력값을 조작하여 원하는 SQL 구문을 실행시키는 공격</strong>. 웹에서 사용자가 입력하는 값이 DB 질의어(SQL)와 연동될 때, 입력값을 적절히 검증·처리하지 않으면 발생. 공격자는 명령어나 질의어에 특정 코드를 삽입하여 DB 인증을 우회하거나 데이터를 조작·삭제할 수 있음. OWASP TOP 10에서 2004·2007·2010·2013·2017년에 지속 포함된 핵심 취약점.</p>
+</div>
+
+<div class="sb">
+<p>SQL Injection의 동작 원리를 코드로 이해해볼게요. 일반적인 로그인 쿼리를 보면, 사용자가 입력한 ID와 PW를 그대로 SQL 문자열에 연결해요. 여기서 PW 필드에 <code>' OR 1=1--</code>을 입력하면 어떻게 될까요?</p>
+</div>
+
+<div class="cb">
+  <span class="com">-- 정상 쿼리</span><br>
+  SELECT * FROM 학생 WHERE ID = '<span class="str">admin</span>' AND PW = '<span class="str">비밀번호</span>';<br><br>
+  <span class="com">-- 공격자가 PW 입력란에  ' OR 1=1-- 를 입력하면</span><br>
+  SELECT * FROM 학생 WHERE ID = '<span class="str">admin</span>' AND PW = '<span class="bad">' OR 1=1--</span>';<br><br>
+  <span class="com">-- 실제로 실행되는 쿼리 (--는 주석, OR 1=1은 항상 참)</span><br>
+  SELECT * FROM 학생 WHERE ID = '<span class="str">admin</span>' AND PW = '<span class="bad">' OR 1=1</span><span class="ok">-- (나머지 주석 처리)</span>
+</div>
+
+<div class="sb">
+<p>쿼리 해석: <code>AND PW = ''</code>는 거짓이지만, <code>OR 1=1</code>이 추가되면서 전체 WHERE 조건이 <strong>항상 참(True)</strong>이 돼요. 결과적으로 PW가 틀려도 첫 번째 레코드(보통 관리자 계정)로 로그인이 성공해요. 이것이 SQL Injection의 가장 기본적인 형태인 <strong>인증 우회 공격</strong>이에요.</p>
+
+<p>SQL Injection의 피해 범위는 인증 우회에 그치지 않아요. 데이터 전체를 조회(<code>UNION SELECT</code> 구문)하거나, 데이터를 삭제(<code>DROP TABLE</code>)하거나, 파일을 읽거나 쓸 수도 있어요. 데이터베이스 서버 권한에 따라 OS 명령어 실행까지 가능해요.</p>
+
+<p>핵심 대응책은 두 가지예요. 첫째, <strong>매개변수화 쿼리(Parameterized Query)/준비된 구문(Prepared Statement)</strong>을 사용하는 거예요. <code>SELECT * FROM 학생 WHERE ID = ? AND PW = ?</code>처럼 입력값 자리에 ?를 쓰면, 드라이버가 입력값을 코드가 아닌 데이터로 처리해요. 둘째, <strong>특수문자 필터링</strong>이에요. <code>'</code>, <code>"</code>, <code>;</code>, <code>--</code>, <code>+</code> 등 SQL에서 특수한 의미를 갖는 문자를 필터링해요.</p>
+</div>
+
+<div class="trap">
+  <div class="th"><span>⚠</span><span class="tht">함정 ★★★ — SQL Injection 대응 방법 (2018 국회직)</span></div>
+  <div class="tb">
+    <div class="tq">"SQL injection: 웹에서 사용자가 입력하는 값이 DB 질의어와 연동이 되는 경우에는 <u>클라이언트 측에서만</u> 자바스크립트 등을 통해 사용자의 입력값을 검증하는 것으로 해결된다" → <span class="vw">✗ 오답</span></div>
+    <p>클라이언트 측(브라우저) 검증만으로는 절대 해결되지 않아요. 공격자는 브라우저 없이 직접 HTTP 요청을 조작할 수 있거든요. <strong>서버 측 검증이 반드시 필요</strong>해요. 클라이언트 검증은 UX 편의용, 서버 검증이 실제 보안.</p>
+    <div class="tq">"SQL Injection: 전송되는 패킷을 가로채어 자신이 송신자인 것처럼 패킷을 변경하여 다시 보내는 기법이다" → <span class="vw">✗ 오답</span></div>
+    <p>이 설명은 <strong>패킷 스푸핑·세션 하이재킹</strong>의 설명이에요. SQL Injection은 패킷 가로채기와 무관하며, <strong>입력값 조작으로 SQL 쿼리를 변형</strong>시키는 공격이에요.</p>
+  </div>
+</div>
+
+</div><!-- /tab-sql -->
+
+<!-- ════ 인증·인가·경로조작 ════ -->
+<div class="tab-pane" id="tab-auth">
+
+<div class="sh"><div class="sn2">1</div><div class="st">인증(Authentication) 기능 취약점</div><span class="slb le">★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">인증 기능 취약점 정의</div>
+  <p>인증(Authentication)이란 현재 요청을 보낸 사람이 실제로 주장하는 사람인지를 확인하는 과정. <strong>적절한 인증 없이 중요 기능이 노출되는 경우 보안 취약점이 됨</strong>. 취약한 인증은 웹 어플리케이션 공통 패스워드 문제 등에서 가장 기본적인 취약점이며, 관리자 변경 기능이 별도로 만들어져 있지 않고 기본 계정·패스워드가 그대로 사용되는 경우가 많음.</p>
+</div>
+
+<div class="sb">
+<p>인증 취약점의 가장 흔한 형태는 <strong>기본 계정 미변경</strong>이에요. 웹 서버·DB·네트워크 장비를 설치하면 기본 관리자 계정(admin/admin, root/root 등)이 설정되어 있어요. 관리자가 이를 변경하지 않으면 누구나 기본값으로 로그인할 수 있어요. 개발자도 개발 환경에서는 보안보다 편의를 우선하기 때문에, 운영 환경에서도 admin/admin 같은 취약한 계정이 남아있는 경우가 많아요.</p>
+
+<p>또 다른 형태는 <strong>세션 관리 취약점</strong>이에요. 로그아웃 후에도 세션이 서버에 남아있거나, 세션 토큰이 예측 가능한 패턴(ex: 사용자 ID 기반)으로 생성되거나, HTTPS 없이 세션 쿠키가 전송되면 취약해요. 2022 국가직 기출에서 "인증 후 정상적으로 세션이 발행된 페이지의 정보를 취득하고 일정 시간 후에 재전송했을 때 정상 처리가 되는지 확인하는 방법 → <strong>불충분한 세션 관리</strong> 취약점 점검"으로 출제됐어요.</p>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">부적절한 인가(Authorization) 취약점</div><span class="slb le">★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">부적절한 인가 정의</div>
+  <p>인가(Authorization)란 <strong>인증된 사용자가 어떤 자원에 접근할 수 있는지 결정하는 과정</strong>. 인증에 성공한 사용자가 어떤 기능을 요청할 때, 해당 기능을 수행할 권한이 있는지 서버가 검증하지 않으면 보안 취약점이 됨. 권한을 확인하거나 변경하는 과정에서 발생.</p>
+</div>
+
+<div class="sb">
+<p>인가 취약점의 대표 사례는 <strong>URL 직접 접근</strong>이에요. 일반 사용자가 관리자 페이지 URL(<code>/admin/users.php</code>)을 직접 브라우저에 입력하면 접근이 되어버리는 경우예요. 화면에서 링크를 숨겼어도 URL을 알면 접근할 수 있어요. 서버 측에서 반드시 권한을 재검증해야 해요.</p>
+
+<p>또 다른 사례는 <strong>파라미터 조작</strong>이에요. 내 정보 조회 URL이 <code>/user?id=100</code>인데, id=101로 바꿔서 다른 사람의 정보를 볼 수 있는 경우예요. 이를 <strong>IDOR(Insecure Direct Object Reference, 불안전한 직접 객체 참조)</strong>라고도 해요. 숫자 하나만 바꾸면 다른 사용자의 데이터에 접근할 수 있어요.</p>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">3</div><div class="st">경로 조작(Path Traversal)</div><span class="slb le">★★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">경로 조작 정의</div>
+  <p>경로 조작(Path Traversal)은 <strong>사용자 입력에 대한 검증을 하지 않고 그대로 파일 경로로 사용할 때, 서버 시스템의 임의 자원에 접근하는 보안 취약점</strong>. 부모 디렉터리를 의미하는 <code>../</code>를 이용하여 허가된 디렉터리를 벗어나 시스템 중요 파일을 읽거나 삭제할 수 있음.</p>
+</div>
+
+<div class="sb">
+<p>경로 조작의 원리는 단순해요. 파일 다운로드 기능이 <code>/download?file=report.pdf</code>처럼 파일명을 파라미터로 받는다면, 공격자는 이를 <code>/download?file=../../../etc/passwd</code>로 바꿔요. <code>../</code>는 "한 단계 위 디렉터리로 이동"을 의미하므로, 웹 서비스 디렉터리를 벗어나 시스템 파일에 접근할 수 있어요.</p>
+
+<p>실제 공격에선 URL 인코딩(<code>%2e%2e%2f</code>)이나 이중 인코딩(<code>%252e%252e%252f</code>)으로 필터링을 우회하려는 시도도 많아요. 그래서 단순히 <code>../</code> 문자열만 필터링하는 방식은 불충분하고, 경로를 정규화(Canonical Path)한 후 허용된 디렉터리 내에 있는지 검증해야 해요.</p>
+
+<p>2022년 국가직 정보시스템보안에서는 "<code>../</code>를 이용해서 임의의 경로가 포함된 값으로 웹페이지 파라미터를 변조한 후 해당 경로의 파일 내용이 표시되는지 확인하는 방법이 점검하는 취약점은?" → <strong>경로 추적(Path Traversal)</strong>으로 출제됐어요. 디렉터리 인덱싱과 혼동하지 않도록 주의해야 해요. 디렉터리 인덱싱은 특정 URL 경로에 직접 접근했을 때 디렉터리 파일 목록이 보이는 취약점이에요.</p>
+</div>
+
+<div class="tw"><table>
+  <thead><tr><th>취약점</th><th>점검 방법</th><th>발생 원인</th><th>대응책</th></tr></thead>
+  <tbody>
+    <tr><td><strong>경로 조작</strong><br>(Path Traversal)</td><td><code>../</code>를 파라미터에 삽입 후 파일 내용 표시 확인</td><td>파일 경로 파라미터 미검증</td><td>입력값 정규화 후 허용 경로 외 차단. <code>../</code>·<code>..\</code> 필터링</td></tr>
+    <tr><td><strong>디렉터리 인덱싱</strong><br>(Directory Listing)</td><td>특정 디렉터리 URL까지만 직접 접근하여 파일 목록 표시 확인</td><td>웹 서버 설정 미흡</td><td>웹 서버 Directory Listing 옵션 비활성화</td></tr>
+    <tr><td><strong>XSS</strong></td><td>게시판에 <code>&lt;script&gt;alert()&lt;/script&gt;</code> 입력 후 실행 확인</td><td>입출력값 이스케이프 미적용</td><td>HTML 엔티티 변환 (<code>&lt;</code>→<code>&amp;lt;</code>)</td></tr>
+    <tr><td><strong>불충분한 세션관리</strong></td><td>인증 후 세션 정보 취득, 일정 시간 후 재전송 시 정상 처리 확인</td><td>세션 유효기간·무결성 미검증</td><td>세션 유효기간 설정, 세션 토큰 재발급</td></tr>
+  </tbody>
+</table></div>
+
+</div><!-- /tab-auth -->
+
+<!-- ════ 파일업로드·웹쉘·리버스텔넷 ════ -->
+<div class="tab-pane" id="tab-upload">
+
+<div class="sh"><div class="sn2">1</div><div class="st">파일 업로드 제한 부재</div><span class="slb le">★★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">파일 업로드 취약점 정의</div>
+  <p>파일 업로드 취약점은 <strong>업로드되는 파일의 유효성을 검증하지 않아</strong> 실행 가능한 스크립트 파일(asp, php, jsp 등)이 업로드될 수 있는 보안 취약점. 공격자는 악성 스크립트(웹쉘)를 업로드하고 이를 실행하여 시스템 명령을 수행하거나 내부 침투 기회를 얻음. <strong>리버스 텔넷 같은 원격 제어를 얻기 위해 반드시 거쳐야 하는 공격 단계</strong>.</p>
+</div>
+
+<div class="sb">
+<p>파일 업로드 취약점이 위험한 이유는 단순히 악성 파일이 서버에 올라가는 게 아니라, 그 파일이 <strong>서버에서 실행될 수 있다는 점</strong>이에요. PHP 파일을 업로드하고 웹 브라우저로 그 파일의 URL에 접근하면, 웹 서버가 해당 PHP 코드를 실행해요. 이렇게 만들어지는 게 웹쉘이에요.</p>
+
+<p>업로드 취약점이 발생하는 이유는 검증의 부재 또는 우회 가능한 검증 방식 때문이에요. 단순히 파일 확장자만 확인하는 경우, 공격자는 <code>shell.php</code>를 <code>shell.php.jpg</code>로 바꿔 우회를 시도해요. 또는 Content-Type 헤더를 image/jpeg로 변조해서 우회하기도 해요. 그래서 확장자 확인, MIME 타입 확인, 파일 내용(Magic Byte) 확인 모두 필요해요.</p>
+</div>
+
+<div class="cds">
+  <div class="cd"><div class="cdt">확장자 화이트리스트</div><div class="cdb">허용할 확장자(.jpg·.png·.pdf)만 명시하고 나머지 차단. <strong>블랙리스트 방식은 우회 가능</strong>.</div></div>
+  <div class="cd"><div class="cdt">업로드 경로 격리</div><div class="cdb">업로드 디렉터리를 <strong>web document root 밖</strong>에 저장. 직접 URL 접근 불가.</div></div>
+  <div class="cd"><div class="cdt">실행 권한 제거</div><div class="cdb">업로드 디렉터리에 <strong>스크립트 실행 권한 제거</strong>. 업로드돼도 실행 불가.</div></div>
+  <div class="cd"><div class="cdt">파일명 변경</div><div class="cdt" style="color:var(--g)"></div><div class="cdb">저장 시 임의 파일명으로 변경. 업로드 파일명에 <strong>필터링 설정</strong>.</div></div>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">웹쉘 (Web Shell)</div><span class="slb le">★★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">웹쉘 정의</div>
+  <p>웹쉘(Web Shell)은 <strong>클라이언트에서 웹 서버에 명령을 전달하기 위한 목적으로 만든 스크립트 프로그램</strong>. 서버 사이드 스크립트(ASP·PHP·JSP 등)로 작성되어 업로드됨. 설치되면 기존 서비스를 계속 작동시키면서 공격자가 만든 명령을 실행하게 됨. <strong>HTTP를 통해 동작하기 때문에 서버 측에서 실행되는 원격 접속 도구</strong>.</p>
+</div>
+
+<div class="sb">
+<p>웹쉘의 핵심 특성은 <strong>HTTP를 통해 OS 명령어를 실행한다</strong>는 점이에요. 일반적인 텔넷이나 SSH 접속은 해당 포트가 열려있어야 하고 방화벽에 차단될 수 있어요. 하지만 웹쉘은 이미 열려있는 80번(HTTP) 포트를 사용해요. 방화벽이 있어도 통과할 수 있어요.</p>
+
+<p>간단한 웹쉘의 예시를 보면, PHP로 한 줄만 써도 돼요. <code>&lt;?php system($_GET['cmd']); ?&gt;</code>. 이 파일을 서버에 업로드하고 <code>http://target.com/uploads/shell.php?cmd=ls</code>를 접근하면, 서버에서 <code>ls</code> 명령이 실행되고 결과가 브라우저에 표시돼요. 이것 하나로 파일 목록 확인, 파일 내용 출력, 시스템 정보 수집 등이 가능해요.</p>
+
+<p>웹쉘은 탐지하기 어렵고 비교적 쉽게 제어할 수 있어 흔히 쓰이는 공격 방법이에요. HTTP 트래픽처럼 보이기 때문에 네트워크 수준에서 탐지가 어렵고, 정상적인 웹 요청과 외형이 같아요. 대응으로는 파일 업로드 취약점 제거(근본 원인 제거), 업로드 파일 실행 권한 제거, 무결성 검사 도구(Tripwire 등)로 파일 변경 탐지, 웹 방화벽(WAF) 시그니처 적용 등이 있어요.</p>
+</div>
+
+<div class="trap">
+  <div class="th"><span>⚠</span><span class="tht">함정 — 웹쉘 대응 방법 (2024 국가직 정보시스템보안)</span></div>
+  <div class="tb">
+    <div class="tq">웹 셸(web shell) 공격에 대한 대응 방법으로 <u>옳지 않은 것</u>은? — "업로드 파일에 대한 실행 금지 / 업로드 파일 위치 격리 / 업로드 가능한 파일 형식 제한 / ④ 업로드 파일명에 대한 필터링 설정" → 모두 옳음. 이 문제에서 오답인 것은 다른 선지.</div>
+    <p>웹쉘 대응 4원칙: <strong>①실행 금지 ②위치 격리 ③형식 제한 ④파일명 필터링</strong>. 모두 유효한 대응. 서버에 업로드된 파일이 직접 실행되지 않도록 다중 방어 적용 필요.</p>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">3</div><div class="st">리버스 텔넷 (Reverse Telnet)</div><span class="slb le">★★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">리버스 텔넷 정의</div>
+  <p>리버스 텔넷(Reverse Telnet)은 <strong>공격 대상 서버가 먼저 공격자 PC로 연결을 시도하게 하여 방화벽의 인바운드 차단 정책을 우회하는 공격 기법</strong>. 웹 서버가 80번 포트(HTTP)를 통해 나가는 연결을 이용하면 방화벽이 차단하지 않아 탐지하기 어려움. 파일 업로드 취약점으로 설치한 웹쉘을 통해 실행됨.</p>
+</div>
+
+<div class="sb">
+<p>일반적인 원격 접속 방향은 <strong>공격자 → 서버</strong>예요. 공격자가 텔넷·SSH로 서버에 접속하려면 해당 포트(23·22번)가 열려있어야 해요. 방화벽이 이 포트로의 인바운드 연결을 차단하면 공격자는 접속할 수 없어요.</p>
+
+<p>리버스 텔넷은 방향을 바꿔요. <strong>서버 → 공격자</strong>로 연결해요. 공격자는 자신의 PC에서 특정 포트를 열고 기다려요. 웹쉘을 통해 서버에서 공격자 PC로 접속 명령을 실행해요. 방화벽 입장에서는 서버에서 나가는(아웃바운드) 연결이라 차단하지 않아요. 특히 80번(HTTP) 포트를 이용하면 정상 웹 통신처럼 보여서 더 탐지하기 어려워요.</p>
+
+<p>리버스 텔넷 대응책은 파일 업로드 취약점을 먼저 막아야 해요. 웹쉘이 없으면 리버스 텔넷 명령을 실행할 방법이 없기 때문이에요. 추가로 서버에서 외부로 나가는 <strong>아웃바운드 트래픽도 불필요한 연결을 차단</strong>하는 게 좋아요. 많은 기업이 인바운드만 차단하고 아웃바운드는 허용하는데, 이 정책의 빈틈을 리버스 텔넷이 파고드는 거예요.</p>
+</div>
+
+<!-- 리버스 텔넷 SVG -->
+<div class="dw">
+  <div class="dt">리버스 텔넷 vs 일반 텔넷 — 방향 비교</div>
+  <svg viewBox="0 0 760 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px;display:block;margin:0 auto;">
+
+    <!-- 일반 텔넷 -->
+    <rect x="10" y="10" width="340" height="135" rx="9" fill="#fdf0ef" stroke="#c0392b" stroke-width="1.5"/>
+    <text x="180" y="32" text-anchor="middle" fill="#c0392b" font-size="12" font-family="sans-serif" font-weight="700">일반 텔넷 (인바운드 연결)</text>
+
+    <rect x="25" y="50" width="90" height="36" rx="7" fill="#c0392b"/>
+    <text x="70" y="70" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="600">공격자 PC</text>
+
+    <line x1="115" y1="68" x2="175" y2="68" stroke="#c0392b" stroke-width="2.5"/>
+    <polygon points="175,64 185,68 175,72" fill="#c0392b"/>
+    <text x="148" y="60" text-anchor="middle" fill="#c0392b" font-size="9" font-family="sans-serif" font-weight="600">접속 시도 →</text>
+
+    <rect x="185" y="50" width="90" height="36" rx="7" fill="#1a2540"/>
+    <text x="230" y="65" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif">방화벽</text>
+    <text x="230" y="78" text-anchor="middle" fill="#fca5a5" font-size="9" font-family="sans-serif">23번 차단!</text>
+
+    <text x="290" y="68" text-anchor="middle" fill="#c0392b" font-size="20" font-family="sans-serif">✗</text>
+    <rect x="305" y="50" width="30" height="36" rx="7" fill="#374151" opacity=".4"/>
+    <text x="320" y="72" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif">서버</text>
+
+    <rect x="25" y="100" width="310" height="36" rx="6" fill="white" stroke="#c0392b" stroke-width="1"/>
+    <text x="180" y="118" text-anchor="middle" fill="#c0392b" font-size="11" font-family="sans-serif" font-weight="600">방화벽이 인바운드 23번 포트 차단 → 실패</text>
+    <text x="180" y="130" text-anchor="middle" fill="#5a6478" font-size="9" font-family="sans-serif">공격자에서 서버로의 직접 접속 불가</text>
+
+    <!-- 리버스 텔넷 -->
+    <rect x="370" y="10" width="380" height="135" rx="9" fill="#edf7f2" stroke="#1a7a4a" stroke-width="1.5"/>
+    <text x="560" y="32" text-anchor="middle" fill="#1a7a4a" font-size="12" font-family="sans-serif" font-weight="700">리버스 텔넷 (아웃바운드 연결)</text>
+
+    <rect x="385" y="50" width="90" height="36" rx="7" fill="#374151"/>
+    <text x="430" y="65" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif">공격자 PC</text>
+    <text x="430" y="78" text-anchor="middle" fill="#86efac" font-size="9" font-family="sans-serif">포트 열고 대기</text>
+
+    <rect x="492" y="50" width="90" height="36" rx="7" fill="#1a2540"/>
+    <text x="537" y="65" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif">방화벽</text>
+    <text x="537" y="78" text-anchor="middle" fill="#86efac" font-size="9" font-family="sans-serif">80번 허용</text>
+
+    <rect x="600" y="50" width="90" height="36" rx="7" fill="#1a7a4a"/>
+    <text x="645" y="65" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="600">서버</text>
+    <text x="645" y="78" text-anchor="middle" fill="#86efac" font-size="9" font-family="sans-serif">(웹쉘 실행)</text>
+
+    <line x1="640" y1="68" x2="588" y2="68" stroke="#1a7a4a" stroke-width="2.5"/>
+    <polygon points="492,64 482,68 492,72" fill="#1a7a4a"/>
+    <line x1="480" y1="68" x2="440" y2="68" stroke="#1a7a4a" stroke-width="2.5"/>
+    <text x="560" y="45" text-anchor="middle" fill="#1a7a4a" font-size="9" font-family="sans-serif" font-weight="600">← 서버가 먼저 접속 (아웃바운드)</text>
+
+    <rect x="385" y="100" width="350" height="36" rx="6" fill="white" stroke="#1a7a4a" stroke-width="1"/>
+    <text x="560" y="118" text-anchor="middle" fill="#1a7a4a" font-size="11" font-family="sans-serif" font-weight="600">아웃바운드 80번 → 방화벽 통과 성공!</text>
+    <text x="560" y="130" text-anchor="middle" fill="#5a6478" font-size="9" font-family="sans-serif">서버→공격자 방향이라 방화벽이 허용 → 원격 제어 획득</text>
+  </svg>
+</div>
+
+<div class="tw"><table>
+  <thead><tr><th>구분</th><th>공격 흐름</th><th>포트</th><th>방화벽 우회</th></tr></thead>
+  <tbody>
+    <tr><td>일반 텔넷</td><td>공격자 → 서버 (인바운드)</td><td>TCP 23번</td><td>❌ 방화벽이 차단</td></tr>
+    <tr><td><strong>리버스 텔넷</strong></td><td><strong>서버 → 공격자 (아웃바운드)</strong></td><td><strong>TCP 80번 (HTTP) 이용 시 탐지 어려움</strong></td><td>✅ 아웃바운드 허용 정책 우회</td></tr>
+  </tbody>
+</table></div>
+
+</div><!-- /tab-upload -->
+
+<!-- ════ 기출 ════ -->
+<div class="tab-pane" id="tab-exam">
+
+<div class="sh"><div class="sn2">📝</div><div class="st">기출문제 전수 해설 — 12문제</div><span class="slb le">연도순</span></div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2014 서울시 9급 · XSS 정의</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">웹사이트에서 입력을 엄밀하게 검증하지 않는 취약점을 이용하는 공격으로 사용자로 위장한 공격자가 웹사이트에 프로그램 코드를 삽입하여 나중에 이 사이트를 방문하는 다른 사용자의 웹 브라우저에서 해당 코드가 실행되도록 한다. 어떤 공격인가?</div>
+    <div class="eo">
+      <div class="op ow">① HTTP 세션 탈취</div>
+      <div class="op ow">② 피싱</div>
+      <div class="op or">③ 사이트 간 스크립팅 (XSS)</div>
+      <div class="op ow">④ 파밍</div>
+    </div>
+    <div class="ex"><strong>정답 ③</strong> — 키워드: "코드 삽입 → 다른 사용자의 브라우저에서 실행" = XSS. "사용자로 위장한 공격자" + "검증하지 않는 취약점 이용" + "타인 브라우저에서 실행"이 XSS의 3대 키워드.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2015 국가직 9급 · SQL Injection 정의</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">공격자가 사용자의 명령어나 질의어에 특정한 코드를 삽입하여 DB 인증을 우회하거나 데이터를 조작한다. 다음에서 설명하는 웹 서비스 공격은?</div>
+    <div class="eo">
+      <div class="op ow">① 직접 객체 참조</div>
+      <div class="op ow">② Cross Site Request Forgery</div>
+      <div class="op ow">③ Cross Site Scripting</div>
+      <div class="op or">④ SQL Injection</div>
+    </div>
+    <div class="ex"><strong>정답 ④</strong> — "명령어·질의어에 코드 삽입 → DB 인증 우회·데이터 조작" = SQL Injection. 직접 객체 참조(IDOR)는 권한 없이 다른 사용자 데이터 접근. CSRF는 로그인 세션을 이용한 위조 요청.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2016 국가직 정보시스템보안 · CSRF 정의</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">( )는(은) 불특정 다수를 대상으로 로그인된 사용자가 자신의 의도와는 무관하게 공격자가 의도한 행위(수정, 삭제, 등록, 송금)를 하게 만드는 공격이다.</div>
+    <div class="eo">
+      <div class="op ow">① 명령 삽입 취약점</div>
+      <div class="op ow">② XSS 취약점</div>
+      <div class="op ow">③ 디렉터리 리스팅 취약점</div>
+      <div class="op or">④ CSRF 취약점</div>
+    </div>
+    <div class="ex"><strong>정답 ④</strong> — 키워드: "불특정 다수", "로그인된 사용자", "자신의 의지와 무관", "수정·삭제·등록·송금" = CSRF. XSS는 스크립트가 클라이언트에서 실행되는 것. CSRF는 서버에 위조 요청을 보내는 것.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2017 국가직 정보시스템보안 · XSS 유형 오답 찾기</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">Cross Site Scripting(XSS) 공격유형에 해당하지 않는 것은?</div>
+    <div class="eo">
+      <div class="op ow">① Reflash XSS 공격</div>
+      <div class="op on">② Reflected XSS 공격</div>
+      <div class="op on">③ DOM(Document Object Model) 기반 XSS 공격</div>
+      <div class="op on">④ Stored XSS 공격</div>
+    </div>
+    <div class="ex"><strong>정답 ①</strong> — "Reflash"는 존재하지 않는 공격 유형. XSS 3종 = <strong>Stored(저장형) / Reflected(반사형) / DOM 기반</strong>. "Reflected"와 비슷하게 만든 함정. Flash는 Adobe Flash로 혼동 유도.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2018 국회직 9급 · 웹 공격 유형 종합</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">웹 공격의 유형에 대한 설명으로 옳지 않은 것은?</div>
+    <div class="eo">
+      <div class="op on">① XSS: 저장·반사·DOM 기반 XSS로 분류. 입출력값 검증·인코딩으로 대응.</div>
+      <div class="op ow">② SQL injection: <u>클라이언트 측에서만</u> 자바스크립트 등을 통해 사용자의 입력값을 검증하는 것으로 해결된다.</div>
+      <div class="op on">③ CSRF: 사용자가 자신의 의도와는 무관하게 공격자가 의도한 행위를 특정 웹사이트에 요청하게 만드는 공격.</div>
+      <div class="op on">④ 쿠키획득 공격: 로그인된 사용자의 쿠키값을 XSS로 획득하여 로그인 가능.</div>
+    </div>
+    <div class="ex"><strong>정답 ②</strong> — 클라이언트 측 검증만으로는 SQL Injection 방어 불가. 공격자는 브라우저 우회 후 직접 HTTP 요청 조작 가능. <strong>반드시 서버 측 검증(Prepared Statement·특수문자 필터링)이 필요</strong>.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2019 경찰공무원 · Reflected XSS vs CSRF</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">㉠ 공격: URL에 악성 스크립트를 포함시킨 메일을 보내고 사용자가 클릭하면 서버로부터 반송된 오류 메시지에 포함된 악성 스크립트가 실행되는 방법.<br>㉡ 공격: 로그인 상태인 사용자의 세션 쿠키와 다른 인증정보를 취약한 웹 앱에 자동으로 포함시키고, 공격자가 의도한 HTTP 요청을 사용자가 보낸 것처럼 자동으로 보내는 방법.</div>
+    <div class="eo">
+      <div class="op or">① ㉠ Reflected XSS, ㉡ CSRF</div>
+      <div class="op ow">② ㉠ SQL 인젝션, ㉡ Reflected XSS</div>
+      <div class="op ow">③ ㉠ CSRF, ㉡ SQL 인젝션</div>
+      <div class="op ow">④ ㉠ Reflected XSS, ㉡ S-HTTP</div>
+    </div>
+    <div class="ex"><strong>정답 ①</strong> — ㉠: URL 파라미터에 스크립트 삽입 + 클릭 유도 + 서버가 반사 = Reflected XSS. ㉡: 로그인 세션 + 쿠키 자동 포함 + 위조 HTTP 요청 = CSRF. 두 공격의 차이를 명확히 구분하는 문제.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2020 국가직 정보시스템보안 · CSRF 오답 (세션 하이재킹)</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">CSRF(Cross Site Request Forgery)의 특징에 대한 설명으로 <u>옳지 않은 것</u>은?</div>
+    <div class="eo">
+      <div class="op on">① 사용자가 자신의 의지와는 무관하게 공격자가 의도한 행위를 특정 웹사이트에 요청하게 하는 방법이다.</div>
+      <div class="op on">② 사이트에 방문하는 사용자가 정상적인 요청이 아닌 임의의 요청을 하도록 위조하는 방법이다.</div>
+      <div class="op ow">③ 서버와 클라이언트에 각각 잘못된 시퀀스 넘버를 사용하여 연결된 세션에 혼란을 줌으로써 공격자가 서버와의 연결을 획득하는 방법이다.</div>
+      <div class="op on">④ 특정 웹사이트가 사용자의 웹브라우저를 신용하는 상태를 악용하는 방법이다.</div>
+    </div>
+    <div class="ex"><strong>정답 ③</strong> — "시퀀스 넘버, 세션 혼란, 서버 연결 획득" = <strong>세션 하이재킹(Session Hijacking)</strong> 설명. CSRF는 시퀀스 번호와 무관. CSRF는 이미 맺어진 정상 세션을 '이용'하는 것이지, 세션 자체를 '탈취'하는 게 아님.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2020 국가직 정보시스템보안 · XSS 공격 순서</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">일반적인 XSS 공격 수행 과정을 순서대로 바르게 나열한 것은?<br>가. 사용자가 공격자의 XSS 코드에 접근한다.<br>나. 사용자의 시스템에서 XSS 코드가 실행된다.<br>다. 웹 서버가 XSS 코드가 포함된 게시판 글을 사용자에게 전달한다.<br>라. 공격자가 XSS 취약점이 존재하는 서버에 XSS 코드를 작성하여 저장한다.<br>마. XSS 코드가 실행된 결과가 공격자에게 전달되고 공격을 종료한다.</div>
+    <div class="eo">
+      <div class="op ow">① 라→가→나→다→마</div>
+      <div class="op ow">② 라→가→다→나→마</div>
+      <div class="op or">③ 라→다→가→나→마</div>
+      <div class="op ow">④ 라→다→나→가→마</div>
+    </div>
+    <div class="ex"><strong>정답 ③ 라→다→가→나→마</strong> — ①라: 공격자가 서버에 XSS 코드 저장. ②다: 사용자가 페이지 요청 시 서버가 코드 포함 응답 전달. ③가: 사용자가 XSS 코드에 접근(인지 못함). ④나: 사용자 브라우저에서 실행. ⑤마: 결과가 공격자에게 전달. 핵심: <strong>"서버가 전달(다)" 후 "사용자 접근(가)"</strong> 순서.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2020 국가직 정보시스템보안 · SQL Injection 오답</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">SQL 인젝션에 대한 설명으로 <u>옳지 않은 것</u>은?</div>
+    <div class="eo">
+      <div class="op on">① 공격자가 입력값을 조작하여 원하는 SQL 구문을 실행한다.</div>
+      <div class="op ow">② 전송되는 패킷을 가로채어 자신이 송신자인 것처럼 패킷을 변경하여 다시 보내는 기법이다.</div>
+      <div class="op on">③ 대응 방법 중에는 사용자의 입력에 특수문자가 포함되어 있는지 검증하는 방법이 있다.</div>
+      <div class="op on">④ OWASP에서 선정한 10대 웹 어플리케이션 보안 위험으로 SQL 인젝션의 취약점이 2004·2007·2010·2013·2017년에 포함되어 있다.</div>
+    </div>
+    <div class="ex"><strong>정답 ②</strong> — "패킷 가로채기 + 송신자 위장 + 패킷 변경 + 재전송" = 패킷 스푸핑 또는 세션 하이재킹 설명. SQL Injection은 입력값 조작으로 SQL 쿼리를 변형하는 공격이며 패킷 가로채기와 무관.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2022 국가직 정보시스템보안 · 리버스 텔넷 정의</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">공격 대상이 되는 서버에서 먼저 공격자 PC로 연결하게 하여 방화벽 보안 정책을 우회하는 공격은?</div>
+    <div class="eo">
+      <div class="op or">① 리버스 텔넷</div>
+      <div class="op ow">② 쿠키 변조</div>
+      <div class="op ow">③ 명령 삽입</div>
+      <div class="op ow">④ 파일 업로드</div>
+    </div>
+    <div class="ex"><strong>정답 ①</strong> — "서버에서 먼저 공격자 PC로 연결" = 리버스 텔넷. 방화벽이 인바운드는 차단하지만 아웃바운드(서버→외부)는 허용하는 정책을 역이용. 주로 웹쉘 설치 후 실행됨.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2022 국가직 정보시스템보안 · 취약점 점검 방법 매핑</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">(가) "../"를 이용해서 임의의 경로가 포함된 값으로 웹페이지 파라미터를 변조한 후 해당 경로의 파일 내용이 표시되는지 확인<br>(나) 사용자 입력값을 전달받는 게시판에 &lt;script&gt;alert()&lt;/script&gt;와 같은 스크립트를 입력한 후 실행 여부 확인<br>(다) 인증 후 정상적으로 세션이 발행된 페이지의 정보를 취득하고 일정 시간 후에 재전송했을 때 정상 처리가 되는지 확인</div>
+    <div class="eo">
+      <div class="op ow">① (가)경로추적 (나)CSRF (다)불충분한 인증 및 인가</div>
+      <div class="op or">② (가)경로추적 (나)XSS (다)불충분한 세션 관리</div>
+      <div class="op ow">③ (가)디렉터리 인덱싱 (나)XSS (다)불충분한 인증 및 인가</div>
+      <div class="op ow">④ (가)디렉터리 인덱싱 (나)CSRF (다)불충분한 세션 관리</div>
+    </div>
+    <div class="ex"><strong>정답 ②</strong> — (가): <code>../</code> 파라미터 변조 → 경로 추적(Path Traversal). (나): 스크립트 입력 후 실행 확인 → XSS. (다): 세션 정보 재전송 시 정상 처리 → 불충분한 세션 관리. 디렉터리 인덱싱은 URL 경로로 직접 접근 시 파일 목록 노출 확인.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2023 국가직 정보시스템보안 · CSRF 설명</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">CSRF에 대한 설명으로 옳은 것은?</div>
+    <div class="eo">
+      <div class="op ow">① 취약한 컴포넌트를 악용하여 공격하면 데이터 손실이나 서버 장악 문제가 발생할 수 있는 취약점이다.</div>
+      <div class="op ow">② 조작된 XPath 쿼리를 보냄으로써 비정상적인 데이터를 쿼리를 이용해 가져올 수 있는 취약점이다.</div>
+      <div class="op ow">③ 적절히 보호되지 않은 쿠키를 사용하여, 쿠키 값 변조를 통한 다른 사용자로의 위장 및 권한 상승 등이 가능한 취약점이다.</div>
+      <div class="op or">④ 로그인한 사용자 브라우저로 하여금 사용자의 세션 쿠키와 기타 인증 정보를 포함하는 위조된 HTTP 요청을 전송할 수 있는 취약점이다.</div>
+    </div>
+    <div class="ex"><strong>정답 ④</strong> — "로그인한 사용자 브라우저 + 세션 쿠키 포함 + 위조된 HTTP 요청 전송" = CSRF 핵심 정의. ①=취약한 컴포넌트 사용, ②=XPath Injection, ③=쿠키 변조(권한 상승).</div>
+  </div>
+</div>
+
+<!-- 암기 카드 -->
+<div class="dv"></div>
+<div class="mem">
+  <div class="mt">💡 웹 취약점 공격 핵심 암기</div>
+  <div class="mi">
+    <div class="mr"><span class="mk">XSS 3종</span><span class="mv"><strong>Stored(저장형)</strong>·Reflected(반사형)·DOM기반. "Reflash"는 없는 유형.</span></div>
+    <div class="mr"><span class="mk">XSS 공격 순서</span><span class="mv">라(코드저장) → <strong>다(서버전달)</strong> → 가(사용자접근) → 나(브라우저실행) → 마(공격자전달)</span></div>
+    <div class="mr"><span class="mk">XSS vs CSRF</span><span class="mv">XSS = 스크립트가 <strong>클라이언트</strong>에서 실행 / CSRF = 위조 요청이 <strong>서버</strong>로 전송</span></div>
+    <div class="mr"><span class="mk">CSRF 키워드</span><span class="mv"><strong>불특정 다수 / 로그인된 세션 / 사용자 의지와 무관 / 수정·삭제·송금</strong></span></div>
+    <div class="mr"><span class="mk">SQL Injection</span><span class="mv">입력값 → SQL 쿼리 변형. 대응: <strong>Prepared Statement + 특수문자 필터링</strong></span></div>
+    <div class="mr"><span class="mk">SQL 대응 오답</span><span class="mv">"클라이언트 측만 검증" → ✗. 반드시 <strong>서버 측 검증 필요</strong>.</span></div>
+    <div class="mr"><span class="mk">경로 조작</span><span class="mv"><code>../</code>로 파라미터 변조 → 허용 디렉터리 밖 파일 접근. 디렉터리 인덱싱(파일목록 노출)과 다름.</span></div>
+    <div class="mr"><span class="mk">파일업로드→웹쉘</span><span class="mv">확장자 미검증 → PHP/ASP/JSP 업로드 → 웹쉘 실행 → OS 명령어 수행</span></div>
+    <div class="mr"><span class="mk">리버스 텔넷</span><span class="mv"><strong>서버→공격자 방향</strong>. 아웃바운드 정책 우회. 80번 포트 이용 시 탐지 어려움.</span></div>
+    <div class="mr"><span class="mk">웹쉘 대응</span><span class="mv">실행금지 + 위치격리 + 형식제한 + 파일명 필터링. <strong>4가지 모두 유효한 대응</strong>.</span></div>
+  </div>
+</div>
+
+<ul class="cl">
+  <li class="clw">"Reflash XSS"는 XSS 공격 유형에 포함된다 → ✗ (존재하지 않는 유형)</li>
+  <li class="clw">"XSS 공격 순서: 라→가→다→나→마" → ✗ (라→다→가→나→마. '서버 전달(다)'가 '사용자 접근(가)' 앞)</li>
+  <li class="clw">"SQL Injection: 클라이언트 측 검증만으로 해결 가능" → ✗ (서버 측 검증 필수)</li>
+  <li class="clw">"SQL Injection: 패킷 가로채기·송신자 위장" → ✗ (세션 하이재킹 설명)</li>
+  <li class="clw">"CSRF: 시퀀스 넘버로 세션 혼란 → 연결 획득" → ✗ (세션 하이재킹 설명)</li>
+  <li class="clw">"리버스 텔넷: 공격자가 서버에 접속하는 방식" → ✗ (서버→공격자 방향)</li>
+  <li class="clr">"XSS = 클라이언트 측 실행 / CSRF = 서버에 위조 요청 전송" → ✓</li>
+  <li class="clr">"CSRF 키워드: 불특정 다수 + 로그인 세션 + 의지와 무관 + 위조 요청" → ✓</li>
+  <li class="clr">"경로 조작 점검: ../를 파라미터에 삽입 후 파일 내용 표시 확인" → ✓</li>
+  <li class="clr">"리버스 텔넷: 서버→공격자 방향, 아웃바운드 정책 우회, 80번 포트 이용" → ✓</li>
+  <li class="clr">"웹쉘 대응: 실행금지 + 위치격리 + 형식제한 + 파일명 필터링" → ✓</li>
+</ul>
+
+<div class="ft">
+  <span>정보보안 합격전략 교재 · INHYUK PI</span>
+  <span>Chapter 08 · 웹 취약점 공격 완전 교재 · 2026 목표</span>
+</div>
+
+</div><!-- /tab-exam -->
+
+</div><!-- /cc -->
+</div><!-- /wrap -->
+
+<script>
+function sw(id){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b=>{
+    if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'"+id+"'")){
+      b.classList.add('active');
+    }
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>

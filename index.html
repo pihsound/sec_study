@@ -85,7 +85,7 @@ body{font-family:var(--sans);background:#eef1f8;color:var(--tx);min-height:100vh
   <div class="htitle">INHYUK PI 정보보안 교재</div>
   <div class="hsub">2026 지방직 · 군무원 · 해경 · 국회직 대비</div>
   <div class="hinfo">
-    <div class="hi"><div class="hi-n">7</div><div class="hi-l">교재 수</div></div>
+    <div class="hi"><div class="hi-n">8</div><div class="hi-l">교재 수</div></div>
     <div class="hi"><div class="hi-n">Ch.08</div><div class="hi-l">웹보안 · 전자우편 · FTP</div></div>
     <div class="hi"><div class="hi-n">스토리</div><div class="hi-l">+ 기출 수록</div></div>
   </div>
@@ -216,6 +216,23 @@ body{font-family:var(--sans);background:#eef1f8;color:var(--tx);min-height:100vh
       </div>
     </a>
 
+    <!-- 8 -->
+    <a class="card c3" href="08_web_attacks.html">
+      <div class="card-top">
+        <div class="card-num" style="color:#c0392b;">08 · 웹 취약점 공격</div>
+        <div class="card-title">XSS · SQL Injection · CSRF · 웹쉘 · 리버스텔넷</div>
+        <div class="card-desc">XSS 3종(Stored·Reflected·DOM) · CSRF · SQL Injection · 경로 조작 · 파일업로드·웹쉘·리버스텔넷 · 기출 12문제</div>
+      </div>
+      <div class="card-bottom">
+        <div class="card-tags">
+          <span class="tag t-r">XSS 3종 ★</span>
+          <span class="tag t-v">CSRF ★</span>
+          <span class="tag t-b">리버스텔넷 ★</span>
+        </div>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
   </div>
 
   <!-- 빠른 참고 -->
@@ -244,6 +261,14 @@ body{font-family:var(--sans);background:#eef1f8;color:var(--tx);min-height:100vh
       <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;">
         <span style="font-family:monospace;font-size:10.5px;font-weight:700;background:#fffbeb;color:#b45309;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;">머클루트 크기</span>
         <span style="color:var(--tx);">SHA-256 출력 = <strong>32 bytes</strong> (64 hex 문자 ≠ 64 bytes) / 블록 헤더에 생성자 계정 없음</span>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;">
+        <span style="font-family:monospace;font-size:10.5px;font-weight:700;background:#fdf0ef;color:#c0392b;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;">XSS vs CSRF</span>
+        <span style="color:var(--tx);">XSS = 스크립트가 <strong>클라이언트</strong>에서 실행 / CSRF = 위조 요청이 <strong>서버</strong>로 전송</span>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;">
+        <span style="font-family:monospace;font-size:10.5px;font-weight:700;background:#fdf0ef;color:#c0392b;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;">리버스텔넷</span>
+        <span style="color:var(--tx);"><strong>서버→공격자</strong> 방향. 아웃바운드 정책 우회. 파일업로드→웹쉘→리버스텔넷 순서.</span>
       </div>
     </div>
   </div>
