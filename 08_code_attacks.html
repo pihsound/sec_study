@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>코드 공격 완전 교재 | INHYUK PI</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --p:#1a2540;--a:#2d5be3;--al:#e8eeff;
+  --r:#c0392b;--rl:#fdf0ef;
+  --g:#1a7a4a;--gl:#edf7f2;
+  --w:#b45309;--wl:#fffbeb;
+  --v:#6d28d9;--vl:#ede9fe;
+  --t:#0f766e;--tl:#ccfbf1;
+  --bd:#dde3ec;--bg:#fff;--tx:#1c2331;--tm:#5a6478;
+  --g0:#f8f9fa;--g1:#f0f2f5;
+  --sans:'Noto Sans KR',sans-serif;--serif:'Noto Serif KR',serif;--mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--sans);background:#eef1f8;color:var(--tx);font-size:14px;line-height:1.8;}
+.wrap{max-width:960px;margin:0 auto;padding:28px 14px 70px;}
+
+.hdr{background:linear-gradient(135deg,#0d0a1f 0%,#1a1040 50%,#0d200a 100%);border-radius:14px 14px 0 0;padding:30px 42px 26px;position:relative;overflow:hidden;}
+.hdr::before{content:'⚡';position:absolute;right:28px;top:10px;font-size:120px;opacity:.05;}
+.mbr{display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap;}
+.bdg{font-size:9.5px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.06em;text-transform:uppercase;}
+.bdg-ch{background:rgba(255,255,255,.13);color:rgba(255,255,255,.9);}
+.bdg-hot{background:#c0392b;color:white;}
+.bdg-ok{background:#6d28d9;color:white;}
+.ht{font-family:var(--serif);font-size:27px;font-weight:600;color:white;letter-spacing:-.02em;margin-bottom:3px;}
+.hs{color:rgba(255,255,255,.55);font-size:12px;font-weight:300;}
+.hst{display:flex;gap:22px;margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.1);flex-wrap:wrap;}
+.hn{font-size:18px;font-weight:700;color:#c4b5fd;}
+.hl{font-size:9.5px;color:rgba(255,255,255,.5);margin-top:1px;}
+
+.tab-bar{display:flex;background:var(--p);padding:0 42px;gap:2px;flex-wrap:wrap;border-bottom:2px solid rgba(255,255,255,.08);}
+.tab-btn{padding:11px 13px;font-size:11.5px;font-weight:600;color:rgba(255,255,255,.5);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all .18s;white-space:nowrap;}
+.tab-btn:hover{color:rgba(255,255,255,.8);}
+.tab-btn.active{color:#c4b5fd;border-bottom-color:#6d28d9;}
+
+.cc{background:var(--bg);border-radius:0 0 14px 14px;padding:36px 42px;border:1px solid var(--bd);border-top:none;}
+.tab-pane{display:none;}.tab-pane.active{display:block;}
+
+.sh{display:flex;align-items:center;gap:9px;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--g1);margin-top:6px;}
+.sn2{width:30px;height:30px;background:var(--p);color:white;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.st{font-size:17px;font-weight:700;color:var(--p);}
+.slb{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.06em;text-transform:uppercase;}
+.le{background:var(--rl);color:var(--r);}
+.ld{background:var(--al);color:var(--a);}
+.lv{background:var(--vl);color:var(--v);}
+.lw{background:var(--wl);color:var(--w);}
+.lg{background:var(--gl);color:var(--g);}
+
+.sb{font-size:13.5px;line-height:2.1;color:var(--tx);}
+.sb p{margin-bottom:14px;}
+.sb strong{color:var(--p);}
+.sb em{color:var(--v);font-style:normal;font-weight:700;}
+.sq{background:var(--p);color:white;border-radius:10px;padding:14px 22px 14px 34px;margin:16px 0;font-size:13.5px;line-height:1.9;position:relative;}
+.sq::before{content:'💬';position:absolute;left:-12px;top:12px;font-size:20px;}
+.sq strong{color:#c4b5fd;}
+.sdiv{height:1px;background:linear-gradient(90deg,transparent,var(--bd),transparent);margin:28px 0;}
+
+.dfb{background:var(--p);color:white;border-radius:11px;padding:16px 21px;margin-bottom:14px;}
+.dfl{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#c4b5fd;margin-bottom:6px;}
+.dfb p{font-size:13.5px;line-height:1.95;color:rgba(255,255,255,.9);}
+.dfb strong{color:#c4b5fd;}
+.dfb code{font-family:var(--mono);font-size:11px;background:rgba(196,181,253,.15);color:#c4b5fd;padding:1px 5px;border-radius:3px;}
+
+.tw{overflow-x:auto;margin:12px 0;border-radius:9px;border:1px solid var(--bd);}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead tr{background:var(--p);color:white;}
+thead th{padding:10px 13px;text-align:left;font-weight:600;font-size:11.5px;}
+tbody tr{border-bottom:1px solid var(--g1);}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:#f8f7ff;}
+tbody td{padding:9px 13px;color:var(--tx);vertical-align:top;line-height:1.7;}
+tbody td:first-child{font-weight:600;color:var(--p);}
+
+.cds{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:10px;margin:12px 0;}
+.cd{border:1px solid var(--bd);border-radius:9px;padding:13px 14px;background:var(--g0);}
+.cdt{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--v);margin-bottom:6px;}
+.cdb{font-size:13px;color:var(--tx);line-height:1.75;}
+.cdb strong{color:var(--p);}
+
+.dw{background:var(--g0);border:1px solid var(--bd);border-radius:12px;padding:18px;margin:14px 0;overflow-x:auto;}
+.dt{font-size:11px;font-weight:700;color:var(--p);margin-bottom:12px;letter-spacing:.03em;}
+
+.proc{display:flex;flex-direction:column;gap:0;margin:14px 0;border-radius:11px;overflow:hidden;border:1px solid var(--bd);}
+.ps{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;border-bottom:1px solid var(--g1);}
+.ps:last-child{border-bottom:none;}
+.ps:nth-child(even){background:var(--g0);}
+.pn{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white;flex-shrink:0;margin-top:2px;}
+.pc{flex:1;}
+.pt{font-size:13.5px;font-weight:700;color:var(--p);margin-bottom:4px;}
+.pd{font-size:13px;color:var(--tm);line-height:1.8;}
+.pd+.pd{margin-top:8px;}
+.ptag{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:5px;margin-top:6px;}
+
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0;}
+.cv{border-radius:10px;overflow:hidden;border:1px solid var(--bd);}
+.cvh{padding:10px 15px;font-size:13px;font-weight:700;color:white;}
+.cvb{padding:11px 15px;background:var(--bg);}
+.cvr{display:flex;gap:8px;padding:5px 0;border-bottom:1px solid var(--g1);font-size:12.5px;}
+.cvr:last-child{border-bottom:none;}
+.cvk{color:var(--tm);min-width:58px;font-size:10.5px;padding-top:2px;flex-shrink:0;}
+.cvv{color:var(--tx);font-weight:500;line-height:1.65;}
+
+.trap{border-radius:11px;margin:16px 0;overflow:hidden;}
+.th{display:flex;align-items:center;gap:8px;padding:11px 16px;background:var(--r);color:white;}
+.tht{font-size:12.5px;font-weight:700;}
+.tb{background:var(--rl);padding:14px 18px;border:1px solid #f5c6c2;border-top:none;border-radius:0 0 11px 11px;}
+.tb p{font-size:13px;color:#7a1c1c;line-height:1.9;margin-bottom:8px;}
+.tb p:last-child{margin-bottom:0;}
+.tq{background:white;border-left:3px solid var(--r);padding:9px 13px;border-radius:0 7px 7px 0;margin:9px 0;font-size:13px;color:var(--tx);font-style:italic;line-height:1.75;}
+.vw{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:20px;background:var(--r);color:white;}
+.vr{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:20px;background:var(--g);color:white;}
+
+.inf-g{background:var(--gl);border:1px solid #a3dbc0;border-radius:9px;padding:12px 16px;margin:12px 0;font-size:13px;color:#0d3321;line-height:1.85;}
+.inf-v{background:var(--vl);border:1px solid #c4b5fd;border-radius:9px;padding:12px 16px;margin:12px 0;font-size:13px;color:#3b0764;line-height:1.85;}
+.inf strong{color:var(--p);}
+
+/* CODE BLOCK */
+.cb{background:#1e1e2e;border-radius:9px;padding:14px 18px;margin:12px 0;font-family:var(--mono);font-size:12px;line-height:1.85;overflow-x:auto;}
+.cb .com{color:#6c7a8d;}
+.cb .kw{color:#c792ea;}
+.cb .fn{color:#82aaff;}
+.cb .str{color:#c3e88d;}
+.cb .bad{color:#f07178;font-weight:700;}
+.cb .ok{color:#89ddff;}
+.cb .num{color:#f78c6c;}
+
+.ec{border:1px solid var(--bd);border-radius:11px;margin:11px 0;overflow:hidden;}
+.eh{display:flex;align-items:center;justify-content:space-between;padding:9px 15px;background:var(--g0);border-bottom:1px solid var(--bd);}
+.ey{font-size:11.5px;font-weight:700;color:var(--p);}
+.es{color:#e8b000;font-size:12px;letter-spacing:2px;}
+.eb{padding:14px 16px;}
+.eq{font-size:13.5px;font-weight:600;color:var(--tx);margin-bottom:11px;line-height:1.75;}
+.eo{display:flex;flex-direction:column;gap:5px;}
+.op{font-size:13px;padding:7px 11px;border-radius:6px;border:1px solid transparent;line-height:1.6;}
+.ow{background:#fdf0ef;border-color:#f5c6c2;color:#7a1c1c;text-decoration:line-through;opacity:.8;}
+.ow::before{content:'✗ ';}
+.or{background:var(--gl);border-color:#a3dbc0;color:#0d4a2a;font-weight:600;}
+.or::before{content:'✓ ';}
+.on{background:var(--g0);border-color:var(--bd);color:var(--tx);}
+.ex{margin-top:11px;padding:12px 14px;background:var(--g0);border-radius:7px;font-size:13px;color:var(--tm);line-height:1.9;border-left:3px solid var(--v);}
+
+.mem{background:linear-gradient(135deg,#0d0a1f 0%,#1a2540 100%);border-radius:13px;padding:22px 25px;color:white;margin:14px 0;position:relative;overflow:hidden;}
+.mem::before{content:'⚡';position:absolute;right:14px;top:8px;font-size:52px;opacity:.07;}
+.mt{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#c4b5fd;margin-bottom:12px;}
+.mi{display:flex;flex-direction:column;gap:9px;}
+.mr{display:flex;gap:10px;align-items:flex-start;}
+.mk{font-family:var(--mono);font-size:10.5px;font-weight:600;background:rgba(196,181,253,.18);color:#c4b5fd;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;}
+.mv{font-size:13px;color:rgba(255,255,255,.85);line-height:1.75;}
+.mv strong{color:#c4b5fd;}
+
+.cl{list-style:none;margin:12px 0;display:flex;flex-direction:column;gap:5px;}
+.cl li{display:flex;align-items:flex-start;gap:8px;font-size:13px;padding:8px 13px;border-radius:7px;border:1px solid var(--bd);background:var(--bg);line-height:1.65;}
+.clw{background:#fdf0ef;border-color:#f5c6c2;}
+.clw::before{content:'⚠';color:var(--r)!important;font-size:12px;flex-shrink:0;margin-top:2px;}
+.clr{background:var(--gl);border-color:#a3dbc0;}
+.clr::before{content:'✓';color:var(--g)!important;font-size:12px;flex-shrink:0;margin-top:2px;}
+
+.dv{height:1px;background:var(--g1);margin:26px 0;}
+.ft{display:flex;justify-content:space-between;margin-top:28px;padding-top:13px;border-top:1px solid var(--bd);font-size:10.5px;color:var(--tm);}
+@media(max-width:640px){.cc,.hdr{padding:22px 16px;}.tab-bar{padding:0 16px;}.cg{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hdr">
+  <div class="mbr">
+    <span class="bdg bdg-ch">Chapter 08 · 시스템 보안</span>
+    <span class="bdg bdg-hot">9급 최빈출</span>
+    <span class="bdg bdg-ok">기출 12문제 수록</span>
+  </div>
+  <div class="ht">코드 공격 완전 교재</div>
+  <div class="hs">버퍼 오버플로우 · 셸코드 · SetUID · 포맷 스트링 · 레이스 컨디션 · 대응책(NX·Stack Guard·ASLR)</div>
+  <div class="hst">
+    <div><div class="hn">스택 vs 힙</div><div class="hl">버퍼 오버플로 2종</div></div>
+    <div><div class="hn">Stack Guard</div><div class="hl">카나리아 ★★★</div></div>
+    <div><div class="hn">포맷 스트링</div><div class="hl">%n · %x 활용</div></div>
+    <div><div class="hn">12문제</div><div class="hl">기출 수록</div></div>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="sw('story')">📖 탄생 스토리</button>
+  <button class="tab-btn" onclick="sw('bof')">💥 버퍼 오버플로우</button>
+  <button class="tab-btn" onclick="sw('shell')">🐚 셸코드 · SetUID</button>
+  <button class="tab-btn" onclick="sw('format')">🔤 포맷 스트링 · 레이스컨디션</button>
+  <button class="tab-btn" onclick="sw('defense')">🛡 대응책</button>
+  <button class="tab-btn" onclick="sw('exam')">📝 기출 12선</button>
+</div>
+
+<div class="cc">
+
+<!-- ════ 스토리 ════ -->
+<div class="tab-pane active" id="tab-story">
+
+<div class="sh"><div class="sn2">1</div><div class="st">프로그램이 예상보다 큰 입력을 받으면 무슨 일이 생길까?</div></div>
+<div class="sb">
+<p>1988년 11월, 세계 최초의 대규모 인터넷 웜이 퍼졌어요. 모리스 웜(Morris Worm)이에요. 당시 인터넷에 연결된 컴퓨터의 약 10%가 감염됐어요. 이 웜이 이용한 핵심 기법 중 하나가 <strong>버퍼 오버플로우(Buffer Overflow)</strong>였어요. 30년이 지난 지금도 버퍼 오버플로우는 여전히 중요한 공격 기법이에요.</p>
+
+<p>버퍼 오버플로우의 원리는 단순해요. 프로그램이 메모리에 데이터를 저장할 공간(버퍼)을 만들어 두는데, 그 공간보다 더 큰 데이터를 집어넣으면 어떻게 될까요? 데이터가 버퍼를 넘쳐서 인접한 메모리 영역을 덮어써요. 그 인접한 메모리에 "다음에 실행할 함수의 주소(반환 주소, RET)"가 있다면, 공격자는 그 주소를 자신이 원하는 코드의 주소로 바꿀 수 있어요. 프로그램이 함수를 끝내고 돌아갈 때 공격자의 코드가 실행돼요.</p>
+
+<p>왜 이런 일이 C/C++ 프로그램에서 자주 생길까요? C언어의 <code>strcpy()</code>, <code>gets()</code>, <code>scanf()</code> 같은 함수들은 입력 데이터의 길이를 검사하지 않아요. 배열 경계도 확인하지 않아요. 컴파일러가 경고를 보내도 개발자들이 무시하는 경우가 많았어요. 이 <strong>"데이터 길이에 대한 불명확한 정의"</strong>가 버퍼 오버플로우의 근본 원인이에요.</p>
+
+<p>포맷 스트링 공격은 버퍼 오버플로우와 형제 같은 공격이에요. C언어의 <code>printf()</code> 함수는 형식 지정자(<code>%s</code>, <code>%n</code> 등)를 해석하는 기능이 있는데, 사용자 입력을 형식 문자열로 그대로 사용하면 공격자가 이 기능을 악용할 수 있어요. 이건 <strong>"데이터 형태에 대한 불명확한 정의"</strong>에서 발생해요. 두 공격의 근본 원인은 비슷하지만 공격 원리는 달라요.</p>
+</div>
+
+<div class="sq">
+코드 공격의 공통 근본 원인:<br>
+<strong>버퍼 오버플로우</strong> = 데이터 <strong>길이</strong>에 대한 불명확한 정의<br>
+<strong>포맷 스트링</strong> = 데이터 <strong>형태</strong>에 대한 불명확한 정의<br>
+<strong>레이스 컨디션</strong> = 프로세스 간 <strong>자원 경쟁</strong>을 이용한 공격
+</div>
+
+<div class="sdiv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">스택이 뭔지 알아야 공격을 이해할 수 있다</div></div>
+<div class="sb">
+<p>프로그램이 실행되면 메모리가 여러 영역으로 나뉘어요. <strong>텍스트(코드) 영역</strong>에는 실행할 명령어가 있고, <strong>데이터 영역</strong>에는 전역 변수가, <strong>스택(Stack)</strong>에는 지역 변수와 함수 호출 정보가, <strong>힙(Heap)</strong>에는 동적으로 할당된 메모리가 저장돼요.</p>
+
+<p>함수가 호출될 때 스택에는 순서대로 쌓여요. 먼저 함수에 전달할 인자, 그다음 <em>반환 주소(RET — 함수가 끝나면 어디로 돌아갈지)</em>, 그리고 이전 프레임 포인터(SFP), 마지막으로 지역 변수들이에요. 이 구조가 핵심이에요. 지역 변수(버퍼)에 오버플로우가 생기면 위로 올라가면서 SFP, 그다음 <strong>RET을 덮어써요</strong>. RET이 바뀌면 함수 종료 후 공격자가 원하는 코드로 점프해요. 이게 스택 버퍼 오버플로우의 원리예요.</p>
+
+<p>힙(Heap) 오버플로우는 조금 달라요. 힙은 <code>malloc()</code>으로 런타임에 동적으로 할당하는 영역이에요. 프로그램이 실행될 때까지 얼마나 필요한지 알 수 없는 가변적인 양의 데이터를 저장해요. 프로그램들에 의해 할당됐다가 회수되는 작용이 반복돼요. 힙 오버플로우는 힙 청크의 메타데이터나 포인터를 덮어써서 공격해요.</p>
+</div>
+
+</div><!-- /tab-story -->
+
+<!-- ════ 버퍼 오버플로우 ════ -->
+<div class="tab-pane" id="tab-bof">
+
+<div class="sh"><div class="sn2">1</div><div class="st">버퍼 오버플로우 정의 및 원리</div><span class="slb le">★★★ 최빈출</span></div>
+
+<div class="dfb">
+  <div class="dfl">버퍼 오버플로우 정의</div>
+  <p>버퍼 오버플로우(Buffer Overflow)는 <strong>데이터 길이에 대한 불명확한 정의</strong>로 인해 발생하는 취약점. 프로그램 메모리 버퍼를 넘치게 해서 인접한 메모리 영역(반환 주소 등)을 덮어씀으로써 <strong>프로그램의 실행 흐름을 조작</strong>. 스택 기반 오버플로우와 힙 기반 오버플로우 2종. C언어의 경계 검사 없는 함수(<code>gets()</code>, <code>strcpy()</code>, <code>scanf()</code> 등)가 주요 원인.</p>
+</div>
+
+<!-- 스택 구조 SVG -->
+<div class="dw">
+  <div class="dt">스택 버퍼 오버플로우 동작 원리 — 정상 vs 공격 상황</div>
+  <svg viewBox="0 0 740 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:740px;display:block;margin:0 auto;">
+
+    <!-- 정상 상황 -->
+    <rect x="10" y="8" width="330" height="184" rx="9" fill="#edf7f2" stroke="#1a7a4a" stroke-width="1.5"/>
+    <text x="175" y="28" text-anchor="middle" fill="#1a7a4a" font-size="12" font-family="sans-serif" font-weight="700">정상 상황</text>
+
+    <rect x="22" y="36" width="306" height="24" rx="5" fill="#374151"/>
+    <text x="175" y="52" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="10" font-family="sans-serif">... (높은 주소) ...</text>
+
+    <rect x="22" y="64" width="306" height="28" rx="5" fill="#2d5be3"/>
+    <text x="175" y="81" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">반환 주소 (RET) ← 정상 주소 0x08048530</text>
+
+    <rect x="22" y="96" width="306" height="24" rx="5" fill="#374151"/>
+    <text x="175" y="112" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="10" font-family="sans-serif">이전 프레임 포인터 (SFP)</text>
+
+    <rect x="22" y="124" width="306" height="56" rx="5" fill="#1a7a4a"/>
+    <text x="175" y="145" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">버퍼 (Buffer) 128 bytes</text>
+    <text x="175" y="163" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="10" font-family="sans-serif">"AAAAAAA..." (정상 입력)</text>
+
+    <text x="175" y="188" text-anchor="middle" fill="#1a7a4a" font-size="9" font-family="sans-serif">← 낮은 주소 (스택은 위로 성장)</text>
+
+    <!-- 공격 상황 -->
+    <rect x="400" y="8" width="330" height="184" rx="9" fill="#fdf0ef" stroke="#c0392b" stroke-width="1.5"/>
+    <text x="565" y="28" text-anchor="middle" fill="#c0392b" font-size="12" font-family="sans-serif" font-weight="700">공격 상황 (버퍼 오버플로우)</text>
+
+    <rect x="412" y="36" width="306" height="24" rx="5" fill="#374151"/>
+    <text x="565" y="52" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="10" font-family="sans-serif">... (높은 주소) ...</text>
+
+    <rect x="412" y="64" width="306" height="28" rx="5" fill="#c0392b"/>
+    <text x="565" y="77" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">반환 주소 → 덮어씀!</text>
+    <text x="565" y="90" text-anchor="middle" fill="#fca5a5" font-size="9" font-family="sans-serif">0x08048530 → 0xbffff410 (쉘코드 주소)</text>
+
+    <rect x="412" y="96" width="306" height="24" rx="5" fill="#c0392b" opacity=".6"/>
+    <text x="565" y="112" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif">SFP도 덮어써짐</text>
+
+    <rect x="412" y="124" width="306" height="56" rx="5" fill="#c0392b" opacity=".8"/>
+    <text x="565" y="142" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">버퍼 + 쉘코드</text>
+    <text x="565" y="158" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="10" font-family="sans-serif">"AAAA...A\x90\x90\xeb\x16\x5e..." (넘침)</text>
+
+    <text x="565" y="186" text-anchor="middle" fill="#c0392b" font-size="9" font-family="sans-serif">함수 종료 시 쉘코드로 점프 → 공격 성공!</text>
+
+    <!-- 화살표 -->
+    <line x1="340" y1="100" x2="400" y2="100" stroke="#374151" stroke-width="2" stroke-dasharray="5,3"/>
+    <polygon points="400,96 412,100 400,104" fill="#374151"/>
+    <text x="370" y="93" text-anchor="middle" fill="#374151" font-size="9" font-family="sans-serif">넘침</text>
+  </svg>
+</div>
+
+<div class="sb">
+<p>스택 버퍼 오버플로우 공격 절차를 단계적으로 살펴보면, 공격자는 먼저 <strong>쉘코드(Shellcode)</strong>를 포함한 큰 데이터를 준비해요. 이 데이터를 입력하면 버퍼를 넘쳐 SFP와 RET까지 덮어써요. RET에는 쉘코드가 있는 메모리 주소(또는 NOP 썰매 앞부분)를 넣어요. 함수가 return 할 때 RET에 저장된 주소로 점프하면서 쉘코드가 실행돼요. 쉘코드가 일반 사용자 권한이면 일반 쉘이, <strong>SetUID가 설정된 root 소유 프로그램이면 root 권한의 쉘</strong>이 실행돼요.</p>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">스택 vs 힙 버퍼 오버플로우 비교</div><span class="slb le">★★★</span></div>
+
+<div class="cg">
+  <div class="cv">
+    <div class="cvh" style="background:#2d5be3;">스택(Stack) 버퍼 오버플로우</div>
+    <div class="cvb">
+      <div class="cvr"><span class="cvk">발생 위치</span><span class="cvv">스택 영역 — 지역 변수, 함수 인자</span></div>
+      <div class="cvr"><span class="cvk">취약 코드</span><span class="cvv"><code>char buf[128]; gets(buf);</code></span></div>
+      <div class="cvr"><span class="cvk">덮어쓰는 것</span><span class="cvv"><strong>반환 주소(RET) · SFP</strong></span></div>
+      <div class="cvr"><span class="cvk">결과</span><span class="cvv">함수 리턴 시 공격자 코드로 점프</span></div>
+      <div class="cvr"><span class="cvk">주요 함수</span><span class="cvv"><code>gets()</code>, <code>strcpy()</code>, <code>scanf()</code></span></div>
+    </div>
+  </div>
+  <div class="cv">
+    <div class="cvh" style="background:#c0392b;">힙(Heap) 버퍼 오버플로우</div>
+    <div class="cvb">
+      <div class="cvr"><span class="cvk">발생 위치</span><span class="cvv">힙 영역 — 동적 할당 메모리</span></div>
+      <div class="cvr"><span class="cvk">취약 코드</span><span class="cvv"><code>char *buf = malloc(256); strcpy(buf, argv[1]);</code></span></div>
+      <div class="cvr"><span class="cvk">덮어쓰는 것</span><span class="cvv"><strong>힙 청크 메타데이터 · 포인터</strong></span></div>
+      <div class="cvr"><span class="cvk">결과</span><span class="cvv">포인터 조작 → 임의 코드 실행</span></div>
+      <div class="cvr"><span class="cvk">주요 함수</span><span class="cvv"><code>malloc()</code> + <code>strcpy()</code> 조합</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="inf-v">
+  <strong>힙 영역 식별 문제 핵심:</strong> "프로그램이 실행될 때까지 알 수 없는 가변적인 양의 데이터를 저장하기 위해 프로세스가 사용할 수 있도록 예약된 메인 메모리 영역으로, 프로그램들에 의해 할당됐다가 회수되는 작용이 되풀이된다" → <strong>힙(Heap)</strong>. 스택은 LIFO 방식으로 함수 호출 시 자동 관리됨.
+</div>
+
+<div class="sb">
+<p>2020년 국회직 기출에서는 <code>malloc()</code>으로 힙에 버퍼를 할당하고 <code>strcpy()</code>로 경계 검사 없이 복사하는 코드를 보여주며 "어떤 공격에 취약한가?"를 물었어요. 키포인트는 메모리 할당 위치예요. 지역 변수(자동 할당) = 스택, <code>malloc()</code>(동적 할당) = <strong>힙</strong>. 이 구분이 시험에 자주 나와요.</p>
+</div>
+
+<div class="tw"><table>
+  <thead><tr><th>취약 함수</th><th>문제점</th><th>안전한 대체 함수</th></tr></thead>
+  <tbody>
+    <tr><td><strong>gets()</strong></td><td>입력 길이 제한 없음. 절대 사용 금지.</td><td><code>fgets(buf, size, stdin)</code></td></tr>
+    <tr><td><strong>strcpy()</strong></td><td>복사 길이 검사 없음.</td><td><code>strncpy(dst, src, n)</code></td></tr>
+    <tr><td><strong>strcat()</strong></td><td>연결 후 길이 검사 없음.</td><td><code>strncat(dst, src, n)</code></td></tr>
+    <tr><td><strong>scanf("%s")</strong></td><td>문자열 입력 시 길이 제한 없음.</td><td><code>scanf("%127s", buf)</code></td></tr>
+    <tr><td><strong>sprintf()</strong></td><td>포맷 결과 길이 미검사.</td><td><code>snprintf(buf, size, fmt, ...)</code></td></tr>
+  </tbody>
+</table></div>
+
+<div class="trap">
+  <div class="th"><span>⚠</span><span class="tht">함정 ★★★ — "gets()는 취약하지 않은 함수" / "strcat() 같은 표준 라이브러리로 교체"</span></div>
+  <div class="tb">
+    <div class="tq">"gets()는 버퍼 오버플로우 공격에 취약하지 않은 함수이다" → <span class="vw">✗ 오답</span> (2016 국가직)</div>
+    <p><code>gets()</code>는 <strong>버퍼 오버플로우에 가장 취약한 함수</strong>. 입력 길이를 전혀 검사하지 않음. C 표준에서도 deprecated(사용 지양). 반드시 <code>fgets()</code>로 대체해야 함.</p>
+    <div class="tq">"버퍼 오버플로우 방어: 문자열 조작 같은 표준 라이브러리를 안전한 것으로 교체한다 → strcat()로 교체" → <span class="vw">✗ 오답</span> (2015 지방직)</div>
+    <p><code>strcat()</code>도 길이 검사 없이 동일하게 취약. '안전한 것으로 교체'의 의미는 <code>strncat()</code>처럼 <strong>길이 제한 버전</strong>으로 교체하는 것. 표준 라이브러리로 단순 교체가 아님.</p>
+  </div>
+</div>
+
+</div><!-- /tab-bof -->
+
+<!-- ════ 셸코드·SetUID ════ -->
+<div class="tab-pane" id="tab-shell">
+
+<div class="sh"><div class="sn2">1</div><div class="st">셸코드 (Shellcode)</div><span class="slb le">★★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">셸코드 정의</div>
+  <p>셸코드(Shellcode)는 <strong>쉘(Shell)을 실행하기 위한 스크립트로, 주입된 코드가 실행될 때 시스템 쉘을 획득하게 해주는 기계어 코드</strong>. 버퍼 오버플로우 공격에서 버퍼에 삽입되어 RET이 가리키는 코드. 쉘이 실행되면 해당 프로세스의 모든 명령을 실행할 수 있음. 일반 사용자 권한이면 일반 쉘, <strong>SetUID가 설정된 root 소유 프로그램에서 실행되면 root 권한의 쉘</strong>이 실행됨.</p>
+</div>
+
+<div class="sb">
+<p>셸코드는 일반 코드와 다른 특성이 있어요. 첫째, <strong>NULL 바이트(<code>\0</code>)가 없어야 해요</strong>. <code>strcpy()</code>처럼 NULL을 문자열 끝으로 인식하는 함수를 통해 주입되기 때문이에요. NULL이 중간에 있으면 복사가 거기서 끊겨요. 둘째, <strong>크기가 작아야 해요</strong>. 버퍼 안에 들어가야 하니까요. 셋째, <strong>실행 가능한 기계어 코드</strong>여야 해요. 어셈블리어로 직접 작성하는 경우가 많아요.</p>
+
+<p>실제 공격에서는 셸코드 앞에 <strong>NOP 썰매(NOP Sled)</strong>를 붙여요. NOP(No Operation, <code>\x90</code>)는 아무것도 하지 않고 다음 명령으로 넘어가는 명령어예요. NOP 썰매가 길면 RET가 정확히 셸코드 시작 주소를 가리키지 않아도, NOP 범위 어딘가만 가리키면 결국 셸코드까지 실행돼요. 정확한 주소를 알기 어려울 때 쓰는 기법이에요.</p>
+
+<p>일반적인 환경에서 쉘을 직접 실행할 기회는 많지 않아요. 보통 사용자라면 시스템 파일 수정이나 프로그램 설치에 상당한 제한이 있어요. 하지만 <strong>관리자(root) 권한</strong>이라면 어떤 제한도 없어요. 그래서 버퍼 오버플로우를 이용한 공격의 최종 목표는 <strong>root 권한 쉘 획득</strong>이에요. 이때 SetUID가 핵심 역할을 해요.</p>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">SetUID — root 권한 쉘 획득의 열쇠</div><span class="slb le">★★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">SetUID 정의</div>
+  <p>SetUID는 <strong>실행 파일에 설정하는 특수 권한으로, 실행하는 동안 파일 소유자의 권한으로 실행</strong>되는 메커니즘. SetUID가 설정된 파일의 실행 권한 자리에 <strong>'s' 또는 'S'</strong>가 표시됨. 각각 UID=0, GID=0인 root가 소유하며 SetUID가 설정된 프로그램은 실행 시 누가 실행하든 root 권한으로 동작. 버퍼 오버플로우와 결합 시 root 쉘 획득 가능.</p>
+</div>
+
+<div class="sb">
+<p>SetUID가 왜 필요한지 먼저 이해해야 해요. <code>/usr/bin/passwd</code> 명령어를 생각해보세요. 일반 사용자가 자신의 비밀번호를 바꾸려면 <code>/etc/shadow</code> 파일을 수정해야 해요. 그런데 <code>/etc/shadow</code>는 root만 쓸 수 있어요. 어떻게 해결할까요? <code>passwd</code> 프로그램에 SetUID를 설정해요. 일반 사용자가 실행해도 root 권한으로 동작해서 <code>/etc/shadow</code>를 수정할 수 있어요.</p>
+
+<p>이 편리한 기능이 공격의 표적이 돼요. root 소유 + SetUID가 설정된 프로그램에서 버퍼 오버플로우가 발생하면, 공격자가 주입한 셸코드가 <strong>root 권한으로 실행</strong>돼요. 일반 사용자가 공격을 실행해도 root 쉘을 얻게 되는 거예요. 이게 레이스 컨디션 공격의 필요 조건에도 SetUID가 포함되는 이유예요.</p>
+
+<p>리눅스에서 SetUID 설정 확인: <code>ls -l</code> 명령으로 소유자 실행 권한 자리에 <strong>s(소문자)</strong>가 있으면 실행 권한이 있고 SetUID 설정됨. <strong>S(대문자)</strong>는 실행 권한 없이 SetUID만 설정된 상태.</p>
+</div>
+
+<!-- SetUID + BOF 공격 흐름 SVG -->
+<div class="dw">
+  <div class="dt">SetUID + 버퍼 오버플로우 → root 쉘 획득 공격 체인</div>
+  <svg viewBox="0 0 740 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:740px;display:block;margin:0 auto;">
+    <rect x="5" y="15" width="120" height="46" rx="7" fill="#374151"/>
+    <text x="65" y="36" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="600">일반 사용자</text>
+    <text x="65" y="52" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" font-family="sans-serif">uid=1000</text>
+
+    <line x1="125" y1="38" x2="155" y2="38" stroke="#6d28d9" stroke-width="2"/>
+    <polygon points="155,34 165,38 155,42" fill="#6d28d9"/>
+    <text x="143" y="30" text-anchor="middle" fill="#6d28d9" font-size="8" font-family="sans-serif">실행</text>
+
+    <rect x="165" y="8" width="160" height="60" rx="7" fill="#6d28d9"/>
+    <text x="245" y="30" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">SetUID 프로그램</text>
+    <text x="245" y="46" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="9" font-family="sans-serif">-rwsr-xr-x root root</text>
+    <text x="245" y="60" text-anchor="middle" fill="#c4b5fd" font-size="9" font-family="sans-serif">소유자=root, SetUID설정</text>
+
+    <line x1="325" y1="38" x2="355" y2="38" stroke="#c0392b" stroke-width="2"/>
+    <polygon points="355,34 365,38 355,42" fill="#c0392b"/>
+    <text x="343" y="30" text-anchor="middle" fill="#c0392b" font-size="8" font-family="sans-serif">BOF 취약점</text>
+
+    <rect x="365" y="8" width="150" height="60" rx="7" fill="#c0392b"/>
+    <text x="440" y="30" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">버퍼 오버플로우</text>
+    <text x="440" y="46" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="9" font-family="sans-serif">RET → 쉘코드 주소</text>
+    <text x="440" y="60" text-anchor="middle" fill="#fca5a5" font-size="9" font-family="sans-serif">공격자 셸코드 주입</text>
+
+    <line x1="515" y1="38" x2="545" y2="38" stroke="#1a7a4a" stroke-width="2"/>
+    <polygon points="545,34 555,38 545,42" fill="#1a7a4a"/>
+    <text x="533" y="30" text-anchor="middle" fill="#1a7a4a" font-size="8" font-family="sans-serif">쉘코드 실행</text>
+
+    <rect x="555" y="8" width="180" height="60" rx="7" fill="#1a7a4a"/>
+    <text x="645" y="30" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">root 권한 쉘 획득!</text>
+    <text x="645" y="46" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="9" font-family="sans-serif">uid=0 (root)</text>
+    <text x="645" y="60" text-anchor="middle" fill="#86efac" font-size="9" font-family="sans-serif">시스템 완전 장악</text>
+  </svg>
+</div>
+
+</div><!-- /tab-shell -->
+
+<!-- ════ 포맷 스트링 · 레이스 컨디션 ════ -->
+<div class="tab-pane" id="tab-format">
+
+<div class="sh"><div class="sn2">1</div><div class="st">포맷 스트링 공격 (Format String Attack)</div><span class="slb le">★★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">포맷 스트링 공격 정의</div>
+  <p>포맷 스트링 공격은 <strong>데이터 형태에 대한 불명확한 정의</strong>로 발생하는 취약점. C언어의 <code>printf()</code> 같은 출력 함수에서 사용자 입력을 <strong>포맷 문자열로 직접 사용</strong>할 때 발생. 포맷 지정자(<code>%x</code>, <code>%n</code> 등)를 악용하여 <strong>메모리 내용을 읽거나 임의의 메모리 주소에 값을 쓸 수 있음</strong>. 버퍼 오버플로우와 같이 취약 함수 이용이라는 공통점이 있지만 공격 원리는 다름.</p>
+</div>
+
+<div class="sb">
+<p>포맷 스트링 취약점의 핵심을 이해하려면 <code>printf()</code>의 동작 방식을 알아야 해요. <code>printf("%d", num)</code>처럼 쓰면 형식 지정자 <code>%d</code>와 인자 <code>num</code>이 대응해요. 그런데 <strong>개발자가 실수로 <code>printf(user_input)</code>처럼 사용자 입력을 형식 문자열 자리에 직접 넣으면</strong> 어떻게 될까요?</p>
+
+<p>공격자가 <code>%x%x%x%x</code>를 입력하면 <code>printf</code>는 스택에서 값을 4개 읽어 16진수로 출력해요. 대응하는 인자가 없어도 스택을 계속 읽어요. 이를 통해 <strong>스택 메모리 내용을 덤프</strong>할 수 있어요. main() 스택 프레임의 값들이 노출되죠. 더 위험한 건 <code>%n</code>이에요. <code>%n</code>은 "지금까지 출력한 바이트 수를 해당 포인터가 가리키는 메모리에 저장"해요. 즉 <strong>메모리에 값을 쓸 수 있어요</strong>. RET 주소에 쉘코드 주소를 써넣으면 버퍼 오버플로우와 유사한 효과를 얻을 수 있어요.</p>
+
+<p>포맷 스트링 공격은 <strong>런타임(실행 시점)</strong>에 발생해요. 컴파일 시점에는 탐지되지 않아요. 일부 컴파일러가 경고를 주지만 오류는 아니에요. 2025 법원직 기출에서 "컴파일 시점에 발생하며, 실행 시에는 영향을 미치지 않는다"는 선지가 오답으로 출제됐어요.</p>
+</div>
+
+<div class="cb">
+  <span class="com">/* 취약한 코드 */</span><br>
+  <span class="kw">char</span> user_input[<span class="num">256</span>];<br>
+  <span class="fn">fgets</span>(user_input, <span class="num">256</span>, stdin);<br>
+  <span class="bad">printf(user_input);</span>    <span class="com">/* ← 위험! 사용자 입력을 형식 문자열로 직접 사용 */</span><br><br>
+  <span class="com">/* 공격자가 "%x%x%x%x%n" 입력 시 → 스택 메모리 읽기 + 쓰기 가능 */</span><br><br>
+  <span class="com">/* 안전한 코드 */</span><br>
+  <span class="ok">printf("%s", user_input);</span>  <span class="com">/* ← 명시적 형식 지정자 사용 */</span>
+</div>
+
+<div class="tw"><table>
+  <thead><tr><th>포맷 지정자</th><th>동작</th><th>공격 활용</th></tr></thead>
+  <tbody>
+    <tr><td><strong>%x</strong></td><td>16진수로 스택 값 출력 (인자 없어도 스택을 읽음)</td><td>스택 메모리 덤프 → 주소 값 추출</td></tr>
+    <tr><td><strong>%s</strong></td><td>포인터가 가리키는 문자열 출력</td><td>스택의 포인터 값을 주소로 해석 → 임의 메모리 읽기</td></tr>
+    <tr><td><strong>%n</strong></td><td>지금까지 출력한 바이트 수를 포인터 위치에 기록</td><td><strong>메모리에 임의 값 쓰기 → RET 조작 가능</strong></td></tr>
+  </tbody>
+</table></div>
+
+<div class="trap">
+  <div class="th"><span>⚠</span><span class="tht">함정 ★★★ — 포맷 스트링 vs 버퍼 오버플로우 발견 시기 (2021 서울시 7급)</span></div>
+  <div class="tb">
+    <div class="tq">"포맷 스트링 공격은 취약한 함수를 이용한다는 점에서 버퍼 오버플로우와 공통점이 있으나, <u>버퍼 오버플로우 공격이 알려지기 훨씬 이전에 발견되었다</u>" → <span class="vw">✗ 오답</span></div>
+    <p>순서가 반대예요. 버퍼 오버플로우는 1988년 모리스 웜에서 이미 활용됐어요. 포맷 스트링 공격은 <strong>1999~2000년경 알려진 더 최근의 공격</strong>이에요. "버퍼 오버플로우보다 훨씬 이전"이 아니라 훨씬 <strong>이후</strong>에 발견됐어요.</p>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">레이스 컨디션 공격 (Race Condition)</div><span class="slb le">★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">레이스 컨디션 정의</div>
+  <p>레이스 컨디션(Race Condition)은 <strong>프로세스 간의 자원 경쟁을 이용한 공격</strong>. 여러 프로세스가 같은 자원에 동시에 접근할 때 발생하는 경쟁 상태를 악용. SetUID가 설정된 root 소유 프로그램이 임시 파일을 생성할 때, 파일 생성 직후 ~ 사용 직전 사이의 짧은 틈을 이용해 임시 파일을 공격자가 원하는 파일의 심볼릭 링크로 교체하는 방식이 대표적.</p>
+</div>
+
+<div class="sb">
+<p>레이스 컨디션 공격의 필요 조건 3가지를 기억하세요. <strong>①파일의 소유자가 root</strong>여야 하고, <strong>②SetUID 비트가 설정</strong>되어 있어야 하고, <strong>③바로 생성되는 임시 파일의 이름을 알고 있어야</strong> 해요. 이 세 조건이 갖춰져야 공격이 가능해요.</p>
+
+<p>공격 원리를 구체적으로 보면, root 소유 SetUID 프로그램이 실행 중에 임시 파일 <code>/tmp/tempfile</code>을 생성해요. 공격자는 그 순간을 노려요. 프로그램이 파일 이름을 결정하고 실제로 파일을 열기 직전 사이에, 공격자가 <code>/tmp/tempfile</code>을 <code>/etc/passwd</code>에 대한 심볼릭 링크로 바꿔요. 그러면 프로그램이 <code>/tmp/tempfile</code>에 쓴다고 생각하지만 실제로는 <code>/etc/passwd</code>를 수정하게 돼요. 이게 레이스 컨디션이에요.</p>
+
+<p>레이스 컨디션 대응책은 임시 파일 이름을 예측 불가능하게 만들거나(<code>mkstemp()</code> 사용), 파일 생성 시 원자적(Atomic) 연산을 사용하거나, <code>O_CREAT | O_EXCL</code> 플래그로 파일이 없을 때만 생성하도록 하는 거예요.</p>
+
+<p>레이스 컨디션은 <strong>프로세스 간 자원 경쟁</strong>이 핵심이에요. "버퍼 오버플로우는 프로세스 간의 자원을 경쟁하여 발생하는 공격에 이용된다"는 설명은 <strong>오답</strong>이에요(2016 국가직). 자원 경쟁 = 레이스 컨디션.</p>
+</div>
+
+<div class="cds">
+  <div class="cd"><div class="cdt">필요 조건 ①</div><div class="cdb">파일 소유자가 <strong>root</strong>여야 함</div></div>
+  <div class="cd"><div class="cdt">필요 조건 ②</div><div class="cdb"><strong>SetUID 비트</strong>가 설정되어 있어야 함</div></div>
+  <div class="cd"><div class="cdt">필요 조건 ③</div><div class="cdb">바로 생성되는 <strong>임시 파일 이름</strong>을 알고 있어야 함</div></div>
+  <div class="cd"><div class="cdt">공격 핵심</div><div class="cdb">파일 생성 ~ 사용 사이 틈에 <strong>심볼릭 링크</strong>로 교체</div></div>
+</div>
+
+</div><!-- /tab-format -->
+
+<!-- ════ 대응책 ════ -->
+<div class="tab-pane" id="tab-defense">
+
+<div class="sh"><div class="sn2">1</div><div class="st">버퍼 오버플로우 4가지 대응책</div><span class="slb le">★★★ 최빈출</span></div>
+
+<div class="sb">
+<p>버퍼 오버플로우 대응책은 시험에서 거의 매년 출제돼요. 4가지를 이름·원리·한계까지 모두 이해해야 해요. 특히 <strong>Stack Guard(스택가드)의 Canary(카나리아)</strong>와 <strong>ASLR</strong>은 단골 출제 포인트예요.</p>
+</div>
+
+<div class="proc">
+  <div class="ps">
+    <div class="pn" style="background:#c0392b;">1</div>
+    <div class="pc">
+      <div class="pt">Non-Executable Stack (NX / DEP)</div>
+      <div class="pd">스택 영역에 <strong>실행 권한(execute)을 제거</strong>하여, 스택에 적재된 쉘코드를 실행할 수 없도록 하는 방법. CPU/OS 수준에서 지원. 스택에서 코드 실행 자체를 막음.</div>
+      <div class="pd"><strong>한계:</strong> Return-to-libc 공격(ret2libc)으로 우회 가능 — 이미 실행 권한이 있는 <code>libc</code>의 <code>system()</code> 함수를 RET에 넣는 방식.</div>
+      <span class="ptag" style="background:var(--rl);color:var(--r);">스택 실행 권한 제거 / ret2libc 우회 가능</span>
+    </div>
+  </div>
+  <div class="ps">
+    <div class="pn" style="background:#6d28d9;">2</div>
+    <div class="pc">
+      <div class="pt">Stack Guard (스택가드) — Canary 값 이용</div>
+      <div class="pd">GCC 컴파일러 확장. 함수 진입 시 <strong>이전 프레임 포인터(SFP) 앞에 Canary 값을 삽입</strong>하고, 함수 종료 시 Canary 값이 변경됐는지 확인. 변경됐으면 버퍼 오버플로우가 발생한 것으로 판단하고 프로그램을 강제 종료.</div>
+      <div class="pd">Canary 종류: <strong>Random Canary</strong>(무작위), <strong>Null Canary</strong>(0 포함), <strong>Terminator Canary</strong>(문자열 종료 문자 포함).</div>
+      <span class="ptag" style="background:var(--vl);color:var(--v);">★★★ SFP 앞 Canary 삽입 → 변조 감지 → 프로그램 종료</span>
+    </div>
+  </div>
+  <div class="ps">
+    <div class="pn" style="background:#2d5be3;">3</div>
+    <div class="pc">
+      <div class="pt">Stack Shield (스택실드)</div>
+      <div class="pd">함수 호출 시 <strong>반환 주소(RET)를 Global RET이라는 별도의 특수 스택에 복사해두고</strong>, 함수 종료 시 실제 RET와 Global RET의 값을 비교. 다르면 공격으로 판단하고 종료.</div>
+      <div class="pd">Stack Guard와 차이: Stack Guard는 SFP와 RET 사이 Canary 값으로 감지. Stack Shield는 RET 원본 값을 별도 저장하여 직접 비교.</div>
+      <span class="ptag" style="background:var(--al);color:var(--a);">RET 원본 별도 저장 → 리턴 시 비교</span>
+    </div>
+  </div>
+  <div class="ps">
+    <div class="pn" style="background:#1a7a4a;">4</div>
+    <div class="pc">
+      <div class="pt">ASLR (Address Space Layout Randomization)</div>
+      <div class="pd">프로그램 실행 시마다 <strong>스택·힙·라이브러리·데이터 영역의 주소를 무작위로 배치</strong>하여 공격자가 정확한 주소를 예측할 수 없게 함. <strong>Linux 커널 2.6.12 이후 적용</strong>됨. 현재 가장 널리 사용되는 방어 기법.</div>
+      <div class="pd"><strong>효과:</strong> 쉘코드 주소나 libc 주소를 고정값으로 하드코딩한 공격이 무력화됨. <strong>한계:</strong> 32비트 시스템에서는 주소 공간이 작아 brute-force 우회 가능.</div>
+      <span class="ptag" style="background:var(--gl);color:var(--g);">★★★ 실행마다 주소 랜덤화 / Linux 2.6.12 이후</span>
+    </div>
+  </div>
+</div>
+
+<!-- Stack Guard 스택 구조 SVG -->
+<div class="dw">
+  <div class="dt">Stack Guard 동작 원리 — Canary 값으로 RET 변조 탐지</div>
+  <svg viewBox="0 0 740 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:740px;display:block;margin:0 auto;">
+
+    <!-- 정상 -->
+    <rect x="10" y="8" width="335" height="115" rx="9" fill="#edf7f2" stroke="#1a7a4a" stroke-width="1.5"/>
+    <text x="177" y="26" text-anchor="middle" fill="#1a7a4a" font-size="12" font-family="sans-serif" font-weight="700">정상 — Canary 변조 없음 → 정상 종료</text>
+
+    <rect x="22" y="34" width="312" height="20" rx="5" fill="#2d5be3"/>
+    <text x="178" y="48" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="600">반환 주소 (RET)</text>
+    <rect x="22" y="58" width="312" height="20" rx="5" fill="#6d28d9"/>
+    <text x="178" y="72" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">🐤 Canary 값 0xdeadbeef (무결)</text>
+    <rect x="22" y="82" width="312" height="20" rx="5" fill="#374151" opacity=".7"/>
+    <text x="178" y="96" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif">이전 프레임 포인터 (SFP)</text>
+    <rect x="22" y="106" width="312" height="14" rx="5" fill="#1a7a4a" opacity=".7"/>
+    <text x="178" y="117" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif">버퍼 (지역 변수)</text>
+
+    <!-- 공격 -->
+    <rect x="395" y="8" width="335" height="115" rx="9" fill="#fdf0ef" stroke="#c0392b" stroke-width="1.5"/>
+    <text x="562" y="26" text-anchor="middle" fill="#c0392b" font-size="12" font-family="sans-serif" font-weight="700">공격 — Canary 변조 탐지 → 강제 종료!</text>
+
+    <rect x="407" y="34" width="312" height="20" rx="5" fill="#c0392b"/>
+    <text x="563" y="48" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="600">반환 주소 → 쉘코드 주소로 덮어써짐</text>
+    <rect x="407" y="58" width="312" height="20" rx="5" fill="#c0392b" opacity=".6"/>
+    <text x="563" y="72" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">⚠ Canary 변조됨! 0xdeadbeef → 0x41414141</text>
+    <rect x="407" y="82" width="312" height="20" rx="5" fill="#c0392b" opacity=".4"/>
+    <text x="563" y="96" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif">SFP도 덮어써짐 (AAAA...)</text>
+    <rect x="407" y="106" width="312" height="14" rx="5" fill="#c0392b" opacity=".3"/>
+    <text x="563" y="117" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif">버퍼 + 오버플로우 데이터</text>
+  </svg>
+</div>
+
+<div class="tw"><table>
+  <thead><tr><th>대응책</th><th>핵심 원리</th><th>한계·우회</th><th>시험 키워드</th></tr></thead>
+  <tbody>
+    <tr><td><strong>NX/DEP</strong></td><td>스택 실행 권한 제거</td><td>ret2libc 공격으로 우회</td><td>Non-Executable Stack, execute 권한 제거</td></tr>
+    <tr><td><strong>Stack Guard</strong></td><td>SFP 앞에 Canary 삽입, 종료 시 검사</td><td>Canary 값을 알면 우회 가능</td><td>★ 프레임포인터·카나리아·반환주소</td></tr>
+    <tr><td><strong>Stack Shield</strong></td><td>RET를 Global RET에 복사, 리턴 시 비교</td><td>RET 복사본도 공격 가능</td><td>Global RET, 별도 복사본 비교</td></tr>
+    <tr><td><strong>ASLR</strong></td><td>실행마다 주소 무작위 배치</td><td>32비트에서 brute-force 가능</td><td>★ Linux 2.6.12, 주소 랜덤화</td></tr>
+  </tbody>
+</table></div>
+
+<div class="trap">
+  <div class="th"><span>⚠</span><span class="tht">함정 ★★★ — 스택가드 Canary 위치 (2016 국가직, 2024 국가직)</span></div>
+  <div class="tb">
+    <div class="tq">스택가드에서 ㉠=프레임포인터, ㉡=카나리아, ㉢=반환주소 → <span class="vr">✓ 정답 ③</span> (2016 국가직)</div>
+    <p>스택가드는 함수 진입 시 <strong>이전 프레임 포인터(SFP) 앞에 카나리아(Canary) 값을 삽입</strong>하고 함수 종료 시 카나리아 값이 변경됐는지 확인한 후 제어를 <strong>반환 주소(RET)</strong>로 이동. ㉠=프레임포인터, ㉡=카나리아, ㉢=반환주소 순서 정확히 외울 것.</p>
+    <div class="tq">(가) 컴파일러가 함수 호출 시 ret 앞에 canary 값 주입 → 종료 시 변조 확인 = <strong>스택 가드</strong> (2024 국가직 정답 ④)</div>
+    <p>스택 실드(Stack Shield)와 혼동 주의: 스택 가드 = Canary 삽입. 스택 실드 = RET을 별도 공간에 복사 후 비교.</p>
+  </div>
+</div>
+
+</div><!-- /tab-defense -->
+
+<!-- ════ 기출 ════ -->
+<div class="tab-pane" id="tab-exam">
+
+<div class="sh"><div class="sn2">📝</div><div class="st">기출문제 전수 해설 — 12문제</div><span class="slb le">연도순</span></div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2015 지방직 9급 · 버퍼 오버플로 방어 오답</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">스택 버퍼 오버플로우를 방어하기 위한 방법으로 적절하지 않은 것은?</div>
+    <div class="eo">
+      <div class="op on">① 문자열 조작 같은 표준 라이브러리를 <u>안전한 것</u>으로 교체한다.</div>
+      <div class="op on">② 종료 시 스택을 검사하는 스택가드를 사용한다.</div>
+      <div class="op ow">③ 다른 프로그램에게 <u>신뢰받을 수 있도록</u> 한다.</div>
+      <div class="op on">④ 실행 시마다 프로세스 안에 <u>다른 곳에 배치</u>되도록 한다. (ASLR)</div>
+    </div>
+    <div class="ex"><strong>정답 ③</strong> — "다른 프로그램에게 신뢰받을 수 있도록 한다"는 버퍼 오버플로우 방어와 무관. ①안전한 함수로 교체(strcpy→strncpy 등), ②스택가드(Canary), ④ASLR — 모두 유효한 방어.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2016 국가직 정보시스템보안 · 버퍼 오버플로 = 레이스컨디션 혼동</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">버퍼 오버플로우에 대한 설명으로 옳지 않은 것은?</div>
+    <div class="eo">
+      <div class="op ow">① <u>프로세스 간의 자원을 경쟁하여 발생하는 공격</u>에 이용된다.</div>
+      <div class="op on">② C 프로그래밍 언어에서 주로 발생. 입력 값이 없으면 발생할 수 없다.</div>
+      <div class="op on">③ 버퍼가 넘쳐서 데이터가 이상한 곳에 저장되는 상황이다.</div>
+      <div class="op on">④ 대응책으로 Non-Executable 스택이나 스택 가드가 있다.</div>
+    </div>
+    <div class="ex"><strong>정답 ①</strong> — "프로세스 간 자원 경쟁" = <strong>레이스 컨디션(Race Condition)</strong> 설명. 버퍼 오버플로우는 단일 프로세스 내에서 메모리 경계를 넘어 인접 메모리를 덮어쓰는 공격이에요.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2016 국가직 정보시스템보안 · 스택가드 Canary 위치</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">스택가드(stackguard) 설명: "함수 진입 코드는 지역변수 공간 할당 전에 이전 (㉠) 주소 앞에 (㉡) 값을 기록한다. 함수 종료 코드는 이전 (㉠)를 복원하고 제어를 (㉢)로 이동하기 전에 (㉡) 값이 변경됐는지 검사한다."</div>
+    <div class="eo">
+      <div class="op ow">① ㉠스택포인터, ㉡반환주소, ㉢카나리아</div>
+      <div class="op ow">② ㉠스택포인터, ㉡카나리아, ㉢반환주소</div>
+      <div class="op or">③ ㉠프레임포인터, ㉡카나리아, ㉢반환주소</div>
+      <div class="op ow">④ ㉠프레임포인터, ㉡반환주소, ㉢스택포인터</div>
+    </div>
+    <div class="ex"><strong>정답 ③</strong> — ㉠=<strong>프레임 포인터(SFP)</strong>: 함수 스택 프레임 기준점. ㉡=<strong>카나리아(Canary)</strong>: SFP 앞에 삽입하는 감시 값. ㉢=<strong>반환 주소(RET)</strong>: 함수 종료 후 돌아갈 주소. 스택 포인터가 아님!</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2016 국가직 정보시스템보안 · gets() 취약 여부</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">코드 보안과 관련된 설명으로 옳지 않은 것은?</div>
+    <div class="eo">
+      <div class="op on">① 버퍼 오버플로우 공격은 데이터 길이에 대한 불명확한 정의를 이용한 공격이다.</div>
+      <div class="op ow">② <u>gets()는 버퍼 오버플로우 공격에 취약하지 않은 함수이다</u>.</div>
+      <div class="op on">③ 포맷 스트링 공격은 데이터 형태에 대한 불명확한 정의로 발생한다.</div>
+      <div class="op on">④ 버퍼 오버플로우 공격 방어 방법으로는 취약한 함수를 사용하지 않거나 최신 운영체제를 사용하는 것 등이 있다.</div>
+    </div>
+    <div class="ex"><strong>정답 ②</strong> — <code>gets()</code>는 <strong>가장 취약한 함수 중 하나</strong>. 입력 길이를 전혀 제한하지 않아 무한정 입력 가능. C11 표준에서 아예 제거됨. <code>fgets()</code>로 반드시 대체해야 함.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2020 국가직 정보시스템보안 · 힙 영역 정의</span><span class="es">★★</span></div>
+  <div class="eb">
+    <div class="eq">다음에서 설명하는 시스템 메모리 기본구조의 영역은?<br>"프로그램이 실행될 때까지 알 수 없는 가변적인 양의 데이터를 저장하기 위해 프로세스가 사용할 수 있도록 예약된 메인 메모리 영역으로, 프로그램들에 의해 할당됐다가 회수되는 작용이 되풀이된다."</div>
+    <div class="eo">
+      <div class="op or">① 힙(Heap) 영역</div>
+      <div class="op ow">② 스택(Stack) 영역</div>
+      <div class="op ow">③ 텍스트(Text) 영역</div>
+      <div class="op ow">④ 데이터(Data) 영역</div>
+    </div>
+    <div class="ex"><strong>정답 ①</strong> — 키워드: "가변적인 양", "할당됐다가 회수", "동적 메모리" = 힙(Heap). 스택은 함수 호출 시 자동 관리. 텍스트=코드 저장. 데이터=전역·정적 변수.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2020 국가직 정보시스템보안 · 버퍼 오버플로 취약 함수 사용 = 오답</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">버퍼 오버플로우 공격에 대한 설명으로 옳지 않은 것은?</div>
+    <div class="eo">
+      <div class="op on">① 스택 기반 오버플로우와 힙 기반 오버플로우 공격이 있다.</div>
+      <div class="op on">② 프로그램의 메모리 버퍼를 넘치게 해서 프로그램의 이상 동작을 유발하는 기법이다.</div>
+      <div class="op ow">③ 버퍼 오버플로우 공격에 대응하기 위해서는 <u>strcat(), strcpy(), gets(), scanf() 등을 사용한다</u>.</div>
+      <div class="op on">④ 대응 방법 중에는 Non-Executable Stack, Stack Guard, Stack Shield가 있다.</div>
+    </div>
+    <div class="ex"><strong>정답 ③</strong> — 이 함수들은 <strong>버퍼 오버플로우에 취약한 함수들</strong>이에요. 대응하기 위해 '사용'하는 게 아니라 '사용하지 말아야' 하는 함수들. 안전한 버전(<code>strncpy()</code>, <code>strncat()</code>, <code>fgets()</code>)으로 교체해야 함.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2020 국회직 9급 · 힙 버퍼 오버플로우 식별</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">다음 프로그램이 취약한 공격 유형은?<br><code>#define BUFSIZE 256</code><br><code>int main(int argc, char **argv) {</code><br><code>  char *buf; buf = (char *)malloc(sizeof(char)*BUFSIZE); strcpy(buf, argv[1]); }</code></div>
+    <div class="eo">
+      <div class="op ow">① 스택 버퍼 오버플로우</div>
+      <div class="op or">② 힙 버퍼 오버플로우</div>
+      <div class="op ow">③ 포맷 스트링</div>
+      <div class="op ow">④ 정수 오버플로우</div>
+      <div class="op ow">⑤ 레이스 컨디션</div>
+    </div>
+    <div class="ex"><strong>정답 ②</strong> — <code>malloc()</code>으로 <strong>힙</strong>에 버퍼 할당 + <code>strcpy()</code>로 경계 검사 없이 복사 = <strong>힙 버퍼 오버플로우</strong>. 지역 변수(<code>char buf[256]</code>)였다면 스택 오버플로우. 동적 할당(<code>malloc()</code>) = 힙 오버플로우.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2021 서울시 7급 · 포맷 스트링 발견 시기 오답</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">포맷 스트링(format string) 공격에 대한 설명으로 옳지 않은 것은?</div>
+    <div class="eo">
+      <div class="op ow">① 취약한 함수를 이용한다는 점에서 버퍼 오버플로우와 공통점이 있으나, <u>버퍼 오버플로우 공격이 알려지기 훨씬 이전에 발견되었다</u>.</div>
+      <div class="op on">② C 언어의 printf 함수가 대표적인 공격 대상이다.</div>
+      <div class="op on">③ %x 토큰을 활용하면 공격자는 메모리 내용을 출력하여 확인할 수 있다.</div>
+      <div class="op on">④ %n 토큰을 활용하면 공격자는 메모리의 내용을 변경할 수 있다.</div>
+    </div>
+    <div class="ex"><strong>정답 ①</strong> — 포맷 스트링 공격은 <strong>1999~2000년경</strong> 발견. 버퍼 오버플로우는 1988년 모리스 웜에서 이미 활용. 즉 포맷 스트링이 버퍼 오버플로우보다 <strong>훨씬 이후에</strong> 발견됨. "이전"이 아니라 "이후".</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2024 국가직 정보시스템보안 · 스택가드 vs 포맷 스트링</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">(가) 컴파일러가 함수 호출 시 ret 앞에 canary 값을 주입하고 종료 시 변조 확인 → <br>(나) 데이터의 형태와 길이에 대한 불명확한 정의 중 <u>데이터 형태</u>에 대한 불명확한 정의로 발생하는 공격</div>
+    <div class="eo">
+      <div class="op ow">① (가)스택 실드, (나)버퍼 오버플로</div>
+      <div class="op ow">② (가)스택 실드, (나)포맷 스트링</div>
+      <div class="op ow">③ (가)스택 가드, (나)버퍼 오버플로</div>
+      <div class="op or">④ (가)스택 가드, (나)포맷 스트링</div>
+    </div>
+    <div class="ex"><strong>정답 ④</strong> — (가): "canary 값 주입 → 변조 확인" = <strong>스택 가드(Stack Guard)</strong>. 스택 실드는 RET을 별도 공간에 복사하여 비교. (나): 데이터 형태 불명확 = <strong>포맷 스트링</strong>. 데이터 길이 불명확 = 버퍼 오버플로우.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2025 법원직 9급 · 포맷 스트링 = 컴파일 시점 발생 오답</span><span class="es">★★</span></div>
+  <div class="eb">
+    <div class="eq">포맷 스트링 공격에 관한 설명 중 가장 옳지 않은 것은?</div>
+    <div class="eo">
+      <div class="op on">① 포맷 지정자를 악용하여 메모리 내용을 유출하거나 조작하는 공격 방법이다.</div>
+      <div class="op on">② C언어 계열에서 printf()와 같은 출력 함수에 사용자 입력을 포맷 문자열로 직접 전달할 때 발생할 수 있다.</div>
+      <div class="op ow">③ <u>컴파일 시점에 발생하며, 실행 시에는 영향을 미치지 않는다</u>.</div>
+      <div class="op on">④ 사용자 입력을 포맷 문자열로 받지 않고 명시적인 서식 지정자를 사용하면 방지할 수 있다.</div>
+    </div>
+    <div class="ex"><strong>정답 ③</strong> — 포맷 스트링 공격은 <strong>런타임(실행 시점)</strong>에 발생. 컴파일 시점에는 탐지되지 않음(일부 컴파일러가 경고를 주지만 오류가 아님). 실행 중 사용자 입력이 포맷 문자열로 해석될 때 발생.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2025 군무원 9급 · 시스템 해킹 취약점 아닌 것</span><span class="es">★★</span></div>
+  <div class="eb">
+    <div class="eq">시스템 해킹에 사용되는 취약점으로 가장 적절하지 않은 것은?</div>
+    <div class="eo">
+      <div class="op ow">① 패스워드 터미널</div>
+      <div class="op on">② 버퍼 오버플로</div>
+      <div class="op on">③ 동적 포맷 스트링</div>
+      <div class="op on">④ 레이스 컨디션</div>
+    </div>
+    <div class="ex"><strong>정답 ①</strong> — "패스워드 터미널"은 시스템 해킹 취약점 유형이 아닌 존재하지 않는 용어. 시스템 해킹 3대 취약점 = <strong>버퍼 오버플로우 / 포맷 스트링 / 레이스 컨디션</strong>.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2025 국회직 9급 · 포맷 스트링 공격 그림 식별</span><span class="es">★★</span></div>
+  <div class="eb">
+    <div class="eq">다음 그림과 같이 수행하는 공격의 명칭은? (스택 메모리 덤프 + %n으로 메모리 조작 흐름도)</div>
+    <div class="eo">
+      <div class="op ow">① 스니핑 공격</div>
+      <div class="op ow">② 백도어 공격</div>
+      <div class="op or">③ 포맷 스트링 공격</div>
+      <div class="op ow">④ 레이스 컨디션 공격</div>
+      <div class="op ow">⑤ 버퍼 오버플로 공격</div>
+    </div>
+    <div class="ex"><strong>정답 ③</strong> — <code>%x</code>로 스택 내용 출력, <code>%n</code>으로 메모리 값 조작하는 흐름 = 포맷 스트링 공격. 버퍼 오버플로와 다른 점: 포맷 스트링은 길이가 아닌 <strong>형식 지정자(%)</strong>를 악용.</div>
+  </div>
+</div>
+
+<!-- 암기 카드 -->
+<div class="dv"></div>
+<div class="mem">
+  <div class="mt">💡 코드 공격 핵심 암기</div>
+  <div class="mi">
+    <div class="mr"><span class="mk">공통 원인 구분</span><span class="mv">버퍼 오버플로우 = 데이터 <strong>길이</strong> / 포맷 스트링 = 데이터 <strong>형태</strong> / 레이스 컨디션 = <strong>자원 경쟁</strong></span></div>
+    <div class="mr"><span class="mk">스택 vs 힙</span><span class="mv">지역변수(자동) = 스택 / <strong>malloc() 동적 할당</strong> = 힙</span></div>
+    <div class="mr"><span class="mk">취약 함수</span><span class="mv"><strong>gets()·strcpy()·strcat()·scanf()·sprintf()</strong> — 모두 취약. fgets() 등으로 대체.</span></div>
+    <div class="mr"><span class="mk">Stack Guard</span><span class="mv"><strong>프레임 포인터</strong> 앞에 <strong>카나리아</strong> 삽입 → 종료 시 변조 확인 → <strong>반환 주소</strong>로 이동</span></div>
+    <div class="mr"><span class="mk">Stack Shield</span><span class="mv">RET를 <strong>Global RET에 복사</strong> → 리턴 시 비교 (Stack Guard와 차이 구분)</span></div>
+    <div class="mr"><span class="mk">ASLR</span><span class="mv">스택·힙·라이브러리 주소 <strong>실행마다 무작위</strong>. Linux <strong>2.6.12</strong> 이후 적용.</span></div>
+    <div class="mr"><span class="mk">포맷 스트링</span><span class="mv"><strong>%x</strong>=메모리 읽기 / <strong>%n</strong>=메모리 쓰기. 런타임 발생. 버퍼 오버플로보다 <strong>이후</strong> 발견(1999~2000년).</span></div>
+    <div class="mr"><span class="mk">레이스 컨디션</span><span class="mv">필요 조건: ①root 소유 ②SetUID 설정 ③<strong>임시 파일 이름 알아야 함</strong></span></div>
+    <div class="mr"><span class="mk">SetUID 표시</span><span class="mv">소유자 실행 권한 자리에 <strong>s(실행권한 있음)</strong> 또는 <strong>S(실행권한 없음)</strong></span></div>
+  </div>
+</div>
+
+<ul class="cl">
+  <li class="clw">"gets()는 버퍼 오버플로우에 취약하지 않다" → ✗ (가장 취약한 함수)</li>
+  <li class="clw">"버퍼 오버플로우 대응: strcat() 같은 표준 라이브러리 사용" → ✗ (취약한 함수, 사용 금지)</li>
+  <li class="clw">"버퍼 오버플로우 = 프로세스 간 자원 경쟁" → ✗ (레이스 컨디션 설명)</li>
+  <li class="clw">"Stack Guard = RET을 Global RET에 복사 비교" → ✗ (Stack Shield 설명)</li>
+  <li class="clw">"포맷 스트링 = 버퍼 오버플로우보다 이전에 발견" → ✗ (이후 발견, 1999~2000년)</li>
+  <li class="clw">"포맷 스트링 = 컴파일 시점에 발생" → ✗ (런타임에 발생)</li>
+  <li class="clr">"버퍼 오버플로 원인 = 데이터 길이, 포맷 스트링 원인 = 데이터 형태" → ✓</li>
+  <li class="clr">"Stack Guard: 프레임포인터 앞에 카나리아 삽입 → 반환주소로 이동 전 검사" → ✓</li>
+  <li class="clr">"힙 오버플로우 = malloc() 동적 할당 영역에서 발생" → ✓</li>
+  <li class="clr">"레이스 컨디션 필요 조건: root 소유 + SetUID + 임시파일명 인지" → ✓</li>
+  <li class="clr">"ASLR: 실행마다 주소 무작위 배치 / Linux 2.6.12 이후 적용" → ✓</li>
+</ul>
+
+<div class="ft">
+  <span>정보보안 합격전략 교재 · INHYUK PI</span>
+  <span>Chapter 08 · 코드 공격 완전 교재 · 2026 목표</span>
+</div>
+
+</div><!-- /tab-exam -->
+
+</div><!-- /cc -->
+</div><!-- /wrap -->
+
+<script>
+function sw(id){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b=>{
+    if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'"+id+"'")){
+      b.classList.add('active');
+    }
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>

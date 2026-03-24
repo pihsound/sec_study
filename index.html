@@ -85,7 +85,7 @@ body{font-family:var(--sans);background:#eef1f8;color:var(--tx);min-height:100vh
   <div class="htitle">INHYUK PI 정보보안 교재</div>
   <div class="hsub">2026 지방직 · 군무원 · 해경 · 국회직 대비</div>
   <div class="hinfo">
-    <div class="hi"><div class="hi-n">8</div><div class="hi-l">교재 수</div></div>
+    <div class="hi"><div class="hi-n">9</div><div class="hi-l">교재 수</div></div>
     <div class="hi"><div class="hi-n">Ch.08</div><div class="hi-l">웹보안 · 전자우편 · FTP</div></div>
     <div class="hi"><div class="hi-n">스토리</div><div class="hi-l">+ 기출 수록</div></div>
   </div>
@@ -233,6 +233,23 @@ body{font-family:var(--sans);background:#eef1f8;color:var(--tx);min-height:100vh
       </div>
     </a>
 
+    <!-- 9 -->
+    <a class="card c4" href="08_code_attacks.html">
+      <div class="card-top">
+        <div class="card-num" style="color:#6d28d9;">09 · 코드 공격</div>
+        <div class="card-title">버퍼 오버플로우 · 셸코드 · SetUID · 포맷 스트링 · 레이스 컨디션</div>
+        <div class="card-desc">스택/힙 오버플로우 · 셸코드 · SetUID root 권한 탈취 · 포맷 스트링(%n·%x) · 레이스 컨디션 · Stack Guard·ASLR 대응책</div>
+      </div>
+      <div class="card-bottom">
+        <div class="card-tags">
+          <span class="tag t-v">Stack Guard ★</span>
+          <span class="tag t-r">gets() 취약 ★</span>
+          <span class="tag t-w">ASLR</span>
+        </div>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
   </div>
 
   <!-- 빠른 참고 -->
@@ -269,6 +286,14 @@ body{font-family:var(--sans);background:#eef1f8;color:var(--tx);min-height:100vh
       <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;">
         <span style="font-family:monospace;font-size:10.5px;font-weight:700;background:#fdf0ef;color:#c0392b;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;">리버스텔넷</span>
         <span style="color:var(--tx);"><strong>서버→공격자</strong> 방향. 아웃바운드 정책 우회. 파일업로드→웹쉘→리버스텔넷 순서.</span>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;">
+        <span style="font-family:monospace;font-size:10.5px;font-weight:700;background:#ede9fe;color:#6d28d9;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;">Stack Guard</span>
+        <span style="color:var(--tx);">프레임포인터 앞에 <strong>카나리아</strong> 삽입 → 변조 확인 후 반환주소 이동 (Stack Shield와 구분)</span>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;">
+        <span style="font-family:monospace;font-size:10.5px;font-weight:700;background:#ede9fe;color:#6d28d9;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;">BOF 원인 구분</span>
+        <span style="color:var(--tx);">버퍼 오버플로 = 데이터 <strong>길이</strong> / 포맷 스트링 = 데이터 <strong>형태</strong> / 레이스 컨디션 = <strong>자원 경쟁</strong></span>
       </div>
     </div>
   </div>
