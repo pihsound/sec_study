@@ -85,7 +85,7 @@ body{font-family:var(--sans);background:#eef1f8;color:var(--tx);min-height:100vh
   <div class="htitle">INHYUK PI 정보보안 교재</div>
   <div class="hsub">2026 지방직 · 군무원 · 해경 · 국회직 대비</div>
   <div class="hinfo">
-    <div class="hi"><div class="hi-n">10</div><div class="hi-l">교재 수</div></div>
+    <div class="hi"><div class="hi-n">11</div><div class="hi-l">교재 수</div></div>
     <div class="hi"><div class="hi-n">Ch.08</div><div class="hi-l">웹보안 · 전자우편 · FTP</div></div>
     <div class="hi"><div class="hi-n">스토리</div><div class="hi-l">+ 기출 수록</div></div>
   </div>
@@ -267,6 +267,23 @@ body{font-family:var(--sans);background:#eef1f8;color:var(--tx);min-height:100vh
       </div>
     </a>
 
+    <!-- 11 -->
+    <a class="card c4" href="08_heartbeat.html">
+      <div class="card-top">
+        <div class="card-num" style="color:#dc2626;">11 · Heartbeat · Heartbleed</div>
+        <div class="card-title">Heartbeat Protocol · Heartbleed 취약점</div>
+        <div class="card-desc">TLS 세션 활성 유지 프로토콜(RFC 6520) · Heartbleed(CVE-2014-0160) · 페이로드 길이 미검증 · OpenSSL 1.0.1f · 2024·2025 국가직 기출</div>
+      </div>
+      <div class="card-bottom">
+        <div class="card-tags">
+          <span class="tag t-r">2024 지방직 ★</span>
+          <span class="tag t-r">2025 국가직 ★</span>
+          <span class="tag t-b">CVE-2014-0160</span>
+        </div>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
   </div>
 
   <!-- 빠른 참고 -->
@@ -319,6 +336,10 @@ body{font-family:var(--sans);background:#eef1f8;color:var(--tx);min-height:100vh
       <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;">
         <span style="font-family:monospace;font-size:10.5px;font-weight:700;background:#ccfbf1;color:#0f766e;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;">CVE 형식</span>
         <span style="color:var(--tx);">CVE-<strong>[연도]</strong>-<strong>[일련번호]</strong> (예: CVE-2022-34993) / CVSS=심각도 점수</span>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;">
+        <span style="font-family:monospace;font-size:10.5px;font-weight:700;background:#fdf0ef;color:#dc2626;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;">Heartbeat</span>
+        <span style="color:var(--tx);">TLS <strong>세션 활성 상태 유지</strong> · Heartbleed=(가)<strong>TLS</strong>+(나)<strong>길이</strong> / PRF 입력=<strong>secret·label·seed</strong>(3가지), 데이터 확장 함수=2가지</span>
       </div>
     </div>
   </div>

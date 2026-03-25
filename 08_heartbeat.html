@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Heartbeat Protocol · Heartbleed 교재 | INHYUK PI</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --p:#1a2540;--a:#2d5be3;--al:#e8eeff;
+  --r:#c0392b;--rl:#fdf0ef;
+  --g:#1a7a4a;--gl:#edf7f2;
+  --w:#b45309;--wl:#fffbeb;
+  --t:#0f766e;--tl:#ccfbf1;
+  --hb:#dc2626;--hbl:#fff1f2;
+  --bd:#dde3ec;--bg:#fff;--tx:#1c2331;--tm:#5a6478;
+  --g0:#f8f9fa;--g1:#f0f2f5;
+  --sans:'Noto Sans KR',sans-serif;--serif:'Noto Serif KR',serif;--mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--sans);background:#eef1f8;color:var(--tx);font-size:14px;line-height:1.8;}
+.wrap{max-width:900px;margin:0 auto;padding:28px 14px 70px;}
+
+.hdr{background:linear-gradient(135deg,#0a0505 0%,#1a0808 50%,#0a1020 100%);border-radius:14px 14px 0 0;padding:30px 42px 26px;position:relative;overflow:hidden;}
+.hdr::before{content:'♥';position:absolute;right:30px;top:8px;font-size:130px;opacity:.06;color:#ef4444;}
+.mbr{display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap;}
+.bdg{font-size:9.5px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.06em;text-transform:uppercase;}
+.bdg-ch{background:rgba(255,255,255,.13);color:rgba(255,255,255,.9);}
+.bdg-new{background:#dc2626;color:white;}
+.bdg-yr{background:#1a7a4a;color:white;}
+.ht{font-family:var(--serif);font-size:27px;font-weight:600;color:white;letter-spacing:-.02em;margin-bottom:3px;}
+.hs{color:rgba(255,255,255,.55);font-size:12px;font-weight:300;}
+.hst{display:flex;gap:22px;margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.1);flex-wrap:wrap;}
+.hn{font-size:18px;font-weight:700;color:#fca5a5;}
+.hl{font-size:9.5px;color:rgba(255,255,255,.5);margin-top:1px;}
+
+.tab-bar{display:flex;background:var(--p);padding:0 42px;gap:2px;flex-wrap:wrap;border-bottom:2px solid rgba(255,255,255,.08);}
+.tab-btn{padding:11px 15px;font-size:11.5px;font-weight:600;color:rgba(255,255,255,.5);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all .18s;white-space:nowrap;}
+.tab-btn:hover{color:rgba(255,255,255,.8);}
+.tab-btn.active{color:#fca5a5;border-bottom-color:#dc2626;}
+
+.cc{background:var(--bg);border-radius:0 0 14px 14px;padding:38px 44px;border:1px solid var(--bd);border-top:none;}
+.tab-pane{display:none;}.tab-pane.active{display:block;}
+
+.sh{display:flex;align-items:center;gap:9px;margin-bottom:18px;padding-bottom:11px;border-bottom:2px solid var(--g1);margin-top:6px;}
+.sn2{width:32px;height:32px;background:var(--p);color:white;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.st{font-size:18px;font-weight:700;color:var(--p);}
+.slb{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.06em;text-transform:uppercase;}
+.le{background:var(--rl);color:var(--r);}
+.lg{background:var(--gl);color:var(--g);}
+.lt{background:var(--tl);color:var(--t);}
+
+.sb{font-size:13.5px;line-height:2.1;color:var(--tx);}
+.sb p{margin-bottom:14px;}
+.sb strong{color:var(--p);}
+.sdiv{height:1px;background:linear-gradient(90deg,transparent,var(--bd),transparent);margin:28px 0;}
+
+/* DEF */
+.dfb{background:var(--p);color:white;border-radius:12px;padding:18px 22px;margin-bottom:16px;}
+.dfl{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fca5a5;margin-bottom:7px;}
+.dfb p{font-size:13.5px;line-height:1.95;color:rgba(255,255,255,.9);}
+.dfb strong{color:#fca5a5;}
+.dfb code{font-family:var(--mono);font-size:11.5px;background:rgba(252,165,165,.18);color:#fca5a5;padding:2px 7px;border-radius:4px;}
+
+/* HEARTBLEED BOX */
+.hb-box{background:linear-gradient(135deg,#1c0505,#2a0808);border:1px solid #7f1d1d;border-radius:13px;padding:20px 24px;margin:16px 0;color:white;position:relative;overflow:hidden;}
+.hb-box::before{content:'♥';position:absolute;right:12px;top:6px;font-size:60px;opacity:.08;color:#ef4444;}
+.hb-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fca5a5;margin-bottom:10px;}
+.hb-cve{display:inline-block;font-family:var(--mono);font-size:12px;font-weight:700;background:rgba(252,165,165,.2);color:#fca5a5;padding:3px 10px;border-radius:6px;margin-bottom:11px;}
+.hb-box p{font-size:13.5px;line-height:1.95;color:rgba(255,255,255,.88);margin-bottom:11px;}
+.hb-box p:last-child{margin-bottom:0;}
+.hb-box strong{color:#fca5a5;}
+
+/* FLOW SVG AREA */
+.dw{background:var(--g0);border:1px solid var(--bd);border-radius:13px;padding:20px;margin:16px 0;overflow-x:auto;}
+.dt{font-size:11px;font-weight:700;color:var(--p);margin-bottom:14px;letter-spacing:.03em;}
+
+/* COMPARE */
+.cg2{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin:14px 0;}
+.cv{border-radius:10px;overflow:hidden;border:1px solid var(--bd);}
+.cvh{padding:11px 16px;font-size:13px;font-weight:700;color:white;}
+.cvb{padding:12px 16px;background:var(--bg);}
+.cvr{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--g1);font-size:13px;}
+.cvr:last-child{border-bottom:none;}
+.cvk{color:var(--tm);min-width:62px;font-size:10.5px;padding-top:2px;flex-shrink:0;}
+.cvv{color:var(--tx);font-weight:500;line-height:1.65;}
+
+/* TRAP */
+.trap{border-radius:12px;margin:16px 0;overflow:hidden;}
+.th{display:flex;align-items:center;gap:8px;padding:12px 17px;background:var(--r);color:white;}
+.tht{font-size:12.5px;font-weight:700;}
+.tb{background:var(--rl);padding:15px 19px;border:1px solid #f5c6c2;border-top:none;border-radius:0 0 12px 12px;}
+.tb p{font-size:13px;color:#7a1c1c;line-height:1.9;margin-bottom:9px;}
+.tb p:last-child{margin-bottom:0;}
+.tq{background:white;border-left:3px solid var(--r);padding:9px 13px;border-radius:0 7px 7px 0;margin:9px 0;font-size:13px;color:var(--tx);line-height:1.75;}
+.vw{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:20px;background:var(--r);color:white;}
+.vr{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:20px;background:var(--g);color:white;}
+
+/* EXAM */
+.ec{border:1px solid var(--bd);border-radius:12px;margin:13px 0;overflow:hidden;}
+.eh{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--g0);border-bottom:1px solid var(--bd);}
+.ey{font-size:11.5px;font-weight:700;color:var(--p);}
+.enew{font-size:9.5px;font-weight:700;padding:2px 9px;border-radius:20px;background:#dc2626;color:white;letter-spacing:.04em;}
+.es{color:#e8b000;font-size:12px;letter-spacing:2px;}
+.eb{padding:15px 17px;}
+.eq{font-size:13.5px;font-weight:600;color:var(--tx);margin-bottom:12px;line-height:1.8;}
+.eo{display:flex;flex-direction:column;gap:5px;}
+.op{font-size:13px;padding:7px 12px;border-radius:7px;border:1px solid transparent;line-height:1.6;}
+.ow{background:#fdf0ef;border-color:#f5c6c2;color:#7a1c1c;text-decoration:line-through;opacity:.8;}
+.ow::before{content:'✗ ';}
+.or{background:var(--gl);border-color:#a3dbc0;color:#0d4a2a;font-weight:600;}
+.or::before{content:'✓ ';}
+.on{background:var(--g0);border-color:var(--bd);color:var(--tx);}
+.ex{margin-top:12px;padding:13px 15px;background:var(--g0);border-radius:8px;font-size:13px;color:var(--tm);line-height:1.9;border-left:3px solid #dc2626;}
+
+/* INFO */
+.inf-g{background:var(--gl);border:1px solid #a3dbc0;border-radius:10px;padding:12px 17px;margin:12px 0;font-size:13px;color:#0d3321;line-height:1.85;}
+.inf-t{background:var(--tl);border:1px solid #a7f3d0;border-radius:10px;padding:12px 17px;margin:12px 0;font-size:13px;color:#064e3b;line-height:1.85;}
+.inf strong{color:var(--p);}
+
+/* MEM */
+.mem{background:linear-gradient(135deg,#0a0505 0%,#1a2540 100%);border-radius:13px;padding:22px 26px;color:white;margin:16px 0;position:relative;overflow:hidden;}
+.mem::before{content:'♥';position:absolute;right:14px;top:8px;font-size:52px;opacity:.08;color:#ef4444;}
+.mt{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fca5a5;margin-bottom:13px;}
+.mi{display:flex;flex-direction:column;gap:10px;}
+.mr{display:flex;gap:11px;align-items:flex-start;}
+.mk{font-family:var(--mono);font-size:10.5px;font-weight:600;background:rgba(252,165,165,.18);color:#fca5a5;padding:3px 9px;border-radius:5px;white-space:nowrap;flex-shrink:0;}
+.mv{font-size:13px;color:rgba(255,255,255,.87);line-height:1.75;}
+.mv strong{color:#fca5a5;}
+
+.cl{list-style:none;margin:12px 0;display:flex;flex-direction:column;gap:5px;}
+.cl li{display:flex;align-items:flex-start;gap:8px;font-size:13px;padding:8px 13px;border-radius:7px;border:1px solid var(--bd);background:var(--bg);line-height:1.65;}
+.clw{background:#fdf0ef;border-color:#f5c6c2;}
+.clw::before{content:'⚠';color:var(--r)!important;font-size:12px;flex-shrink:0;margin-top:2px;}
+.clr{background:var(--gl);border-color:#a3dbc0;}
+.clr::before{content:'✓';color:var(--g)!important;font-size:12px;flex-shrink:0;margin-top:2px;}
+
+.dv{height:1px;background:var(--g1);margin:26px 0;}
+.ft{display:flex;justify-content:space-between;margin-top:28px;padding-top:13px;border-top:1px solid var(--bd);font-size:10.5px;color:var(--tm);}
+@media(max-width:640px){.cc,.hdr{padding:22px 16px;}.tab-bar{padding:0 16px;}.cg2{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hdr">
+  <div class="mbr">
+    <span class="bdg bdg-ch">Chapter 08 · SSL/TLS 보안</span>
+    <span class="bdg bdg-new">24·25 국가직 출제</span>
+    <span class="bdg bdg-yr">기출 3문제 수록</span>
+  </div>
+  <div class="ht">Heartbeat Protocol · Heartbleed 완전 교재</div>
+  <div class="hs">TLS Heartbeat 동작 원리 · Heartbleed(CVE-2014-0160) · TLS 의사난수 함수(PRF) · 데이터 확장 함수 · 기출 3문제</div>
+  <div class="hst">
+    <div><div class="hn">2024 지방직</div><div class="hl">하트블리드 (가)(나) 출제</div></div>
+    <div><div class="hn">2025 국가직</div><div class="hl">Heartbeat Protocol 출제</div></div>
+    <div><div class="hn">CVE-2014-0160</div><div class="hl">Heartbleed 공식 번호</div></div>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="sw('concept')">📡 Heartbeat 개념</button>
+  <button class="tab-btn" onclick="sw('attack')">💉 Heartbleed 공격</button>
+  <button class="tab-btn" onclick="sw('prf')">🔢 TLS 의사난수 함수</button>
+  <button class="tab-btn" onclick="sw('exam')">📝 기출 3문제</button>
+</div>
+
+<div class="cc">
+
+<!-- ════ 개념 ════ -->
+<div class="tab-pane active" id="tab-concept">
+
+<div class="sh"><div class="sn2">1</div><div class="st">Heartbeat Protocol이란?</div><span class="slb lg">★★★ 2025 국가직 출제</span></div>
+
+<div class="dfb">
+  <div class="dfl">Heartbeat Protocol 정의</div>
+  <p>Heartbeat(하트비트) 프로토콜은 <strong>TLS/DTLS 연결의 생존 여부를 확인하기 위한 확장 기능</strong>. <code>RFC 6520</code>에 정의된 TLS/DTLS 확장 규격. 클라이언트와 서버가 연결을 유지하고 있는지 확인하기 위해 <strong>Heartbeat 요청 메시지를 주고받는</strong> 방식. 클라이언트가 임의의 데이터(페이로드)를 포함한 메시지를 서버에 보내고, 서버는 그 데이터를 <strong>그대로 되돌려주는(에코) 방식</strong>으로 동작.</p>
+</div>
+
+<div class="sb">
+<p>Heartbeat는 이름 그대로 "심장 박동"이에요. 살아있는 사람의 심장이 계속 박동하듯, TLS 연결이 살아있는지 확인하는 신호예요. TCP 연결은 데이터를 주고받지 않아도 일정 시간 동안 유지될 수 있는데, 정말 연결이 살아있는지 아닌지 확인하는 방법이 필요해요.</p>
+
+<p>Heartbeat는 SSL/TLS의 <strong>4가지 상위 프로토콜 중 하나</strong>예요. 기존 SSL의 3개(Handshake·Change Cipher Spec·Alert)에 추가된 확장 기능이에요. TLS 1.3에서도 Heartbeat 확장은 별도로 협상해서 사용할 수 있어요.</p>
+
+<p>동작 방식: 클라이언트가 <strong>"나 살아있어? [페이로드 N바이트]"</strong>라는 Heartbeat Request를 보내면, 서버는 <strong>"응, 살아있어. [페이로드 그대로]"</strong>라는 Heartbeat Response를 돌려줘요. 매우 단순한 에코(Echo) 방식이에요.</p>
+</div>
+
+<!-- TLS 프로토콜 구조 SVG -->
+<div class="dw">
+  <div class="dt">TLS 프로토콜 계층 구조 — Heartbeat 위치</div>
+  <svg viewBox="0 0 720 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px;display:block;margin:0 auto;">
+
+    <!-- 상위 4개 프로토콜 -->
+    <rect x="10" y="10" width="155" height="44" rx="7" fill="#1a2540"/>
+    <text x="87" y="28" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="600">Handshake</text>
+    <text x="87" y="43" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="8.5" font-family="sans-serif">Protocol</text>
+
+    <rect x="173" y="10" width="155" height="44" rx="7" fill="#374151"/>
+    <text x="250" y="28" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="600">Change Cipher</text>
+    <text x="250" y="43" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="8.5" font-family="sans-serif">Spec Protocol</text>
+
+    <rect x="336" y="10" width="155" height="44" rx="7" fill="#374151"/>
+    <text x="413" y="28" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="600">Alert</text>
+    <text x="413" y="43" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="8.5" font-family="sans-serif">Protocol</text>
+
+    <rect x="499" y="10" width="211" height="44" rx="7" fill="#dc2626" stroke="#fca5a5" stroke-width="1.5"/>
+    <text x="604" y="25" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">♥ Heartbeat Protocol</text>
+    <text x="604" y="40" text-anchor="middle" fill="rgba(255,255,255,.75)" font-size="8.5" font-family="sans-serif">RFC 6520 TLS/DTLS 확장</text>
+    <text x="604" y="50" text-anchor="middle" fill="#fca5a5" font-size="8" font-family="sans-serif">연결 생존 확인</text>
+
+    <!-- Record Protocol -->
+    <rect x="10" y="64" width="700" height="36" rx="7" fill="#2d5be3"/>
+    <text x="360" y="80" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">TLS Record Protocol (기반 레이어)</text>
+    <text x="360" y="94" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="9" font-family="sans-serif">모든 상위 프로토콜의 데이터를 처리 · 단편화 → 압축 → MAC → 암호화 → 헤더 (단압MAC암헤)</text>
+
+    <!-- TCP/IP -->
+    <rect x="10" y="108" width="700" height="26" rx="6" fill="#374151"/>
+    <text x="360" y="124" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="10" font-family="sans-serif">TCP / IP</text>
+
+    <!-- 강조 화살표 -->
+    <text x="604" y="105" text-anchor="middle" fill="#dc2626" font-size="9" font-family="sans-serif" font-weight="700">↑ Heartbleed 취약점 발생 지점</text>
+  </svg>
+</div>
+
+<div class="inf-t">
+  <strong>2025 국가직 기출 키포인트:</strong> "TLS에 속한 프로토콜 중 <strong>세션을 활성 상태로 유지하는 목적</strong>으로 사용하는 것은?" → <strong>Heartbeat Protocol</strong>. Alert=경고 알림. Application Data=데이터 전송. Connection=연결 관리(SSH 개념). 세션 유지·생존 확인 = Heartbeat.
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">Heartbeat 동작 흐름</div><span class="slb lg">원리 이해</span></div>
+
+<div class="sb">
+<p>Heartbeat Request 메시지 구조는 세 부분으로 구성돼요. 첫째 <strong>타입(Type)</strong>: 요청(1) 또는 응답(2). 둘째 <strong>페이로드 길이(Payload Length)</strong>: 클라이언트가 "내가 N바이트 보낼게"라고 선언하는 값. 셋째 <strong>페이로드(Payload)</strong>: 실제 데이터. 서버는 페이로드 길이 필드에 적힌 만큼 메모리에서 데이터를 읽어 돌려줘야 해요.</p>
+
+<p>여기서 핵심 규칙이 있어요. <strong>서버는 페이로드 길이 필드의 값이 실제 페이로드의 크기와 일치하는지 검증해야 해요</strong>. 이 검증을 안 하면? → Heartbleed 취약점이 생겨요.</p>
+</div>
+
+<!-- 정상 vs 공격 흐름 SVG -->
+<div class="dw">
+  <div class="dt">Heartbeat 정상 동작 vs Heartbleed 공격 흐름</div>
+  <svg viewBox="0 0 740 195" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:740px;display:block;margin:0 auto;">
+
+    <!-- 정상 -->
+    <rect x="5" y="5" width="355" height="182" rx="9" fill="#edf7f2" stroke="#1a7a4a" stroke-width="1.5"/>
+    <text x="182" y="24" text-anchor="middle" fill="#1a7a4a" font-size="12" font-family="sans-serif" font-weight="700">✓ 정상 Heartbeat 동작</text>
+
+    <rect x="18" y="34" width="130" height="30" rx="6" fill="#2d5be3"/>
+    <text x="83" y="53" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="600">클라이언트</text>
+
+    <rect x="218" y="34" width="130" height="30" rx="6" fill="#374151"/>
+    <text x="283" y="53" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif">서버</text>
+
+    <line x1="148" y1="49" x2="218" y2="49" stroke="#1a7a4a" stroke-width="2"/>
+    <polygon points="218,45 228,49 218,53" fill="#1a7a4a"/>
+    <text x="183" y="43" text-anchor="middle" fill="#1a7a4a" font-size="8.5" font-family="sans-serif" font-weight="700">요청: "HI [4바이트], 길이=4"</text>
+
+    <rect x="18" y="84" width="330" height="38" rx="6" fill="white" stroke="#1a7a4a" stroke-width="1"/>
+    <text x="183" y="100" text-anchor="middle" fill="#1a7a4a" font-size="10" font-family="sans-serif" font-weight="600">서버: 길이 검증 → 4바이트 = 4바이트 ✓</text>
+    <text x="183" y="116" text-anchor="middle" fill="#1a7a4a" font-size="9" font-family="sans-serif">메모리에서 정확히 4바이트만 읽어 반환</text>
+
+    <line x1="283" y1="132" x2="148" y2="132" stroke="#1a7a4a" stroke-width="2"/>
+    <polygon points="148,128 138,132 148,136" fill="#1a7a4a"/>
+    <text x="210" y="126" text-anchor="middle" fill="#1a7a4a" font-size="8.5" font-family="sans-serif">응답: "HI [4바이트]" ← 그대로 에코</text>
+
+    <rect x="18" y="148" width="330" height="32" rx="6" fill="white" stroke="#1a7a4a" stroke-width="1"/>
+    <text x="183" y="163" text-anchor="middle" fill="#0d4a2a" font-size="10" font-family="sans-serif" font-weight="600">안전. 서버 메모리 누출 없음.</text>
+    <text x="183" y="175" text-anchor="middle" fill="#5a6478" font-size="8.5" font-family="sans-serif">페이로드 길이 검증 통과</text>
+
+    <!-- 공격 -->
+    <rect x="380" y="5" width="355" height="182" rx="9" fill="#fdf0ef" stroke="#dc2626" stroke-width="1.5"/>
+    <text x="557" y="24" text-anchor="middle" fill="#dc2626" font-size="12" font-family="sans-serif" font-weight="700">✗ Heartbleed 공격</text>
+
+    <rect x="393" y="34" width="130" height="30" rx="6" fill="#dc2626"/>
+    <text x="458" y="53" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">공격자</text>
+
+    <rect x="593" y="34" width="130" height="30" rx="6" fill="#374151"/>
+    <text x="658" y="53" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif">서버 (취약)</text>
+
+    <line x1="523" y1="49" x2="593" y2="49" stroke="#dc2626" stroke-width="2"/>
+    <polygon points="593,45 603,49 593,53" fill="#dc2626"/>
+    <text x="557" y="40" text-anchor="middle" fill="#dc2626" font-size="8.5" font-family="sans-serif" font-weight="700">요청: "H [1바이트], 길이=65535!!"</text>
+
+    <rect x="393" y="84" width="330" height="38" rx="6" fill="white" stroke="#dc2626" stroke-width="1"/>
+    <text x="557" y="100" text-anchor="middle" fill="#dc2626" font-size="10" font-family="sans-serif" font-weight="600">서버: 길이 검증 없이 65535바이트 메모리 읽기!</text>
+    <text x="557" y="116" text-anchor="middle" fill="#dc2626" font-size="9" font-family="sans-serif">요청의 실제 페이로드(1바이트) 확인 안 함 → 인접 메모리 노출</text>
+
+    <line x1="658" y1="132" x2="523" y2="132" stroke="#dc2626" stroke-width="2"/>
+    <polygon points="523,128 513,132 523,136" fill="#dc2626"/>
+    <text x="590" y="123" text-anchor="middle" fill="#dc2626" font-size="8.5" font-family="sans-serif" font-weight="700">응답: 메모리 64KB 덤프 전송!</text>
+
+    <rect x="393" y="148" width="330" height="32" rx="6" fill="white" stroke="#dc2626" stroke-width="1"/>
+    <text x="557" y="163" text-anchor="middle" fill="#7a1c1c" font-size="10" font-family="sans-serif" font-weight="600">비밀번호·세션쿠키·개인키 등 유출!</text>
+    <text x="557" y="175" text-anchor="middle" fill="#5a6478" font-size="8.5" font-family="sans-serif">CVE-2014-0160 · OpenSSL 1.0.1~1.0.1f</text>
+  </svg>
+</div>
+
+</div><!-- /tab-concept -->
+
+<!-- ════ 공격 ════ -->
+<div class="tab-pane" id="tab-attack">
+
+<div class="sh"><div class="sn2">1</div><div class="st">Heartbleed 취약점 완전 정리</div><span class="slb le">★★★ 2024 지방직 출제</span></div>
+
+<div class="hb-box">
+  <div class="hb-title">Heartbleed Vulnerability</div>
+  <div class="hb-cve">CVE-2014-0160</div>
+  <p><strong>Heartbleed</strong>는 <strong>TLS(Transport Layer Security)</strong>를 구현한 공개 소프트웨어인 <strong>OpenSSL 1.0.1~1.0.1f 버전</strong>에서 발견된 심각한 보안 취약점. 클라이언트가 보낸 Heartbeat 요청 메시지의 실제 <strong>페이로드 길이(Length)</strong>를 제대로 검증하지 않아 발생. 이로 인해 서버 메모리에 저장된 <strong>비밀번호, 세션 쿠키, 개인키</strong> 등 민감한 정보가 유출될 수 있음. 최대 <strong>64KB</strong>씩 반복 호출 가능.</p>
+</div>
+
+<div class="sb">
+<p>Heartbleed의 핵심은 <strong>"길이 검증 누락"</strong>이에요. 클라이언트가 Heartbeat Request에 페이로드 길이를 65,535라고 써서 보내도, 실제 페이로드는 1바이트만 보낼 수 있어요. 취약한 서버는 이 차이를 확인하지 않고, 길이 필드에 적힌 65,535바이트만큼 메모리에서 읽어 응답해요. 1바이트 뒤에 있는 64KB는 서버 메모리에 저장된 다른 데이터예요.</p>
+
+<p>왜 이름이 "Heartbleed(심장 출혈)"일까요? Heartbeat 프로토콜을 통해 서버 메모리의 내용이 피가 흘러나오듯 <em>새어나온다</em>는 의미에서 붙은 이름이에요. 2014년 4월에 공개됐고, 당시 전 세계 수많은 HTTPS 웹사이트가 영향을 받았어요.</p>
+
+<p><strong>2024 지방직 기출 포인트:</strong> "(가)에는 프로토콜 이름, (나)에는 검증하지 않은 것"이 들어가요. (가)=<strong>TLS</strong>(SSH가 아님!), (나)=<strong>길이(Length)</strong>(유형이 아님!)가 핵심이에요.</p>
+</div>
+
+<div class="cg2">
+  <div class="cv">
+    <div class="cvh" style="background:#1a7a4a;">✓ 정확한 정보</div>
+    <div class="cvb">
+      <div class="cvr"><span class="cvk">프로토콜</span><span class="cvv"><strong>TLS</strong> (Transport Layer Security)</span></div>
+      <div class="cvr"><span class="cvk">취약 SW</span><span class="cvv"><strong>OpenSSL 1.0.1~1.0.1f</strong></span></div>
+      <div class="cvr"><span class="cvk">미검증 항목</span><span class="cvv">요청 메시지의 실제 <strong>페이로드 길이(Length)</strong></span></div>
+      <div class="cvr"><span class="cvk">CVE</span><span class="cvv"><strong>CVE-2014-0160</strong></span></div>
+      <div class="cvr"><span class="cvk">유출 정보</span><span class="cvv">비밀번호, 세션 쿠키, 개인키</span></div>
+      <div class="cvr"><span class="cvk">최대 유출량</span><span class="cvv">1회 최대 <strong>64KB</strong></span></div>
+    </div>
+  </div>
+  <div class="cv">
+    <div class="cvh" style="background:#dc2626;">⚠ 시험 함정</div>
+    <div class="cvb">
+      <div class="cvr"><span class="cvk">혼동 ①</span><span class="cvv">SSH ✗ → <strong>TLS</strong>. Heartbeat는 TLS/DTLS 확장</span></div>
+      <div class="cvr"><span class="cvk">혼동 ②</span><span class="cvv">유형(Type) ✗ → <strong>길이(Length)</strong> 검증 누락이 원인</span></div>
+      <div class="cvr"><span class="cvk">혼동 ③</span><span class="cvv">서버가 공격 ✗ → 서버 <strong>메모리가 유출</strong>됨</span></div>
+      <div class="cvr"><span class="cvk">혼동 ④</span><span class="cvv">CSRF ✗ → Heartbleed는 메모리 읽기 공격</span></div>
+      <div class="cvr"><span class="cvk">혼동 ⑤</span><span class="cvv">Heartbeat = 연결 생존 확인 (세션 활성 유지)</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="trap">
+  <div class="th"><span>⚠</span><span class="tht">함정 ★★★ — (가)=SSH? (나)=유형? (2024 지방직 기출)</span></div>
+  <div class="tb">
+    <div class="tq">"하트블리드(Heartbleed)는 <u>(가)</u>를 구현한 공개 소프트웨어인 OpenSSL의 심각한 보안 취약점으로, 수신한 요청 메시지의 실제 <u>(나)</u>을/를 제대로 확인하지 않은 것에 기인한 것이다."</div>
+    <p>선지 ①: SSH + 길이 → <span class="vw">✗</span> | 선지 ②: SSH + 유형 → <span class="vw">✗</span> | 선지 ③: TLS + 길이 → <span class="vr">✓</span> | 선지 ④: TLS + 유형 → <span class="vw">✗</span></p>
+    <p><strong>Heartbleed = TLS 구현체(OpenSSL)의 취약점</strong>. SSH와 혼동하지 말 것. 미검증 항목 = <strong>길이(Length)</strong>. 페이로드의 유형(Type)이 아니라 선언된 길이와 실제 길이의 불일치를 검증하지 않은 게 원인.</p>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">Heartbeat vs Heartbleed — 한눈에 구분</div><span class="slb lg">★★★</span></div>
+
+<div class="inf-g">
+  <strong>암기 공식:</strong><br>
+  <strong>Heartbeat</strong> = TLS 프로토콜 중 하나. <strong>연결 생존(세션 활성) 확인</strong>. RFC 6520. 에코 방식. 정상 기능.<br>
+  <strong>Heartbleed</strong> = Heartbeat를 <strong>악용</strong>한 취약점. TLS/OpenSSL. <strong>페이로드 길이 미검증</strong>. 서버 메모리 유출. CVE-2014-0160.
+</div>
+
+<div class="mem">
+  <div class="mt">♥ Heartbeat · Heartbleed 핵심 암기</div>
+  <div class="mi">
+    <div class="mr"><span class="mk">Heartbeat 정의</span><span class="mv"><strong>TLS/DTLS 세션 활성 상태 유지(연결 생존 확인)</strong>. RFC 6520. 에코 방식.</span></div>
+    <div class="mr"><span class="mk">TLS 4 프로토콜</span><span class="mv">Handshake · Change Cipher Spec · Alert · <strong>Heartbeat</strong></span></div>
+    <div class="mr"><span class="mk">Heartbleed (가)</span><span class="mv"><strong>TLS</strong> (SSH 아님)</span></div>
+    <div class="mr"><span class="mk">Heartbleed (나)</span><span class="mv">페이로드 <strong>길이(Length)</strong> 미검증 (유형 아님)</span></div>
+    <div class="mr"><span class="mk">Heartbleed CVE</span><span class="mv"><strong>CVE-2014-0160</strong> / OpenSSL 1.0.1~1.0.1f</span></div>
+    <div class="mr"><span class="mk">유출 정보</span><span class="mv">비밀번호 · 세션 쿠키 · <strong>개인키</strong> (최대 64KB)</span></div>
+    <div class="mr"><span class="mk">공격 원리</span><span class="mv">페이로드 길이를 크게 선언 → 서버가 검증 없이 메모리 읽어 반환</span></div>
+  </div>
+</div>
+
+<ul class="cl">
+  <li class="clw">"Heartbleed = SSH 구현체 취약점" → ✗ (TLS/OpenSSL)</li>
+  <li class="clw">"Heartbleed = 페이로드 유형(Type) 미검증" → ✗ (길이(Length) 미검증)</li>
+  <li class="clw">"Heartbeat = 데이터 암호화 프로토콜" → ✗ (연결 생존 확인 프로토콜)</li>
+  <li class="clw">"Heartbleed = CSRF와 동일 공격 유형" → ✗ (서버 메모리 읽기 공격)</li>
+  <li class="clr">"Heartbeat Protocol = TLS 세션을 활성 상태로 유지하는 목적" → ✓</li>
+  <li class="clr">"Heartbleed = TLS 구현 OpenSSL의 페이로드 길이 미검증 취약점" → ✓</li>
+  <li class="clr">"Heartbleed CVE = CVE-2014-0160, OpenSSL 1.0.1~1.0.1f" → ✓</li>
+</ul>
+
+</div><!-- /tab-attack -->
+
+<!-- ════ TLS PRF ════ -->
+<div class="tab-pane" id="tab-prf">
+
+<div class="sh"><div class="sn2">1</div><div class="st">TLS 데이터 확장 함수 (Data-Expansion Function)</div><span class="slb le">★★★ 2022 국가직 출제</span></div>
+
+<div class="dfb">
+  <div class="dfl">데이터 확장 함수 정의</div>
+  <p>데이터 확장 함수(data-expansion function)는 <strong>비밀(secret)을 보다 길게 확장하기 위해</strong> 미리 정의된 <strong>HMAC(MD5 또는 SHA-1)</strong>을 사용하는 함수. 각 섹션은 비밀(secret)과 종자(seed)인 두 개의 HMAC을 이용. 입력: <strong>secret + seed</strong>.</p>
+</div>
+
+<div class="sb">
+<p>데이터 확장 함수의 구조를 이해하는 게 핵심이에요. HMAC을 반복 적용해 원하는 길이의 출력을 만들어요. 입력 비밀(secret)을 HMAC으로 계속 체이닝(Chaining)해서 필요한 만큼 늘려요. 이 과정이 <strong>P_hash(secret, seed)</strong>예요.</p>
+
+<p>중요한 구분: 데이터 확장 함수의 입력은 <strong>secret + seed 두 가지</strong>예요. 레이블(label)은 데이터 확장 함수에 직접 들어가는 게 아니라, label과 seed를 합쳐서(concatenation) seed로 넘겨요.</p>
+</div>
+
+<!-- 데이터 확장 함수 SVG -->
+<div class="dw">
+  <div class="dt">P_hash(secret, seed) — 데이터 확장 함수 구조</div>
+  <svg viewBox="0 0 700 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto;">
+    <!-- Secret -->
+    <rect x="10" y="10" width="90" height="28" rx="6" fill="#1a2540"/>
+    <text x="55" y="28" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">Secret</text>
+
+    <!-- 화살표들 -->
+    <line x1="100" y1="24" x2="130" y2="24" stroke="#1a2540" stroke-width="1.5"/>
+    <polygon points="130,20 140,24 130,28" fill="#1a2540"/>
+    <line x1="100" y1="24" x2="110" y2="60" stroke="#1a2540" stroke-width="1.5" stroke-dasharray="3,2"/>
+
+    <!-- HMAC 1 -->
+    <rect x="140" y="10" width="80" height="28" rx="6" fill="#dc2626"/>
+    <text x="180" y="28" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">HMAC</text>
+    <rect x="140" y="46" width="80" height="28" rx="6" fill="#374151"/>
+    <text x="180" y="64" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="9" font-family="sans-serif">A(1)=HMAC(s,seed)</text>
+
+    <line x1="220" y1="24" x2="260" y2="24" stroke="#dc2626" stroke-width="1.5"/>
+    <polygon points="260,20 270,24 260,28" fill="#dc2626"/>
+    <line x1="220" y1="24" x2="230" y2="60" stroke="#374151" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <line x1="220" y1="60" x2="260" y2="60" stroke="#374151" stroke-width="1.5"/>
+
+    <!-- HMAC 2 -->
+    <rect x="270" y="10" width="80" height="28" rx="6" fill="#dc2626"/>
+    <text x="310" y="28" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">HMAC</text>
+    <rect x="270" y="46" width="80" height="28" rx="6" fill="#374151"/>
+    <text x="310" y="64" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="9" font-family="sans-serif">A(2)=HMAC(s,A(1))</text>
+
+    <line x1="350" y1="24" x2="390" y2="24" stroke="#dc2626" stroke-width="1.5"/>
+    <polygon points="390,20 400,24 390,28" fill="#dc2626"/>
+    <line x1="350" y1="24" x2="360" y2="60" stroke="#374151" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <line x1="350" y1="60" x2="390" y2="60" stroke="#374151" stroke-width="1.5"/>
+
+    <!-- HMAC 3 -->
+    <rect x="400" y="10" width="80" height="28" rx="6" fill="#dc2626"/>
+    <text x="440" y="28" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">HMAC</text>
+    <rect x="400" y="46" width="80" height="28" rx="6" fill="#374151"/>
+    <text x="440" y="64" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="9" font-family="sans-serif">A(3)=HMAC(s,A(2))</text>
+
+    <text x="510" y="28" fill="#374151" font-size="16" font-family="sans-serif">···</text>
+
+    <!-- 출력 XOR -->
+    <line x1="180" y1="74" x2="180" y2="95" stroke="#374151" stroke-width="1.5"/>
+    <line x1="310" y1="74" x2="310" y2="95" stroke="#374151" stroke-width="1.5"/>
+    <line x1="440" y1="74" x2="440" y2="95" stroke="#374151" stroke-width="1.5"/>
+
+    <rect x="10" y="95" width="550" height="20" rx="5" fill="#1a7a4a"/>
+    <text x="285" y="110" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="600">Expanded Secret (P_hash 출력 — 원하는 길이만큼 확장)</text>
+  </svg>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">TLS 의사난수 함수 (Pseudorandom Function, PRF)</div><span class="slb le">★★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">PRF 정의</div>
+  <p>TLS 의사난수 함수(PRF)는 <strong>MD5 또는 SHA-1을 사용하여 두 데이터 확장 함수의 결합이 되도록</strong> 정의된 함수. 입력: <strong>비밀(secret) · 식별용 레이블(label) · 종자(seed)</strong> 3가지. 비밀은 두 개의 절반(half-secret)으로 나뉘어 각각의 데이터 확장 함수에 사용됨. 두 확장 함수의 출력을 <strong>XOR</strong>하여 최종 출력 생성.</p>
+</div>
+
+<div class="sb">
+<p>PRF가 데이터 확장 함수와 다른 점: PRF는 입력이 <strong>3가지(secret, label, seed)</strong>예요. 데이터 확장 함수는 <strong>2가지(secret, seed)</strong>. PRF는 내부적으로 데이터 확장 함수를 <em>활용</em>하는 상위 구조예요.</p>
+
+<p>PRF 동작 구조: ① 비밀(secret)을 절반(half-secret)으로 나눔 → ② 한쪽은 MD5 기반 P_MD5, 다른 쪽은 SHA-1 기반 P_SHA-1로 확장 → ③ 두 출력을 XOR → 최종 PRF 출력. seed 자리에는 label과 seed를 연결(label || seed)해서 넣어요.</p>
+</div>
+
+<!-- PRF 구조 SVG -->
+<div class="dw">
+  <div class="dt">TLS PRF 구조 — 비밀을 절반으로 나눠 MD5·SHA-1 이중 처리 후 XOR</div>
+  <svg viewBox="0 0 680 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;display:block;margin:0 auto;">
+
+    <!-- 입력 3가지 -->
+    <rect x="10" y="10" width="90" height="26" rx="6" fill="#1a2540"/>
+    <text x="55" y="27" text-anchor="middle" fill="#fca5a5" font-size="10" font-family="sans-serif" font-weight="700">Secret</text>
+
+    <rect x="110" y="10" width="90" height="26" rx="6" fill="#374151"/>
+    <text x="155" y="27" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif">Label</text>
+
+    <rect x="210" y="10" width="90" height="26" rx="6" fill="#374151"/>
+    <text x="255" y="27" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif">Seed</text>
+
+    <!-- Label || Seed -->
+    <line x1="155" y1="36" x2="155" y2="50" stroke="#374151" stroke-width="1.5"/>
+    <line x1="255" y1="36" x2="255" y2="50" stroke="#374151" stroke-width="1.5"/>
+    <line x1="155" y1="50" x2="255" y2="50" stroke="#374151" stroke-width="1.5"/>
+    <line x1="205" y1="50" x2="205" y2="62" stroke="#374151" stroke-width="1.5"/>
+    <rect x="155" y="62" width="100" height="22" rx="5" fill="#374151"/>
+    <text x="205" y="77" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif">label ‖ seed</text>
+
+    <!-- Secret 분리 -->
+    <line x1="55" y1="36" x2="55" y2="75" stroke="#1a2540" stroke-width="1.5"/>
+    <line x1="55" y1="75" x2="390" y2="75" stroke="#1a2540" stroke-width="1.5"/>
+
+    <!-- Half-secret 1 (MD5) -->
+    <line x1="120" y1="75" x2="120" y2="92" stroke="#dc2626" stroke-width="1.5"/>
+    <line x1="205" y1="84" x2="170" y2="92" stroke="#374151" stroke-width="1.5"/>
+    <rect x="80" y="92" width="120" height="26" rx="6" fill="#dc2626"/>
+    <text x="140" y="109" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">P_MD5 (확장함수)</text>
+    <text x="140" y="122" text-anchor="middle" fill="rgba(255,255,255,.65)" font-size="8.5" font-family="sans-serif">Half-secret + label‖seed</text>
+
+    <!-- Half-secret 2 (SHA-1) -->
+    <line x1="330" y1="75" x2="330" y2="92" stroke="#2d5be3" stroke-width="1.5"/>
+    <line x1="205" y1="84" x2="270" y2="92" stroke="#374151" stroke-width="1.5"/>
+    <rect x="250" y="92" width="130" height="26" rx="6" fill="#2d5be3"/>
+    <text x="315" y="109" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">P_SHA-1 (확장함수)</text>
+    <text x="315" y="122" text-anchor="middle" fill="rgba(255,255,255,.65)" font-size="8.5" font-family="sans-serif">Half-secret + label‖seed</text>
+
+    <!-- XOR -->
+    <line x1="140" y1="130" x2="210" y2="145" stroke="#dc2626" stroke-width="2"/>
+    <line x1="315" y1="130" x2="250" y2="145" stroke="#2d5be3" stroke-width="2"/>
+    <rect x="185" y="145" width="85" height="10" rx="3" fill="#1a7a4a"/>
+    <text x="227" y="153" text-anchor="middle" fill="white" font-size="8" font-family="sans-serif" font-weight="700">XOR → PRF 출력</text>
+
+    <!-- 입력 레이블 -->
+    <text x="490" y="20" fill="#5a6478" font-size="9" font-family="sans-serif" font-weight="700">PRF 입력 3가지:</text>
+    <text x="490" y="35" fill="#dc2626" font-size="9" font-family="sans-serif">① Secret (→ Half로 분리)</text>
+    <text x="490" y="50" fill="#5a6478" font-size="9" font-family="sans-serif">② Label (식별용 문자열)</text>
+    <text x="490" y="65" fill="#5a6478" font-size="9" font-family="sans-serif">③ Seed (난수 등)</text>
+    <text x="490" y="85" fill="#1a2540" font-size="9" font-family="sans-serif" font-weight="700">→ label ‖ seed 로 합쳐 입력</text>
+  </svg>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">3</div><div class="st">마스터 비밀(Master Secret) 생성 — PRF 활용</div><span class="slb le">★★★ 2022 국가직 문9 정답 핵심</span></div>
+
+<div class="sb">
+<p>마스터 비밀 생성 공식: <strong>Master Secret = PRF(pre-master secret, "master secret", ClientHello.random ‖ ServerHello.random)</strong></p>
+
+<p>즉, PRF에 들어가는 3가지 입력은:</p>
+</div>
+
+<div class="tw"><table>
+  <thead><tr><th>PRF 입력</th><th>실제 값</th><th>역할</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Secret</strong></td><td>사전 마스터 비밀 (pre-master secret)</td><td>핸드셰이크에서 협상된 원본 비밀값</td></tr>
+    <tr><td><strong>Label</strong></td><td>"master secret" (문자열)</td><td>목적 식별용 고정 문자열</td></tr>
+    <tr><td><strong>Seed</strong></td><td>클라이언트 난수 ‖ 서버 난수</td><td>재현 불가능한 랜덤값 2개 연결</td></tr>
+  </tbody>
+</table></div>
+
+<div class="sb">
+<p>2022 국가직 기출 문9 선지 ④: <strong>"마스터 비밀 생성을 위해 데이터 확장 함수는 사전 마스터 비밀, 'master secret' 문자, 2개의 임의의 수를 입력받는다"</strong> → <strong>오답</strong></p>
+
+<p>왜 틀렸냐면, 사전 마스터 비밀·'master secret'·2개 난수를 입력받는 건 <strong>PRF(의사난수 함수)</strong>예요. <strong>데이터 확장 함수(P_hash)</strong>의 입력은 <strong>secret과 seed 두 가지</strong>뿐이에요. PRF가 내부적으로 데이터 확장 함수를 호출하는 것이지, 데이터 확장 함수가 직접 label을 받는 게 아니에요.</p>
+</div>
+
+<div class="trap">
+  <div class="th"><span>⚠</span><span class="tht">핵심 함정 — 데이터 확장 함수 vs PRF 입력 구분 (2022 국가직 문9)</span></div>
+  <div class="tb">
+    <div class="tq">④ "TLS의 마스터 비밀 생성을 위해 <u>데이터 확장 함수</u>는 사전 마스터 비밀, 'master secret' 문자, 2개의 임의의 수를 입력받는다" → <span class="vw">✗ 오답</span></div>
+    <p>3가지(secret·label·seed)를 입력받는 건 <strong>PRF(의사난수 함수)</strong>. 데이터 확장 함수(P_hash)는 <strong>secret·seed 2가지</strong>만 입력받아요.</p>
+    <p>올바른 표현: "마스터 비밀 생성을 위해 <strong>PRF</strong>는 사전 마스터 비밀(secret), 'master secret' 문자(label), 2개의 임의의 수(seed)를 입력받는다."</p>
+  </div>
+</div>
+
+<div class="mem">
+  <div class="mt">🔢 TLS PRF 핵심 암기</div>
+  <div class="mi">
+    <div class="mr"><span class="mk">데이터 확장 함수</span><span class="mv">입력: <strong>secret + seed</strong> (2가지). HMAC(MD5 또는 SHA-1) 반복 적용. 비밀을 원하는 길이로 확장.</span></div>
+    <div class="mr"><span class="mk">PRF 입력</span><span class="mv"><strong>secret · label · seed</strong> 3가지. 내부적으로 데이터 확장 함수 2개(P_MD5 + P_SHA-1)를 XOR.</span></div>
+    <div class="mr"><span class="mk">Master Secret</span><span class="mv">PRF(pre-master secret, "master secret", <strong>클라이언트 난수 ‖ 서버 난수</strong>)</span></div>
+    <div class="mr"><span class="mk">2022 기출 오답 이유</span><span class="mv">"데이터 확장 함수가 3가지 입력받는다" → ✗. 3가지 입력 = <strong>PRF</strong>. 데이터 확장 함수 = <strong>2가지(secret, seed)</strong></span></div>
+  </div>
+</div>
+
+</div><!-- /tab-prf -->
+
+<!-- ════ 기출 ════ -->
+<div class="tab-pane" id="tab-exam">
+
+<div class="sh"><div class="sn2">📝</div><div class="st">기출문제 — 2022·2024·2025 출제</div><span class="slb le">최신 출제 경향</span></div>
+
+<div class="ec">
+  <div class="eh">
+    <span class="ey">📄 2022 국가직 9급 네트워크보안 문9 · TLS PRF 오답 찾기</span>
+    <span class="enew">NEW</span>
+  </div>
+  <div class="eb">
+    <div class="eq">TLS에 대한 설명으로 옳지 않은 것은?</div>
+    <div class="eo">
+      <div class="op on">① TLS는 SSL을 기반으로 만들어진 인터넷 표준이다.</div>
+      <div class="op on">② TLS의 의사난수 함수(pseudorandom function)는 데이터 확장 함수(data-expansion function)를 활용한다.</div>
+      <div class="op on">③ TLS의 의사난수 함수는 비밀(secret), 식별용 라벨(label), 종자(seed)를 입력받는다.</div>
+      <div class="op ow">④ TLS의 마스터 비밀(master secret) 생성을 위해 <u>데이터 확장 함수</u>는 사전 마스터 비밀(pre-master secret), 'master secret' 문자, 2개의 임의의 수를 입력받는다.</div>
+    </div>
+    <div class="ex">
+      <strong>정답 ④</strong><br><br>
+      ④에서 "데이터 확장 함수"가 잘못됐어요. 사전 마스터 비밀·'master secret' 레이블·2개의 난수(seed)를 입력받는 것은 <strong>PRF(의사난수 함수)</strong>예요.<br><br>
+      · <strong>데이터 확장 함수(P_hash)</strong> 입력: secret + seed (2가지)<br>
+      · <strong>PRF(의사난수 함수)</strong> 입력: secret + label + seed (3가지)<br><br>
+      PRF가 내부적으로 데이터 확장 함수를 호출하는 구조. 마스터 비밀 생성 시 PRF(pre-master secret, "master secret", CR‖SR)를 호출하고, PRF는 이를 데이터 확장 함수에 넘겨 확장함.<br><br>
+      ①②③은 모두 옳은 설명이에요.
+    </div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh">
+    <span class="ey">📄 2024 지방직 9급 정보보호론 문12 · 하트블리드 (가)(나)</span>
+    <span class="enew">NEW</span>
+  </div>
+  <div class="eb">
+    <div class="eq">하트블리드(Heartbleed)는 (가) 를 구현한 공개 소프트웨어인 OpenSSL의 심각한 보안 취약점으로, 수신한 요청 메시지의 실제 (나) 을/를 제대로 확인하지 않은 것에 기인한 것이다.</div>
+    <div class="eo">
+      <div class="op ow">① (가) SSH &nbsp;&nbsp; (나) 길이</div>
+      <div class="op ow">② (가) SSH &nbsp;&nbsp; (나) 유형</div>
+      <div class="op or">③ (가) TLS &nbsp;&nbsp; (나) 길이</div>
+      <div class="op ow">④ (가) TLS &nbsp;&nbsp; (나) 유형</div>
+    </div>
+    <div class="ex">
+      <strong>정답 ③ — (가) TLS, (나) 길이</strong><br><br>
+      <strong>(가) TLS:</strong> Heartbeat Protocol은 TLS/DTLS 확장 기능(RFC 6520). SSH와 전혀 무관. OpenSSL은 TLS를 구현한 오픈소스 라이브러리.<br><br>
+      <strong>(나) 길이(Length):</strong> 공격자가 Heartbeat Request 메시지에 실제 페이로드 크기보다 훨씬 큰 값을 페이로드 길이 필드에 기재해도, 취약한 OpenSSL은 실제 데이터의 길이를 검증하지 않고 그대로 메모리에서 읽어 응답. "유형(Type)"이 아닌 <strong>길이(Length)</strong>가 핵심.
+    </div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh">
+    <span class="ey">📄 2025 국가직 9급 정보시스템보안 문13 · Heartbeat Protocol 식별</span>
+    <span class="enew">NEW</span>
+  </div>
+  <div class="eb">
+    <div class="eq">TLS에 속한 프로토콜 중 세션을 활성 상태로 유지하는 목적으로 사용하는 것은?</div>
+    <div class="eo">
+      <div class="op ow">① Alert Protocol</div>
+      <div class="op ow">② Connection Protocol</div>
+      <div class="op or">③ Heartbeat Protocol</div>
+      <div class="op ow">④ Application Data Protocol</div>
+    </div>
+    <div class="ex">
+      <strong>정답 ③ Heartbeat Protocol</strong><br><br>
+      <strong>목적별 구분:</strong><br>
+      · Alert Protocol = 오류·경고 알림 전달 (예: 인증 실패, 버전 불일치)<br>
+      · Connection Protocol = SSH 개념. TLS에는 없는 구분.<br>
+      · <strong>Heartbeat Protocol</strong> = <strong>TLS/DTLS 연결(세션) 생존 여부 확인 → 세션 활성 상태 유지</strong>. RFC 6520.<br>
+      · Application Data Protocol = 실제 애플리케이션 데이터 전송<br><br>
+      "세션을 활성 상태로 유지"는 Heartbeat의 핵심 목적. 심장 박동처럼 주기적으로 확인 신호를 주고받아 연결이 끊기지 않도록 함.
+    </div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh">
+    <span class="ey">📄 2025 국가직 9급 정보시스템보안 문12 · Heartbleed vs CSRF 구분</span>
+    <span class="enew">NEW</span>
+  </div>
+  <div class="eb">
+    <div class="eq">삽입된 악성 스크립트를 통해 사용자가 인지하지 못하는 상태에서 사용자의 권한으로 서버에 공격자가 의도한 요청을 하는 공격은?</div>
+    <div class="eo">
+      <div class="op ow">① Slowloris</div>
+      <div class="op or">② CSRF</div>
+      <div class="op ow">③ Heartbleed</div>
+      <div class="op ow">④ DNS Cache Poisoning</div>
+    </div>
+    <div class="ex">
+      <strong>정답 ② CSRF</strong><br><br>
+      이 문제는 Heartbleed를 오답으로 활용했어요. Heartbleed를 선택하지 않으려면 정확한 개념 구분이 필요해요.<br><br>
+      · <strong>CSRF</strong> = 로그인된 사용자를 이용해 공격자가 의도한 요청을 서버에 전송. 사용자 권한 악용.<br>
+      · <strong>Heartbleed</strong> = 서버 메모리 읽기 공격. 악성 스크립트 삽입과 무관. TLS 취약점.<br>
+      · Slowloris = HTTP 연결 점유형 DoS 공격. DNS Cache Poisoning = DNS 캐시 변조.
+    </div>
+  </div>
+</div>
+
+<div class="ft">
+  <span>정보보안 합격전략 교재 · INHYUK PI</span>
+  <span>Heartbeat Protocol · Heartbleed · 2026 목표</span>
+</div>
+
+</div><!-- /tab-exam -->
+
+</div><!-- /cc -->
+</div><!-- /wrap -->
+
+<script>
+function sw(id){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b=>{
+    if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'"+id+"'")){
+      b.classList.add('active');
+    }
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
