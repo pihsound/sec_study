@@ -652,8 +652,136 @@ tbody td:first-child{font-weight:600;color:var(--p);}
   <p>CCMP(Counter Mode With Cipher Block Chaining Message Authentication Code Protocol)는 <strong>AES를 이용한 블록암호의 카운터 모드</strong>. <strong>기밀성·메시지 무결성·키 관리</strong>를 행한다. 무선 보안표준인 IEEE 802.11i와 WPA에서 공동채택. <strong>WPA2에서는 강제사항</strong>으로 규정되어 있음.</p>
 </div>
 
-</div><!-- /tab-wpa -->
+<div class="dv"></div>
 
+<div class="sh"><div class="sn2">5</div><div class="st">IEEE 802.11i 키 관리 — 쌍별 키 계층</div><span class="slb le">★★★ 2020·2024 국가직 출제</span></div>
+
+<div class="dfb">
+  <div class="dfl">키 계층 구조 개요</div>
+  <p>IEEE 802.11i의 키 관리는 <strong>PSK/MSK → PMK → PTK → TK</strong> 순으로 계층적으로 키를 파생하는 구조. AAAK(AAA Key)라고도 불리는 <strong>MSK</strong>는 IEEE 802.1X 프로토콜에 의해 인증 단계에서 생성됨. 인증 완료 후 AP와 STA는 <strong>PMK</strong>를 공유하게 되며, PMK로부터 <strong>PTK</strong>가 만들어지고, PTK의 일부인 <strong>TK</strong>가 실제 무선 데이터 패킷 암호화에 사용됨.</p>
+</div>
+
+<!-- 키 계층 SVG -->
+<div class="dw">
+  <div class="dt">IEEE 802.11i 쌍별 키 계층 구조 — PSK/MSK → PMK → PTK → TK</div>
+  <svg viewBox="0 0 740 175" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:740px;display:block;margin:0 auto;">
+
+    <!-- 최상위: PSK / MSK 2갈래 -->
+    <rect x="30" y="10" width="150" height="46" rx="8" fill="#1a2540"/>
+    <text x="105" y="29" text-anchor="middle" fill="#6ee7b7" font-size="11" font-family="sans-serif" font-weight="700">PSK</text>
+    <text x="105" y="43" text-anchor="middle" fill="rgba(255,255,255,.75)" font-size="9" font-family="sans-serif">(Pre-Shared Key)</text>
+    <text x="105" y="54" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="8" font-family="sans-serif">AP↔STA 공유 비밀키</text>
+
+    <rect x="210" y="10" width="150" height="46" rx="8" fill="#1a2540"/>
+    <text x="285" y="29" text-anchor="middle" fill="#6ee7b7" font-size="11" font-family="sans-serif" font-weight="700">MSK</text>
+    <text x="285" y="43" text-anchor="middle" fill="rgba(255,255,255,.75)" font-size="9" font-family="sans-serif">(Master Session Key)</text>
+    <text x="285" y="54" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="8" font-family="sans-serif">802.1X 인증 단계 생성</text>
+
+    <text x="195" y="35" text-anchor="middle" fill="#5a6478" font-size="13" font-family="sans-serif" font-weight="700">또는</text>
+
+    <!-- 화살표 PSK/MSK → PMK -->
+    <line x1="105" y1="56" x2="240" y2="88" stroke="#0f766e" stroke-width="2"/>
+    <line x1="285" y1="56" x2="260" y2="88" stroke="#0f766e" stroke-width="2"/>
+    <polygon points="246,88 258,92 252,80" fill="#0f766e"/>
+
+    <!-- PMK -->
+    <rect x="175" y="92" width="150" height="46" rx="8" fill="#0f766e"/>
+    <text x="250" y="111" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">PMK</text>
+    <text x="250" y="125" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="9" font-family="sans-serif">(Pairwise Master Key)</text>
+    <text x="250" y="135" text-anchor="middle" fill="rgba(255,255,255,.65)" font-size="8" font-family="sans-serif">PSK를 PMK로 사용 / MSK 일부 잘라 PMK로</text>
+
+    <!-- 화살표 PMK → PTK -->
+    <line x1="250" y1="138" x2="250" y2="155" stroke="#2d5be3" stroke-width="2"/>
+    <polygon points="246,155 250,165 254,155" fill="#2d5be3"/>
+
+    <!-- PTK -->
+    <rect x="175" y="165" width="150" height="46" rx="8" fill="#2d5be3"/>
+    <text x="250" y="184" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">PTK</text>
+    <text x="250" y="198" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="9" font-family="sans-serif">(Pairwise Transient Key)</text>
+    <text x="250" y="208" text-anchor="middle" fill="rgba(255,255,255,.65)" font-size="8" font-family="sans-serif">PMK 이용해 생성. LAN EAP 키, EAPOL 암호화 키</text>
+
+    <!-- 화살표 PTK → TK -->
+    <line x1="325" y1="188" x2="450" y2="188" stroke="#c0392b" stroke-width="2" stroke-dasharray="4,2"/>
+    <polygon points="450,184 462,188 450,192" fill="#c0392b"/>
+
+    <!-- TK -->
+    <rect x="462" y="165" width="150" height="46" rx="8" fill="#c0392b"/>
+    <text x="537" y="184" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">TK</text>
+    <text x="537" y="198" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="9" font-family="sans-serif">(Temporal Key / 임시 키)</text>
+    <text x="537" y="208" text-anchor="middle" fill="rgba(255,255,255,.65)" font-size="8" font-family="sans-serif">PTK의 일부 → 실제 데이터 패킷 암호화</text>
+
+    <!-- 우측 설명 -->
+    <rect x="640" y="10" width="95" height="30" rx="5" fill="#f0f2f5" stroke="#dde3ec"/>
+    <text x="687" y="29" text-anchor="middle" fill="#1a2540" font-size="9" font-family="sans-serif" font-weight="600">개인모드: PSK</text>
+    <rect x="640" y="46" width="95" height="30" rx="5" fill="#f0f2f5" stroke="#dde3ec"/>
+    <text x="687" y="65" text-anchor="middle" fill="#1a2540" font-size="9" font-family="sans-serif" font-weight="600">기업모드: MSK</text>
+
+    <text x="687" y="105" text-anchor="middle" fill="#0f766e" font-size="9" font-family="sans-serif" font-weight="700">PMK 공유</text>
+    <text x="687" y="118" text-anchor="middle" fill="#5a6478" font-size="8.5" font-family="sans-serif">인증 완료 후</text>
+    <text x="687" y="130" text-anchor="middle" fill="#5a6478" font-size="8.5" font-family="sans-serif">AP↔STA 공유</text>
+
+    <text x="687" y="178" text-anchor="middle" fill="#2d5be3" font-size="9" font-family="sans-serif" font-weight="700">4-way HS</text>
+    <text x="687" y="191" text-anchor="middle" fill="#5a6478" font-size="8.5" font-family="sans-serif">PTK 생성·배포</text>
+
+    <text x="687" y="205" text-anchor="middle" fill="#c0392b" font-size="9" font-family="sans-serif" font-weight="700">TK = 암호화</text>
+    <text x="687" y="218" text-anchor="middle" fill="#5a6478" font-size="8.5" font-family="sans-serif">실제 데이터 보호</text>
+  </svg>
+</div>
+
+<div class="tw"><table>
+  <thead><tr><th>키 이름</th><th>Full Name</th><th>생성 방법</th><th>역할</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>PSK</strong></td>
+      <td>Pre-Shared Key<br>사전 공유키</td>
+      <td>AP와 STA가 사전에 공유하는 비밀키. 개인 모드에서 사용.</td>
+      <td>PMK로 직접 사용. WPA/WPA2 개인 모드의 최상위 키.</td>
+    </tr>
+    <tr>
+      <td><strong>MSK</strong></td>
+      <td>Master Session Key<br>마스터 세션키</td>
+      <td>IEEE 802.1X 인증 단계에서 생성됨. AAAK(AAA Key)라고도 불림.</td>
+      <td>MSK의 일부를 잘라 PMK로 사용. 기업 모드에서 사용.</td>
+    </tr>
+    <tr style="background:#edf7f2;">
+      <td><strong>PMK ★</strong></td>
+      <td>Pairwise Master Key<br>쌍별 마스터키</td>
+      <td>PSK를 그대로 PMK로 사용(개인모드) 또는 MSK 일부를 잘라 PMK로 사용(기업모드).</td>
+      <td>인증 완료 후 AP↔STA가 공유. PTK 생성에 사용. <strong>키 계층의 핵심</strong>.</td>
+    </tr>
+    <tr style="background:#e8eeff;">
+      <td><strong>PTK ★</strong></td>
+      <td>Pairwise Transient Key<br>쌍별 임시키</td>
+      <td>PMK를 이용하여 생성. <strong>4-way 핸드셰이크</strong>로 AP↔STA에 배치.</td>
+      <td>LAN 상의 EAP 키 확인키 / EAPOL 키 암호화 키 / 임시 키로 사용. TK를 포함.</td>
+    </tr>
+    <tr style="background:#fdf0ef;">
+      <td><strong>TK ★</strong></td>
+      <td>Temporal Key<br>임시 키</td>
+      <td>PTK의 일부분을 잘라 사용.</td>
+      <td><strong>사용자의 무선 데이터 패킷 암호화</strong>에 직접 사용. 실제 통신 보호.</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<div class="inf-t">
+  <strong>핵심 암기 순서 (시험 빈출):</strong><br>
+  개인모드: <strong>PSK → PMK → PTK → TK</strong><br>
+  기업모드: <strong>MSK → PMK → PTK → TK</strong><br>
+  실제 데이터 암호화에 사용되는 키 = <strong>TK (PTK의 일부)</strong>
+</div>
+
+<div class="trap">
+  <div class="th"><span>⚠</span><span class="tht">함정 ★★★ — 쌍별 키 계층 순서 혼동 (2020·2024 국가직)</span></div>
+  <div class="tb">
+    <div class="tq">2024 국가직 문7: "IEEE 802.11i 키 관리의 쌍별 키 계층을 바르게 나열한 것은? (가)(나)(다)"<br>① PMK / TK / PTK → <span class="vw">✗</span><br><span style="font-weight:700;color:#0d4a2a;">② PMK / PTK / TK → ✓ 정답</span><br>③ PTK / TK / PMK → <span class="vw">✗</span><br>④ PTK / PMK / TK → <span class="vw">✗</span></div>
+    <p>PMK → PTK → TK 순서 반드시 암기. TK가 PTK 앞에 오면 오답. PMK가 PTK 뒤에 오면 오답.</p>
+    <div class="tq">2020 국가직 문7: "AP와 STA는 (가)를 공유 → (가)로부터 (나)가 만들어짐 → (나)의 일부인 (다)가 암호화에 사용"<br>→ (가)=<strong>PMK</strong>, (나)=<strong>PTK</strong>, (다)=<strong>TK</strong></div>
+    <p>설명의 흐름: "공유" = PMK / "만들어짐" = PTK / "암호화에 사용" = TK. 역할로 매핑해서 풀 것.</p>
+  </div>
+</div>
+
+</div><!-- /tab-wpa -->
 <!-- ════ 3종 비교 ════ -->
 <div class="tab-pane" id="tab-compare">
 
@@ -869,6 +997,34 @@ tbody td:first-child{font-weight:600;color:var(--p);}
 <div class="tab-pane" id="tab-exam">
 
 <div class="sh"><div class="sn2">📝</div><div class="st">기출문제 전수 해설 — 8문제</div><span class="slb le">연도순</span></div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2020 국가직 9급 네트워크보안 문7 · PMK→PTK→TK 빈칸</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">IEEE 802.11i의 키 관리에 대한 설명에서 (가)~(다)에 들어갈 용어를 바르게 연결한 것은?<br><br>AAAK라고도 불리는 MSK는 IEEE 802.1X 프로토콜에 의해 인증 단계에서 생성된다. 인증의 마지막 과정이 끝나고 나면 AP와 STA는 <strong>(가)</strong>를 공유하게 된다. (가)로부터 AP와 STA 간의 통신에 사용할 <strong>(나)</strong>가 만들어지는데, (나)의 일부인 <strong>(다)</strong>가 사용자의 무선 데이터 패킷의 암호화에 사용된다.</div>
+    <div class="eo">
+      <div class="op or">① (가)PMK (나)PTK (다)TK</div>
+      <div class="op ow">② (가)PMK (나)TK (다)PTK</div>
+      <div class="op ow">③ (가)PTK (나)PMK (다)TK</div>
+      <div class="op ow">④ (가)PTK (나)TK (다)PMK</div>
+    </div>
+    <div class="ex"><strong>정답 ①</strong> — (가) 인증 완료 후 AP↔STA가 공유 = <strong>PMK(쌍별 마스터키)</strong>. (나) PMK로부터 만들어지는 = <strong>PTK(쌍별 임시키)</strong>. (다) PTK의 일부로 실제 암호화에 사용 = <strong>TK(임시 키)</strong>. PMK→PTK→TK 순서 고정 암기.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2024 국가직 9급 정보보호론 문7 · 쌍별 키 계층 순서</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">IEEE 802.11i 키 관리의 쌍별 키 계층을 바르게 나열한 것은?<br><br>(가) &nbsp;&nbsp;&nbsp; (나) &nbsp;&nbsp;&nbsp; (다)</div>
+    <div class="eo">
+      <div class="op ow">① PMK &nbsp;&nbsp; TK &nbsp;&nbsp; PTK</div>
+      <div class="op or">② PMK &nbsp;&nbsp; PTK &nbsp;&nbsp; TK</div>
+      <div class="op ow">③ PTK &nbsp;&nbsp; TK &nbsp;&nbsp; PMK</div>
+      <div class="op ow">④ PTK &nbsp;&nbsp; PMK &nbsp;&nbsp; TK</div>
+    </div>
+    <div class="ex"><strong>정답 ②</strong> — 쌍별 키 계층 순서: <strong>PMK → PTK → TK</strong>. PMK(쌍별 마스터키)에서 PTK(쌍별 임시키)가 파생되고, PTK의 일부인 TK(임시 키)가 실제 데이터 암호화에 사용. ①③④는 모두 순서가 잘못됨.</div>
+  </div>
+</div>
 
 <div class="ec">
   <div class="eh"><span class="ey">📄 2016 국가직 7급 · 802.11i·TKIP·AES·EAP 빈칸</span><span class="es">★★★</span></div>
