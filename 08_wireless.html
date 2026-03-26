@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>무선 LAN 보안 완전 교재 | INHYUK PI</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --p:#1a2540;--a:#2d5be3;--al:#e8eeff;
+  --r:#c0392b;--rl:#fdf0ef;
+  --g:#1a7a4a;--gl:#edf7f2;
+  --w:#b45309;--wl:#fffbeb;
+  --v:#6d28d9;--vl:#ede9fe;
+  --t:#0f766e;--tl:#ccfbf1;
+  --bd:#dde3ec;--bg:#fff;--tx:#1c2331;--tm:#5a6478;
+  --g0:#f8f9fa;--g1:#f0f2f5;
+  --sans:'Noto Sans KR',sans-serif;--serif:'Noto Serif KR',serif;--mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--sans);background:#eef1f8;color:var(--tx);font-size:14px;line-height:1.8;}
+.wrap{max-width:960px;margin:0 auto;padding:28px 14px 70px;}
+
+.hdr{background:linear-gradient(135deg,#030a1a 0%,#0a1a30 50%,#03100a 100%);border-radius:14px 14px 0 0;padding:30px 42px 26px;position:relative;overflow:hidden;}
+.hdr::before{content:'📡';position:absolute;right:28px;top:8px;font-size:120px;opacity:.06;}
+.mbr{display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap;}
+.bdg{font-size:9.5px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.06em;text-transform:uppercase;}
+.bdg-ch{background:rgba(255,255,255,.13);color:rgba(255,255,255,.9);}
+.bdg-hot{background:#c0392b;color:white;}
+.bdg-ok{background:#0f766e;color:white;}
+.ht{font-family:var(--serif);font-size:27px;font-weight:600;color:white;letter-spacing:-.02em;margin-bottom:3px;}
+.hs{color:rgba(255,255,255,.55);font-size:12px;font-weight:300;}
+.hst{display:flex;gap:22px;margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.1);flex-wrap:wrap;}
+.hn{font-size:17px;font-weight:700;color:#6ee7b7;}
+.hl{font-size:9.5px;color:rgba(255,255,255,.5);margin-top:1px;}
+
+.tab-bar{display:flex;background:var(--p);padding:0 42px;gap:2px;flex-wrap:wrap;border-bottom:2px solid rgba(255,255,255,.08);}
+.tab-btn{padding:11px 13px;font-size:11.5px;font-weight:600;color:rgba(255,255,255,.5);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all .18s;white-space:nowrap;}
+.tab-btn:hover{color:rgba(255,255,255,.8);}
+.tab-btn.active{color:#6ee7b7;border-bottom-color:#0f766e;}
+
+.cc{background:var(--bg);border-radius:0 0 14px 14px;padding:36px 42px;border:1px solid var(--bd);border-top:none;}
+.tab-pane{display:none;}.tab-pane.active{display:block;}
+
+.sh{display:flex;align-items:center;gap:9px;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--g1);margin-top:6px;}
+.sn2{width:30px;height:30px;background:var(--p);color:white;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.st{font-size:17px;font-weight:700;color:var(--p);}
+.slb{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.06em;text-transform:uppercase;}
+.le{background:var(--rl);color:var(--r);}
+.ld{background:var(--al);color:var(--a);}
+.lv{background:var(--vl);color:var(--v);}
+.lw{background:var(--wl);color:var(--w);}
+.lg{background:var(--gl);color:var(--g);}
+.lt{background:var(--tl);color:var(--t);}
+
+.sb{font-size:13.5px;line-height:2.1;color:var(--tx);}
+.sb p{margin-bottom:14px;}
+.sb strong{color:var(--p);}
+.sb em{color:var(--t);font-style:normal;font-weight:700;}
+
+.sq{background:var(--p);color:white;border-radius:10px;padding:14px 22px 14px 34px;margin:16px 0;font-size:13.5px;line-height:1.9;position:relative;}
+.sq::before{content:'💬';position:absolute;left:-12px;top:12px;font-size:20px;}
+.sq strong{color:#6ee7b7;}
+
+.dfb{background:var(--p);color:white;border-radius:11px;padding:16px 21px;margin-bottom:14px;}
+.dfl{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6ee7b7;margin-bottom:6px;}
+.dfb p{font-size:13.5px;line-height:1.95;color:rgba(255,255,255,.9);}
+.dfb strong{color:#6ee7b7;}
+.dfb code{font-family:var(--mono);font-size:11.5px;background:rgba(110,231,183,.15);color:#6ee7b7;padding:2px 7px;border-radius:4px;}
+
+.tw{overflow-x:auto;margin:12px 0;border-radius:9px;border:1px solid var(--bd);}
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+thead tr{background:var(--p);color:white;}
+thead th{padding:10px 13px;text-align:left;font-weight:600;font-size:11.5px;}
+tbody tr{border-bottom:1px solid var(--g1);}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:#f0fff8;}
+tbody td{padding:9px 13px;color:var(--tx);vertical-align:top;line-height:1.7;}
+tbody td:first-child{font-weight:600;color:var(--p);}
+.tc-r{background:#fdf0ef!important;}
+.tc-w{background:#fffbeb!important;}
+.tc-g{background:#edf7f2!important;}
+.tc-b{background:#e8eeff!important;}
+
+.dw{background:var(--g0);border:1px solid var(--bd);border-radius:12px;padding:18px;margin:14px 0;overflow-x:auto;}
+.dt{font-size:11px;font-weight:700;color:var(--p);margin-bottom:12px;letter-spacing:.03em;}
+
+.cds{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:10px;margin:12px 0;}
+.cd{border:1px solid var(--bd);border-radius:9px;padding:13px 14px;background:var(--g0);}
+.cdt{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--t);margin-bottom:6px;}
+.cdb{font-size:13px;color:var(--tx);line-height:1.75;}
+.cdb strong{color:var(--p);}
+
+/* WEP/WPA/WPA2 카드 */
+.ver-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:14px 0;}
+.vc{border-radius:11px;overflow:hidden;border:1px solid var(--bd);}
+.vch{padding:11px 16px;font-size:13px;font-weight:700;color:white;text-align:center;}
+.vcb{padding:13px 15px;background:var(--bg);}
+.vcr{display:flex;gap:8px;padding:5px 0;border-bottom:1px solid var(--g1);font-size:12.5px;}
+.vcr:last-child{border-bottom:none;}
+.vck{color:var(--tm);min-width:55px;font-size:10.5px;padding-top:2px;flex-shrink:0;}
+.vcv{color:var(--tx);font-weight:500;line-height:1.65;}
+.bad{color:var(--r)!important;font-weight:700;}
+.good{color:var(--g)!important;font-weight:700;}
+.ok{color:var(--w)!important;font-weight:700;}
+
+/* 블루투스 카드 */
+.bt-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0;}
+.btc{border-radius:10px;overflow:hidden;border:1px solid var(--bd);}
+.btch{padding:10px 15px;font-size:12.5px;font-weight:700;color:white;}
+.btcb{padding:12px 15px;background:var(--bg);}
+.btcr{font-size:13px;color:var(--tx);padding:4px 0;border-bottom:1px solid var(--g1);line-height:1.7;}
+.btcr:last-child{border-bottom:none;}
+.btcr strong{color:var(--p);}
+
+.trap{border-radius:11px;margin:16px 0;overflow:hidden;}
+.th{display:flex;align-items:center;gap:8px;padding:11px 16px;background:var(--r);color:white;}
+.tht{font-size:12.5px;font-weight:700;}
+.tb{background:var(--rl);padding:14px 18px;border:1px solid #f5c6c2;border-top:none;border-radius:0 0 11px 11px;}
+.tb p{font-size:13px;color:#7a1c1c;line-height:1.9;margin-bottom:8px;}
+.tb p:last-child{margin-bottom:0;}
+.tq{background:white;border-left:3px solid var(--r);padding:9px 13px;border-radius:0 7px 7px 0;margin:9px 0;font-size:13px;color:var(--tx);line-height:1.75;}
+.vw{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:20px;background:var(--r);color:white;}
+.vr{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:20px;background:var(--g);color:white;}
+
+.inf-t{background:var(--tl);border:1px solid #a7f3d0;border-radius:9px;padding:12px 16px;margin:12px 0;font-size:13px;color:#064e3b;line-height:1.85;}
+.inf-t strong{color:var(--p);}
+.inf-v{background:var(--vl);border:1px solid #c4b5fd;border-radius:9px;padding:12px 16px;margin:12px 0;font-size:13px;color:#3b0764;line-height:1.85;}
+.inf-v strong{color:var(--p);}
+
+.ec{border:1px solid var(--bd);border-radius:11px;margin:11px 0;overflow:hidden;}
+.eh{display:flex;align-items:center;justify-content:space-between;padding:9px 15px;background:var(--g0);border-bottom:1px solid var(--bd);}
+.ey{font-size:11.5px;font-weight:700;color:var(--p);}
+.es{color:#e8b000;font-size:12px;letter-spacing:2px;}
+.eb{padding:14px 16px;}
+.eq{font-size:13.5px;font-weight:600;color:var(--tx);margin-bottom:11px;line-height:1.75;}
+.eo{display:flex;flex-direction:column;gap:5px;}
+.op{font-size:13px;padding:7px 11px;border-radius:6px;border:1px solid transparent;line-height:1.6;}
+.ow{background:#fdf0ef;border-color:#f5c6c2;color:#7a1c1c;text-decoration:line-through;opacity:.8;}
+.ow::before{content:'✗ ';}
+.or{background:var(--gl);border-color:#a3dbc0;color:#0d4a2a;font-weight:600;}
+.or::before{content:'✓ ';}
+.on{background:var(--g0);border-color:var(--bd);color:var(--tx);}
+.ex{margin-top:11px;padding:12px 14px;background:var(--g0);border-radius:7px;font-size:13px;color:var(--tm);line-height:1.9;border-left:3px solid var(--t);}
+
+.mem{background:linear-gradient(135deg,#030a1a 0%,#1a2540 100%);border-radius:13px;padding:22px 25px;color:white;margin:14px 0;position:relative;overflow:hidden;}
+.mem::before{content:'📡';position:absolute;right:14px;top:8px;font-size:52px;opacity:.08;}
+.mt{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6ee7b7;margin-bottom:12px;}
+.mi{display:flex;flex-direction:column;gap:9px;}
+.mr{display:flex;gap:10px;align-items:flex-start;}
+.mk{font-family:var(--mono);font-size:10.5px;font-weight:600;background:rgba(110,231,183,.18);color:#6ee7b7;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;}
+.mv{font-size:13px;color:rgba(255,255,255,.85);line-height:1.75;}
+.mv strong{color:#6ee7b7;}
+
+.cl{list-style:none;margin:12px 0;display:flex;flex-direction:column;gap:5px;}
+.cl li{display:flex;align-items:flex-start;gap:8px;font-size:13px;padding:8px 13px;border-radius:7px;border:1px solid var(--bd);background:var(--bg);line-height:1.65;}
+.clw{background:#fdf0ef;border-color:#f5c6c2;}
+.clw::before{content:'⚠';color:var(--r)!important;font-size:12px;flex-shrink:0;margin-top:2px;}
+.clr{background:var(--gl);border-color:#a3dbc0;}
+.clr::before{content:'✓';color:var(--g)!important;font-size:12px;flex-shrink:0;margin-top:2px;}
+
+.dv{height:1px;background:var(--g1);margin:26px 0;}
+.ft{display:flex;justify-content:space-between;margin-top:28px;padding-top:13px;border-top:1px solid var(--bd);font-size:10.5px;color:var(--tm);}
+@media(max-width:640px){.cc,.hdr{padding:22px 16px;}.tab-bar{padding:0 16px;}.ver-grid{grid-template-columns:1fr;}.bt-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hdr">
+  <div class="mbr">
+    <span class="bdg bdg-ch">Chapter 08 · 네트워크 보안</span>
+    <span class="bdg bdg-hot">최빈출</span>
+    <span class="bdg bdg-ok">기출 8문제 수록</span>
+  </div>
+  <div class="ht">무선 LAN 보안 완전 교재</div>
+  <div class="hs">무선LAN 개요·구성요소·유형 · IEEE 802.11i RSN 5단계 · WEP→WPA→WPA2 · TKIP·CCMP · 취약점 8종 · 블루투스 5종</div>
+  <div class="hst">
+    <div><div class="hn">WEP→WPA→WPA2</div><div class="hl">진화 과정 ★★★</div></div>
+    <div><div class="hn">TKIP vs CCMP</div><div class="hl">RC4 vs AES 구분 ★★★</div></div>
+    <div><div class="hn">블루투스 5종</div><div class="hl">재킹·스나프·버그·프린팅·BIAS</div></div>
+    <div><div class="hn">8문제</div><div class="hl">기출 수록</div></div>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="sw('intro')">🌐 개요 · 구성요소</button>
+  <button class="tab-btn" onclick="sw('types')">📶 유형 · IEEE 규격</button>
+  <button class="tab-btn" onclick="sw('vuln')">⚡ 무선 취약점</button>
+  <button class="tab-btn" onclick="sw('overview')">🔄 WEP→WPA→WPA2</button>
+  <button class="tab-btn" onclick="sw('wep')">🔓 WEP</button>
+  <button class="tab-btn" onclick="sw('wpa')">🔒 WPA · WPA2</button>
+  <button class="tab-btn" onclick="sw('compare')">📊 3종 비교표</button>
+  <button class="tab-btn" onclick="sw('tech')">🔧 보안 기술</button>
+  <button class="tab-btn" onclick="sw('bluetooth')">🦷 블루투스 공격</button>
+  <button class="tab-btn" onclick="sw('exam')">📝 기출 10선</button>
+</div>
+
+<div class="cc">
+
+<!-- ════ 개요 · 구성요소 ════ -->
+<div class="tab-pane active" id="tab-intro">
+
+<div class="sh"><div class="sn2">1</div><div class="st">무선 LAN(Wireless LAN) 정의 및 특징</div><span class="slb lg">★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">무선 LAN 정의</div>
+  <p>무선 LAN(Wireless LAN)은 <strong>케이블 없이 전파를 이용할 수 있게 해주는 무선 인터넷</strong>을 의미하며, 흔히 <strong>Wi-Fi</strong>라고도 한다. Wi-Fi(Wireless Fidelity)는 국제 인증 기관인 <strong>Wi-Fi Alliance</strong>가 IEEE 802.11x를 지원하여 상호 관련됨을 인증한 표준 규격. <strong>2.4~5GHz 무허가 주파수 대역</strong>을 활용. 기존 10m 거리에서 200~300m 대폭 증가하여 멀티미디어 서비스 수신 가능.</p>
+</div>
+
+<div class="sb">
+<p>무선 LAN은 유선 LAN에 비해 편리하지만 보안 위협이 훨씬 크요. 유선은 물리적으로 선을 연결해야 하지만, 무선은 공기 중으로 데이터가 흘러다녀요. 안테나만 있으면 누구든 신호를 수신할 수 있어요. 이 때문에 <strong>도청, 불법 접속, 중간자 공격, Rogue AP</strong> 등에 취약해요.</p>
+<p>무선 LAN의 주요 특징: ① 물리적 이동성(기기를 들고 이동하면서 사용 가능) ② 무허가 주파수 대역 사용 ③ 전파 범위 내 누구나 신호 수신 가능 ④ 유선에 비해 일반적으로 품질이 낮음 ⑤ 전파 간섭 존재.</p>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">무선 LAN 3대 구성요소</div><span class="slb le">★★★</span></div>
+
+<div class="sb">
+<p>무선 LAN 환경을 구성하기 위해서는 기본적으로 <strong>무선 AP(Access Point), W-NIC(무선 랜카드), 인증 서버</strong> 세 요소가 필요해요. 각각의 역할을 정확히 이해해야 해요.</p>
+</div>
+
+<div class="dw">
+  <div class="dt">무선 LAN 구성요소 관계도</div>
+  <svg viewBox="0 0 740 155" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:740px;display:block;margin:0 auto;">
+    <!-- 인터넷 -->
+    <ellipse cx="660" cy="75" rx="68" ry="32" fill="#1a2540"/>
+    <text x="660" y="71" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">인터넷</text>
+    <text x="660" y="85" text-anchor="middle" fill="rgba(255,255,255,.65)" font-size="8.5" font-family="sans-serif">(유선 네트워크)</text>
+    <!-- AP -->
+    <rect x="390" y="45" width="130" height="60" rx="9" fill="#0f766e"/>
+    <text x="455" y="68" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">AP</text>
+    <text x="455" y="82" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="9" font-family="sans-serif">(Access Point)</text>
+    <text x="455" y="96" text-anchor="middle" fill="rgba(255,255,255,.65)" font-size="8.5" font-family="sans-serif">무선↔유선 브리지</text>
+    <!-- 유선 연결 AP↔인터넷 -->
+    <line x1="520" y1="75" x2="592" y2="75" stroke="#374151" stroke-width="2.5"/>
+    <text x="556" y="67" text-anchor="middle" fill="#5a6478" font-size="8.5" font-family="sans-serif">유선 LAN</text>
+    <!-- 전파 표시 -->
+    <text x="455" y="30" text-anchor="middle" fill="#0f766e" font-size="13" font-family="sans-serif">📡</text>
+    <!-- 클라이언트들 -->
+    <rect x="10" y="15" width="120" height="50" rx="7" fill="#2d5be3"/>
+    <text x="70" y="37" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">노트북</text>
+    <text x="70" y="51" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="8.5" font-family="sans-serif">W-NIC 탑재</text>
+    <rect x="10" y="88" width="120" height="50" rx="7" fill="#2d5be3"/>
+    <text x="70" y="110" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">스마트폰</text>
+    <text x="70" y="124" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="8.5" font-family="sans-serif">W-NIC 탑재</text>
+    <!-- 무선 연결 -->
+    <line x1="130" y1="40" x2="390" y2="62" stroke="#0f766e" stroke-width="1.5" stroke-dasharray="6,3"/>
+    <line x1="130" y1="113" x2="390" y2="88" stroke="#0f766e" stroke-width="1.5" stroke-dasharray="6,3"/>
+    <text x="260" y="48" text-anchor="middle" fill="#0f766e" font-size="8.5" font-family="sans-serif" font-weight="600">무선 연결 (전파)</text>
+    <!-- 인증 서버 -->
+    <rect x="190" y="110" width="130" height="42" rx="7" fill="#6d28d9"/>
+    <text x="255" y="128" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">인증 서버</text>
+    <text x="255" y="143" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="8.5" font-family="sans-serif">(RADIUS 서버)</text>
+    <line x1="390" y1="100" x2="320" y2="128" stroke="#6d28d9" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <text x="355" y="123" text-anchor="middle" fill="#6d28d9" font-size="8" font-family="sans-serif">802.1x/EAP</text>
+  </svg>
+</div>
+
+<div class="tw"><table>
+  <thead><tr><th>구성요소</th><th>역할</th><th>상세 설명</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>① AP (Access Point)</strong><br>무선 액세스 포인트</td>
+      <td>무선 기지국·중계기. 유선↔무선 브리지</td>
+      <td>무선 LAN에서 사용자 간의 중계 역할을 하는 무선 출력 기기. <strong>인터넷 선(유선 LAN, 와이브로 등)에 연결</strong>하여 유선과 무선을 잇는 브리지 역할. AP를 허브에 연결하면 스위치처럼 동작. 무선 AP가 커버하는 영역을 <strong>BSS(Basic Service Set)</strong>라 함.</td>
+    </tr>
+    <tr>
+      <td><strong>② W-NIC (Wireless NIC)</strong><br>무선 네트워크 인터페이스 카드</td>
+      <td>단말기의 무선 송수신 장치</td>
+      <td>무선 랜카드. 무선 네트워크 인터페이스 카드. 단말기(노트북·스마트폰·태블릿 등)가 무선 통신을 하기 위한 하드웨어. 전파 수신·송신을 담당하며 AP 없이는 인프라 모드에서 동작 불가. 무선 통신 능력은 전적으로 W-NIC에 존재.</td>
+    </tr>
+    <tr>
+      <td><strong>③ 인증 서버</strong><br>(Authentication Server)</td>
+      <td>사용자 신원 인증 처리</td>
+      <td>사용자 인증을 처리하는 서버. 기업 환경에서 <strong>RADIUS(Remote Authentication Dial-In User Service) 서버</strong>로 구현. IEEE 802.1x/EAP 기반 인증 처리. AP와 인증 서버 사이에는 RADIUS 프로토콜로 통신. 개인 모드(PSK)에서는 별도 인증 서버 불필요.</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">3</div><div class="st">무선 LAN 접속 방식 — Infrastructure vs Ad-hoc</div><span class="slb le">★★★</span></div>
+
+<div class="tw"><table>
+  <thead><tr><th>방식</th><th>정의</th><th>특징</th><th>용도</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Infrastructure<br>(인프라스트럭처) 방식</strong></td>
+      <td>무선 공유기(AP) 장비를 통해 네트워크에 연결하는 무선 연결 방식</td>
+      <td>AP를 중심으로 모든 통신이 이루어짐. 클라이언트들은 AP를 통해 인터넷이나 서버에 연결. <strong>가장 일반적인 무선 LAN 방식</strong>. 보안 정책 일괄 적용 가능.</td>
+      <td>가정·사무실·공공 무선랜. 기업 내 Wi-Fi.</td>
+    </tr>
+    <tr>
+      <td><strong>Ad-hoc 방식</strong></td>
+      <td>AP 장비 없이 PC들의 무선 NIC만으로 무선 연결하는 방식</td>
+      <td>Peer to Peer 방식. AP 없이도 기기 간 직접 연결. 물리적으로 이동 중에도 통신 가능. <strong>보안 정책 적용이 어려움</strong>. 인증 없이 접속 가능하여 취약. 연결 가능한 범위·거리 제약 없이 통신 가능.</td>
+      <td>임시 파일 공유, Wi-Fi Direct, 재난 현장 통신.</td>
+    </tr>
+  </tbody>
+</table></div>
+
+</div><!-- /tab-intro -->
+
+<!-- ════ 유형 · IEEE 규격 ════ -->
+<div class="tab-pane" id="tab-types">
+
+<div class="sh"><div class="sn2">1</div><div class="st">무선 네트워크 유형 — WPAN · WLAN · WMAN</div><span class="slb le">★★</span></div>
+
+<div class="tw"><table>
+  <thead><tr><th>유형</th><th>Full Name</th><th>커버리지</th><th>특징</th><th>IEEE 표준</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>WPAN</strong></td>
+      <td>Wireless Personal Area Network</td>
+      <td>초단거리 (수 m)</td>
+      <td>무선 케이블 없는 소규모 개인 네트워크. 단거리 Ad-Hoc 또는 P2P 방식. <strong>블루투스, ZigBee, UWB</strong></td>
+      <td>IEEE 802.15</td>
+    </tr>
+    <tr>
+      <td><strong>WLAN</strong></td>
+      <td>Wireless Local Area Network</td>
+      <td>근거리 (수십~수백 m)</td>
+      <td>근거리 통신. 가까운 장소에 있는 기기를 하는 네트워크. 각종 터미널 간에 연결. <strong>Wi-Fi(802.11)</strong>가 대표</td>
+      <td>IEEE 802.11</td>
+    </tr>
+    <tr>
+      <td><strong>WMAN</strong></td>
+      <td>Wireless Metropolitan Area Network</td>
+      <td>도시 규모</td>
+      <td>도시 규모에서 무선 광대역을 통해 사용자 연결 기능 제공. <strong>WiMAX</strong>가 대표</td>
+      <td>IEEE 802.16</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">IEEE 802.11 무선 LAN 규격 비교</div><span class="slb ld">★★ 심화</span></div>
+
+<div class="tw"><table>
+  <thead><tr><th>규격</th><th>주파수 대역</th><th>최대 속도</th><th>주요 특징</th></tr></thead>
+  <tbody>
+    <tr><td><strong>802.11b</strong></td><td>2.4GHz</td><td>11Mbps</td><td>최초 상용화 Wi-Fi. 현재는 거의 사용 안 함.</td></tr>
+    <tr><td><strong>802.11g</strong></td><td>2.4GHz</td><td>54Mbps</td><td>802.11b 호환. 현재도 일부 사용.</td></tr>
+    <tr><td><strong>802.11n</strong></td><td><strong>2.4GHz + 5GHz</strong></td><td>최대 600Mbps</td><td>MIMO(다중 입출력) 기술. 우리나라 현재 상용화. 2.4GHz와 5GHz 동시 지원.</td></tr>
+    <tr><td><strong>802.11ac</strong></td><td><strong>5GHz</strong></td><td>최대 단일링크 500Mbps~1Gbps</td><td>5GHz만 사용. 더 넓은 주파수 대역폭(최대 160MHz). 다중 사용자 MIMO.</td></tr>
+    <tr><td><strong>802.11ad</strong></td><td><strong>2.4/5GHz + 60GHz</strong></td><td>최대 7Gbps</td><td>빔포밍 기술. 60GHz 대역 추가 사용. <strong>단점: 60GHz는 장애물 통과 어려워 10m 이내만 사용 가능</strong>.</td></tr>
+  </tbody>
+</table></div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">3</div><div class="st">CSMA/CA — 무선 LAN 매체 접근 방식</div><span class="slb lv">★★ 심화</span></div>
+
+<div class="dfb">
+  <div class="dfl">CSMA/CA 정의</div>
+  <p>CSMA/CA(Carrier Sense Multiple Access / Collision Avoidance)는 <strong>IEEE 802.11 무선 LAN이 경로 공유를 위해 모두 사용하는 인터넷 프로토콜</strong>. 무선 LAN(IEEE 802.11)에서 사용되는 접근 방식. <strong>데이터의 흐름을 감지하여 네트워크가 사용 중이 아니면 바로 패킷을 보내지 않고, 예비 신호를 먼저 보내 데이터 전송 및 패킷 충돌(Collision)을 피한다.</strong> CSMA/CA의 Multiple Access와 Carrier Sense는 CSMA/CD에도 적용된다.</p>
+</div>
+
+<div class="sb">
+<p>유선 LAN에서는 CSMA/<strong>CD</strong>(Collision Detection — 충돌 감지)를 사용하지만, 무선 LAN에서는 CSMA/<strong>CA</strong>(Collision Avoidance — 충돌 회피)를 사용해요. 무선 환경에서는 충돌을 감지하기 어렵기 때문에, 미리 예비 신호를 보내 다른 기기의 전송을 기다린 후 데이터를 전송하는 방식이에요.</p>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">4</div><div class="st">IEEE 802.11i RSN 동작 5단계 (심화)</div><span class="slb lw">★★ 2017 국가직 7급 출제</span></div>
+
+<div class="sb">
+<p>IEEE 802.11i의 RSN(Robust Security Network) 동작은 5단계로 이루어져요. 각 단계의 역할과 주체를 정확히 알아야 해요.</p>
+</div>
+
+<div class="dw">
+  <div class="dt">IEEE 802.11i RSN 동작 5단계</div>
+  <svg viewBox="0 0 740 135" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:740px;display:block;margin:0 auto;">
+    <text x="60" y="20" text-anchor="middle" fill="#2d5be3" font-size="11" font-family="sans-serif" font-weight="700">STA (단말)</text>
+    <text x="370" y="20" text-anchor="middle" fill="#0f766e" font-size="11" font-family="sans-serif" font-weight="700">AP</text>
+    <text x="610" y="20" text-anchor="middle" fill="#6d28d9" font-size="11" font-family="sans-serif" font-weight="700">AS (인증서버)</text>
+    <text x="730" y="20" text-anchor="middle" fill="#374151" font-size="9" font-family="sans-serif">종단 지국</text>
+    <!-- 수직선 -->
+    <line x1="60" y1="25" x2="60" y2="130" stroke="#2d5be3" stroke-width="1" stroke-dasharray="3,3"/>
+    <line x1="370" y1="25" x2="370" y2="130" stroke="#0f766e" stroke-width="1" stroke-dasharray="3,3"/>
+    <line x1="610" y1="25" x2="610" y2="130" stroke="#6d28d9" stroke-width="1" stroke-dasharray="3,3"/>
+    <!-- 5단계 박스 -->
+    <rect x="10" y="32" width="720" height="17" rx="3" fill="#edf7f2" stroke="#a3dbc0" stroke-width="1"/>
+    <text x="370" y="44" text-anchor="middle" fill="#0d4a2a" font-size="9.5" font-family="sans-serif" font-weight="700">1단계 — 탐색 (Discovery): AP가 802.11i 보안 정책을 브로드캐스트 → STA가 AP를 찾고 연관 맺음</text>
+    <rect x="10" y="53" width="720" height="17" rx="3" fill="#e8eeff" stroke="#a5b4fc" stroke-width="1"/>
+    <text x="370" y="65" text-anchor="middle" fill="#1e40af" font-size="9.5" font-family="sans-serif" font-weight="700">2단계 — 인증 (Authentication): STA↔AS 상호 인증 (EAP 교환). AP는 전달만 담당 (인증에 참여 안 함)</text>
+    <rect x="10" y="74" width="720" height="17" rx="3" fill="#ede9fe" stroke="#c4b5fd" stroke-width="1"/>
+    <text x="370" y="86" text-anchor="middle" fill="#4c1d95" font-size="9.5" font-family="sans-serif" font-weight="700">3단계 — 키 관리 (Key Management): AP↔STA 간 쌍별 키 + 멀티캐스팅용 그룹 키 생성·배치</text>
+    <rect x="10" y="95" width="720" height="17" rx="3" fill="#ccfbf1" stroke="#5eead4" stroke-width="1"/>
+    <text x="370" y="107" text-anchor="middle" fill="#134e4a" font-size="9.5" font-family="sans-serif" font-weight="700">4단계 — 안전 데이터 전송: STA↔AP↔종단지국 프레임 교환 (CCMP/TKIP 암호화). 안전한 전송은 STA↔AP 사이에서만</text>
+    <rect x="10" y="116" width="720" height="17" rx="3" fill="#fdf0ef" stroke="#fca5a5" stroke-width="1"/>
+    <text x="370" y="128" text-anchor="middle" fill="#7f1d1d" font-size="9.5" font-family="sans-serif" font-weight="700">5단계 — 연결 중단: AP↔STA 프레임 교환 → 안전한 연결 해제 → 연결은 원래 상태로 복귀</text>
+  </svg>
+</div>
+
+<div class="inf-t">
+  <strong>2017 국가직 7급 기출 포인트:</strong> 4단계(보호 데이터 전송)에서 "<strong>CRC로 메시지 인증과 데이터 기밀성을 제공한다</strong>"는 오답. CRC는 오류 검출용이고, 메시지 인증·기밀성은 <strong>CCMP(AES) 또는 TKIP</strong>이 제공해요.
+</div>
+
+</div><!-- /tab-types -->
+
+<!-- ════ 무선 취약점 ════ -->
+<div class="tab-pane" id="tab-vuln">
+
+<div class="sh"><div class="sn2">1</div><div class="st">무선 LAN 주요 취약점 분류</div><span class="slb le">★★★</span></div>
+
+<div class="sb">
+<p>무선 LAN의 취약점은 크게 <strong>비인가 접속, 도청·스니핑, 서비스 거부(DoS), 불법 AP</strong> 4가지로 분류해요. 유선 LAN과 달리 물리적 접근 없이도 공격이 가능해서 훨씬 취약해요.</p>
+</div>
+
+<div class="tw"><table>
+  <thead><tr><th>취약점 유형</th><th>원인</th><th>내용</th><th>대응 방안</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>① SSID 노출</strong></td>
+      <td>AP가 SSID를 브로드캐스트하도록 기본 설정</td>
+      <td>SSID(Service Set Identification) = 무선 네트워크를 위한 이름. 일반적인 무선 AP의 경우 SSID를 브로드캐스트하도록 설정되어 있어 스니핑 등을 통해 쉽게 SSID를 획득할 수 있음. SSID를 알면 인증이나 암호화 없이도 필요한 기본적인 네트워크 정보 획득 가능.</td>
+      <td>SSID <strong>숨김(Hidden)</strong> 설정으로 브로드캐스트 차단 → 폐쇄시스템 운영. 단, 완전한 보안 아님.</td>
+    </tr>
+    <tr>
+      <td><strong>② MAC 주소 노출</strong></td>
+      <td>무선 프레임 헤더에 MAC 주소가 평문으로 전송</td>
+      <td>무선 통신 중 MAC 주소가 노출됨. MAC 주소 필터링 적용 시 정상 MAC을 스니핑으로 획득하여 MAC을 변조(MAC 스푸핑)하면 필터링 무력화 가능.</td>
+      <td>MAC 필터링 + 강력한 암호화 병행. 단, MAC 스푸핑에 취약.</td>
+    </tr>
+    <tr>
+      <td><strong>③ 도청·스니핑</strong></td>
+      <td>무선 신호가 공기 중에 노출</td>
+      <td>암호화되지 않은 무선 통신은 전파 범위 내 누구나 수신 가능. WEP는 수분 내 해독 가능. 암호화되지 않는 모든 정보가 바로 수집 가능.</td>
+      <td>강력한 암호화(WPA2-AES) 필수 적용.</td>
+    </tr>
+    <tr>
+      <td><strong>④ 불법 AP (Rogue AP)</strong></td>
+      <td>비인가 AP를 공격자가 설치</td>
+      <td>외부 공격자가 악의적으로 무선 AP를 설치하여 이용자의 데이터 전송을 수집. 회사 내의 보안 정책을 따르지 않은 설치된 액세스 포인트. 가능한 신호를 가지고 AP를 설치하는 것이 어렵지 않아 사용자의 정상 AP 접속을 방해하는 것이 어렵다.</td>
+      <td>무선 침입탐지시스템(WIDS) 운영. AP 목록 주기적 점검.</td>
+    </tr>
+    <tr>
+      <td><strong>⑤ Evil Twin</strong></td>
+      <td>정상 AP로 위장한 악성 AP 설치</td>
+      <td>정상 AP처럼 위장하기 위해 동일 SSID로 설치된 무선 AP. 사용자가 Evil Twin에 접속하면 MITM(중간자) 공격 가능. Rogue AP의 특수한 형태.</td>
+      <td>인증서 기반 AP 검증. VPN 사용.</td>
+    </tr>
+    <tr>
+      <td><strong>⑥ 서비스 거부 (DoS)</strong></td>
+      <td>전파 방해 또는 인증 프레임 공격</td>
+      <td>무선 AP 또는 무선 네트워크를 공격하는 서비스 거부. 무선 AP가 사용하는 주파수 대역에 대해 강한 신호를 전송하여 서비스를 무력화. 전파 방해(Jamming) 공격.</td>
+      <td>주파수 모니터링. 채널 변경. 지향성 안테나 사용.</td>
+    </tr>
+    <tr>
+      <td><strong>⑦ WEP 암호 취약점</strong></td>
+      <td>RC4·IV 설계 결함</td>
+      <td>짧은 초기 벡터(IV, 24비트)로 인한 IV 재사용 가능성. 불완전한 RC4 암호화로 키 노출. 짧은 키 길이로 인한 공격 가능성 증가. 무선 전송 노출 위험 높음.</td>
+      <td>WEP 사용 금지 → WPA2로 업그레이드.</td>
+    </tr>
+    <tr>
+      <td><strong>⑧ WPA/WPA2 취약점 (PSK)</strong></td>
+      <td>PSK 방식에서 4-way 핸드셰이크 노출</td>
+      <td>PSK 방식 중 초기에는 PSK를 이용해 4-way Handshaking을 통해 무선 AP와 동일한 키를 갖고 있는지 확인하는 과정에서 암호화되어 있지 않아 무선 패킷 수집 후 분석하는 것이 가능. KRACK 공격 취약점.</td>
+      <td>기업 모드(802.1x/EAP) 사용. KRACK 패치 적용.</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">무선 LAN 보안 강화 대책</div><span class="slb le">★★★ 2016·2020 국가직·해경 기출</span></div>
+
+<div class="tw"><table>
+  <thead><tr><th>보안 대책</th><th>효과</th><th>한계</th></tr></thead>
+  <tbody>
+    <tr class="tc-g"><td><strong>WPA2-AES 암호화 + 사용자 인증</strong></td><td>가장 강력한 암호화. 도청 차단.</td><td>PSK 방식에서 패스워드 취약 시 위험</td></tr>
+    <tr class="tc-g"><td><strong>802.1x/EAP + RADIUS 서버 인증</strong></td><td>중앙집중 인증. 비인가 접속 차단.</td><td>인프라 비용 필요</td></tr>
+    <tr class="tc-w"><td><strong>SSID 숨김 설정</strong></td><td>브로드캐스트 차단. 스니핑 어렵게 함.</td><td>스니핑으로 여전히 획득 가능. 완전 보안 아님.</td></tr>
+    <tr class="tc-w"><td><strong>MAC 주소 필터링</strong></td><td>미등록 기기 접속 차단.</td><td>MAC 스푸핑으로 우회 가능. 관리 어려움.</td></tr>
+    <tr class="tc-g"><td><strong>지향성 안테나 사용</strong></td><td>전파 범위 제한 → 외부 수신 어렵게 함.</td><td>설치 비용·방향 제약</td></tr>
+    <tr class="tc-r"><td><strong>무지향성 안테나 사용</strong></td><td>—</td><td><strong>보안에 불리</strong>. 전파가 모든 방향으로 방사.</td></tr>
+    <tr class="tc-r"><td><strong>SSID 브로드캐스트 설정</strong></td><td>—</td><td><strong>보안에 불리</strong>. 누구나 네트워크 발견 가능.</td></tr>
+    <tr class="tc-g"><td><strong>자동 접속 기능 비활성화</strong></td><td>Evil Twin에 자동 연결 방지.</td><td>—</td></tr>
+  </tbody>
+</table></div>
+
+<div class="trap">
+  <div class="th"><span>⚠</span><span class="tht">함정 ★★★ — 안전하지 않은 보안 대책 (2016·2020 국가직·해경 출제)</span></div>
+  <div class="tb">
+    <div class="tq">"무선랜 AP의 이름인 SSID를 <u>브로드캐스팅</u>하도록 설정한다" → <span class="vw">✗ 안전하지 않음</span> (2016 국가직)</div>
+    <div class="tq">"무선랜 AP에 보안을 위해 <u>무지향성 안테나</u>를 사용한다" → <span class="vw">✗ 안전하지 않음</span> (2020 해경)</div>
+    <p>SSID 브로드캐스트 = 누구나 네트워크 발견 가능 → 비활성화해야 함. 무지향성 안테나 = 전파가 모든 방향으로 방사 → 도청 위험 증가. <strong>지향성 안테나</strong>를 사용해야 전파 범위를 제한할 수 있어요.</p>
+  </div>
+</div>
+
+</div><!-- /tab-vuln -->
+
+<!-- ════ 개요 · 진화과정 ════ -->
+<div class="tab-pane" id="tab-overview">
+
+<div class="sh"><div class="sn2">1</div><div class="st">무선 LAN 개요</div><span class="slb lg">★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">무선 LAN 정의</div>
+  <p>무선 LAN(Wireless LAN)은 <strong>케이블 없이 전파를 이용할 수 있게 해주는 무선 인터넷</strong>을 의미하며, 흔히 Wi-Fi라고도 한다. Wi-Fi(Wireless Fidelity)는 국제 인증 기관인 WiFi Alliance가 IEEE 802.11x를 지원하여 상호 관련됨을 인증한 표준 규격. <strong>2.4~5GHz</strong> 주파수 대역을 사용하며 <strong>무허가 주파수 대역</strong>을 활용하는 기술이다.</p>
+</div>
+
+<div class="sb">
+<p>무선 LAN은 편리하지만 유선 LAN보다 보안 위협이 훨씬 크요. 유선은 물리적으로 선을 연결해야 하지만, 무선은 공기 중으로 데이터가 흘러다녀요. 안테나만 있으면 누구든 데이터를 수신할 수 있어요. 이 특성 때문에 도청·무단 접속·중간자 공격에 훨씬 취약해요.</p>
+<p><strong>IEEE 802.11i</strong>는 IEEE 802.11 무선 LAN의 보안 표준으로, <strong>인증·데이터 무결성·데이터 기밀성</strong>에 관한 규격을 다루어요. 이 표준이 진화하는 과정에서 Wi-Fi Alliance가 WPA와 WPA2를 공표했어요.</p>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">WEP → WPA → WPA2 진화 과정</div><span class="slb le">★★★ 2017 국가직 출제</span></div>
+
+<div class="dw">
+  <div class="dt">무선 LAN 보안 진화 타임라인</div>
+  <svg viewBox="0 0 740 110" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:740px;display:block;margin:0 auto;">
+    <!-- 타임라인 -->
+    <line x1="30" y1="55" x2="710" y2="55" stroke="#dde3ec" stroke-width="3"/>
+
+    <!-- WEP -->
+    <circle cx="120" cy="55" r="18" fill="#c0392b"/>
+    <text x="120" y="51" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">WEP</text>
+    <text x="120" y="63" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="8" font-family="sans-serif">~1999</text>
+    <rect x="60" y="80" width="120" height="26" rx="5" fill="#fdf0ef" stroke="#f5c6c2" stroke-width="1"/>
+    <text x="120" y="92" text-anchor="middle" fill="#c0392b" font-size="9" font-family="sans-serif" font-weight="600">RC4 + 고정키 (취약)</text>
+    <text x="120" y="102" text-anchor="middle" fill="#c0392b" font-size="8" font-family="sans-serif">64/128비트 WEP키</text>
+
+    <!-- 화살표 -->
+    <line x1="138" y1="55" x2="258" y2="55" stroke="#374151" stroke-width="2"/>
+    <polygon points="258,51 270,55 258,59" fill="#374151"/>
+    <text x="200" y="48" text-anchor="middle" fill="#374151" font-size="8.5" font-family="sans-serif">취약점 발견</text>
+    <text x="200" y="38" text-anchor="middle" fill="#374151" font-size="8.5" font-family="sans-serif">Wi-Fi Alliance 대응</text>
+
+    <!-- WPA -->
+    <circle cx="330" cy="55" r="18" fill="#b45309"/>
+    <text x="330" y="51" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">WPA</text>
+    <text x="330" y="63" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="8" font-family="sans-serif">2003년</text>
+    <rect x="270" y="80" width="120" height="26" rx="5" fill="#fffbeb" stroke="#fde68a" stroke-width="1"/>
+    <text x="330" y="92" text-anchor="middle" fill="#92400e" font-size="9" font-family="sans-serif" font-weight="600">RC4 + TKIP (개선)</text>
+    <text x="330" y="102" text-anchor="middle" fill="#92400e" font-size="8" font-family="sans-serif">802.11i Draft 기반</text>
+
+    <!-- 화살표 -->
+    <line x1="348" y1="55" x2="468" y2="55" stroke="#374151" stroke-width="2"/>
+    <polygon points="468,51 480,55 468,59" fill="#374151"/>
+    <text x="413" y="48" text-anchor="middle" fill="#374151" font-size="8.5" font-family="sans-serif">802.11i 완전 구현</text>
+
+    <!-- WPA2 -->
+    <circle cx="550" cy="55" r="18" fill="#1a7a4a"/>
+    <text x="550" y="51" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">WPA2</text>
+    <text x="550" y="63" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="8" font-family="sans-serif">2004년~</text>
+    <rect x="490" y="80" width="120" height="26" rx="5" fill="#edf7f2" stroke="#a3dbc0" stroke-width="1"/>
+    <text x="550" y="92" text-anchor="middle" fill="#0d4a2a" font-size="9" font-family="sans-serif" font-weight="600">AES + CCMP (강력)</text>
+    <text x="550" y="102" text-anchor="middle" fill="#0d4a2a" font-size="8" font-family="sans-serif">현재 표준</text>
+
+    <!-- IEEE -->
+    <rect x="630" y="38" width="100" height="34" rx="6" fill="#1a2540"/>
+    <text x="680" y="55" text-anchor="middle" fill="white" font-size="9.5" font-family="sans-serif" font-weight="700">IEEE 802.11i</text>
+    <text x="680" y="67" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="8.5" font-family="sans-serif">완전 보안 표준</text>
+    <line x1="570" y1="55" x2="628" y2="55" stroke="#1a2540" stroke-width="1.5" stroke-dasharray="3,2"/>
+  </svg>
+</div>
+
+<div class="inf-t">
+  <strong>핵심 암기:</strong> WEP → WPA는 <strong>Wi-Fi Alliance</strong>가 802.11i Draft 기반 중간 조치로 공표. WPA → WPA2는 <strong>IEEE 802.11i 완전 표준</strong>을 따르는 새로운 보안 대책. WPA = TKIP(RC4 개선) / WPA2 = CCMP(AES).
+</div>
+
+</div><!-- /tab-overview -->
+
+<!-- ════ WEP ════ -->
+<div class="tab-pane" id="tab-wep">
+
+<div class="sh"><div class="sn2">1</div><div class="st">WEP (Wired Equivalent Privacy)</div><span class="slb le">★★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">WEP 정의</div>
+  <p>WEP(Wired Equivalent Privacy)는 <strong>초기 무선랜 보안설정 방법으로 유선랜과 동등한 수준의 보안성 제공을 목적으로 만들어진 보안 기술</strong>. <strong>대칭키 기반 암호화</strong> 방식으로 현재는 암호 알고리즘 자체의 취약성이 많이 알려져 있어 사용이 권고되지 않음. <strong>RC4 알고리즘</strong> 사용. 인증: <strong>PSK(Pre-Shared Key)</strong>. 암호화: <strong>RC4(64bit/128bit)</strong>.</p>
+</div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">WEP 암호화 동작 원리</div><span class="slb ld">원리 이해</span></div>
+
+<div class="sb">
+<p>WEP의 암호화 과정을 단계별로 이해할게요. ① PRNG(의사난수 생성기)에 <strong>초기 벡터(IV, Initialization Vector)</strong>와 <strong>WEP 키</strong>를 입력하여 키스트림(Keystream)을 생성해요. (RC4 알고리즘) ② 키스트림과 전송 데이터를 <strong>XOR</strong>하여 암호문을 생성해요. ③ 생성된 암호문에 <strong>초기 벡터(IV)를 추가</strong>하여 전송해요.</p>
+
+<p>하나의 키스트림(keystream)을 사용하여 전송 데이터를 암호화하는 것은 아주 쉽게 데이터가 노출될 수 있으므로, <strong>전송되는 패킷마다 서로 다른 값의 키스트림을 이용</strong>하여 암호화하는 방식을 사용해요. 그런데 문제는 IV가 24비트로 짧아 2²⁴(약 1600만)번 사용 후 반복되며, 같은 IV가 반복되면 분석이 가능해져요.</p>
+</div>
+
+<div class="sh"><div class="sn2">3</div><div class="st">WEP 취약점</div><span class="slb le">★★★</span></div>
+
+<div class="cds">
+  <div class="cd">
+    <div class="cdt">① IV 재사용</div>
+    <div class="cdb">초기 벡터(IV)가 <strong>24비트로 짧음</strong>. 약 5,000~5,000만 패킷 후 IV가 재사용되어 같은 IV에서 생성된 키스트림이 반복 → 통계적 분석 가능. <strong>64비트 WEP 키는 수분 내 해독 가능</strong>.</div>
+  </div>
+  <div class="cd">
+    <div class="cdt">② 고정 키 문제</div>
+    <div class="cdb">WEP 키가 <strong>고정(정적)</strong>이에요. 키를 한 번 설정하면 바꾸지 않는 경우 많음. 키가 하나 노출되면 전체 통신이 해독됨.</div>
+  </div>
+  <div class="cd">
+    <div class="cdt">③ 단방향 인증</div>
+    <div class="cdb">단방향 인증으로 인한 <strong>악의적인 목적으로 운영되는 복제 AP(Clone AP)</strong>를 통해 정상 AP로의 접속을 방해하거나 정상 사용자의 복제 AP로의 접속을 유도할 수 있음.</div>
+  </div>
+  <div class="cd">
+    <div class="cdt">④ RC4 취약성</div>
+    <div class="cdb">RC4 스트림 암호 알고리즘 자체에 알려진 약점 존재. WEP키를 하나의 <strong>고정된 공유키</strong>로 사용하여 키값이 외부로 유출될 경우 많은 보안 문제를 유발할 수 있음.</div>
+  </div>
+</div>
+
+</div><!-- /tab-wep -->
+
+<!-- ════ WPA · WPA2 ════ -->
+<div class="tab-pane" id="tab-wpa">
+
+<div class="sh"><div class="sn2">1</div><div class="st">WPA (WiFi Protected Access)</div><span class="slb le">★★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">WPA 정의</div>
+  <p>WPA(WiFi Protected Access)는 <strong>IEEE 802.11i의 표준화 지연으로 WEP의 취약성을 보완하고자 WiFi Alliance에서 정한 인증 및 암호화 관련 무선랜 보안 규격</strong>. <strong>802.1x 인증과 TKIP</strong>을 수용하며 802.11i의 Subset 표준. WPA는 <strong>IEEE 802.11i Draft 3.0의 Subset</strong>이며, 새로운 장비의 교체 및 구매 없이 기존 H/W에 S/W의 업그레이드로 적용 가능. 인증: <strong>PSK(개인모드) 또는 IEEE 802.1x/EAP(기업모드)</strong>. 암호화: <strong>RC4-TKIP</strong>.</p>
+</div>
+
+<div class="sb">
+<p>WPA의 가장 큰 특징은 <strong>TKIP(Temporal Key Integrity Protocol)</strong>이에요. WEP의 고정 키 문제를 해결하기 위해 <strong>패킷마다 키를 동적으로 변경</strong>해요. 키 할당, 재설정 등 기존 WEP 소프트웨어 패치만으로 안전성을 개선한 보안 기술이에요. 그러나 RC4를 여전히 사용한다는 한계가 있어요.</p>
+<p>비인가 AP로의 연결을 방지하기 위해 <strong>상호인증(Mutual Authentication)</strong>으로 구현돼요. AP와 사용자 사이에는 Open System 인증을 지원해야 해요.</p>
+</div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">TKIP (Temporal Key Integrity Protocol)</div><span class="slb le">★★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">TKIP 정의</div>
+  <p>TKIP(Temporal Key Integrity Protocol)는 <strong>WEP 알고리즘의 취약성을 보완하기 위해 연구된 기술</strong>. <strong>패킷당 키 할당, 키 재설정 등</strong> 기존 WEP 방식에 소프트웨어 패치만으로 안전성을 개선. <strong>암호키가 각 데이터 프레임마다 변경</strong>되도록 만들고 메시지 무결성을 보장하기 위해 <strong>MIC(Message Integrity Code)</strong>를 프레임에 포함.</p>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">3</div><div class="st">WPA2 (Wi-Fi Protected Access 2)</div><span class="slb le">★★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">WPA2 정의</div>
+  <p>WPA2(Wi-Fi Protected Access 2)는 <strong>802.11i 보안 표준 중 일부분으로 WEP 방식의 보안 문제점을 해결하기 위해 만들었음</strong>. WPA와 구분하기 위해 WPA2로 불린다. <strong>AES-CCMP</strong>를 통한 암호화 기능 향상, EAP 사용자 인증 강화. 암호화 알고리즘으로 <strong>AES</strong>를 사용하며 WEP보다 훨씬 더 강화된 암호화 서비스를 제공. WPA2에서는 CCMP가 <strong>강제사항(Mandatory)</strong>으로 규정되어 있음.</p>
+</div>
+
+<div class="sb">
+<p>WPA2의 핵심은 <strong>CCMP(Counter Mode With Cipher Block Chaining Message Authentication Code Protocol)</strong>예요. AES를 이용한 카운터 모드로 동작하며 <strong>기밀성·메시지 무결성·키 관리</strong> 기능을 모두 수행해요. 무선 보안표준인 IEEE 802.11i와 WPA에서 공동채택됐고, WPA2에서는 강제사항으로 규정됐어요.</p>
+<p>암호화 키를 이용해 <strong>128비트인 통신용 암호화 키를 새로 생성하고 10,000 패킷마다 바꿔요</strong>. AP에 접속하는 사용자마다 같은 암호화 키를 사용하는 보안 취약성이 아직 존재하지만, 현재 가장 강력한 무선 LAN 보안 기술이에요.</p>
+</div>
+
+<div class="sh"><div class="sn2">4</div><div class="st">CCMP (Counter Mode with CBC-MAC Protocol)</div><span class="slb le">★★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">CCMP 정의</div>
+  <p>CCMP(Counter Mode With Cipher Block Chaining Message Authentication Code Protocol)는 <strong>AES를 이용한 블록암호의 카운터 모드</strong>. <strong>기밀성·메시지 무결성·키 관리</strong>를 행한다. 무선 보안표준인 IEEE 802.11i와 WPA에서 공동채택. <strong>WPA2에서는 강제사항</strong>으로 규정되어 있음.</p>
+</div>
+
+</div><!-- /tab-wpa -->
+
+<!-- ════ 3종 비교 ════ -->
+<div class="tab-pane" id="tab-compare">
+
+<div class="sh"><div class="sn2">1</div><div class="st">WEP · WPA · WPA2 완전 비교</div><span class="slb le">★★★ 매년 출제</span></div>
+
+<div class="ver-grid">
+  <div class="vc">
+    <div class="vch" style="background:#c0392b;">WEP</div>
+    <div class="vcb">
+      <div class="vcr"><span class="vck">표준</span><span class="vcv">IEEE 802.11 초기</span></div>
+      <div class="vcr"><span class="vck">인증(개인)</span><span class="vcv">PSK (사전 공유키)</span></div>
+      <div class="vcr"><span class="vck">인증(기업)</span><span class="vcv">PSK</span></div>
+      <div class="vcr"><span class="vck">암호화</span><span class="vcv"><span class="bad">RC4 (고정키)</span></span></div>
+      <div class="vcr"><span class="vck">키 길이</span><span class="vcv">64비트, 128비트</span></div>
+      <div class="vcr"><span class="vck">키 변경</span><span class="vcv"><span class="bad">고정 (변경 없음)</span></span></div>
+      <div class="vcr"><span class="vck">보안성</span><span class="vcv"><span class="bad">취약 (수분 내 해독)</span></span></div>
+      <div class="vcr"><span class="vck">현재</span><span class="vcv"><span class="bad">사용 권고하지 않음</span></span></div>
+    </div>
+  </div>
+  <div class="vc">
+    <div class="vch" style="background:#b45309;">WPA</div>
+    <div class="vcb">
+      <div class="vcr"><span class="vck">표준</span><span class="vcv">802.11i Draft 3.0 Subset</span></div>
+      <div class="vcr"><span class="vck">인증(개인)</span><span class="vcv">PSK</span></div>
+      <div class="vcr"><span class="vck">인증(기업)</span><span class="vcv"><span class="ok">IEEE 802.1x / EAP</span></span></div>
+      <div class="vcr"><span class="vck">암호화</span><span class="vcv"><span class="ok">RC4 - TKIP</span></span></div>
+      <div class="vcr"><span class="vck">키 변경</span><span class="vcv"><span class="ok">동적 변경 (TKIP)</span></span></div>
+      <div class="vcr"><span class="vck">특징</span><span class="vcv">기존 H/W에 S/W 업그레이드만으로 적용</span></div>
+      <div class="vcr"><span class="vck">보안성</span><span class="vcv"><span class="ok">WEP보다 안전. 불완전한 RC4 사용</span></span></div>
+    </div>
+  </div>
+  <div class="vc">
+    <div class="vch" style="background:#1a7a4a;">WPA2</div>
+    <div class="vcb">
+      <div class="vcr"><span class="vck">표준</span><span class="vcv">IEEE 802.11i 완전 표준</span></div>
+      <div class="vcr"><span class="vck">인증(개인)</span><span class="vcv">PSK</span></div>
+      <div class="vcr"><span class="vck">인증(기업)</span><span class="vcv"><span class="good">IEEE 802.1x / EAP</span></span></div>
+      <div class="vcr"><span class="vck">암호화</span><span class="vcv"><span class="good">AES - CCMP</span></span></div>
+      <div class="vcr"><span class="vck">키 변경</span><span class="vcv"><span class="good">동적 변경 (AES 기반)</span></span></div>
+      <div class="vcr"><span class="vck">특징</span><span class="vcv">CCMP = 강제 사항. 128비트 통신용 키</span></div>
+      <div class="vcr"><span class="vck">보안성</span><span class="vcv"><span class="good">가장 강력한 보안 제공</span></span></div>
+    </div>
+  </div>
+</div>
+
+<div class="tw"><table>
+  <thead><tr><th>구분</th><th>WEP</th><th>WPA</th><th>WPA2</th></tr></thead>
+  <tbody>
+    <tr><td><strong>인증(개인모드)</strong></td><td class="tc-r">PSK (64·128비트)</td><td class="tc-w">PSK</td><td class="tc-g">PSK</td></tr>
+    <tr><td><strong>인증(기업모드)</strong></td><td class="tc-r">PSK</td><td class="tc-w">IEEE 802.1x/EAP</td><td class="tc-g">IEEE 802.1x/EAP</td></tr>
+    <tr><td><strong>암호화 알고리즘</strong></td><td class="tc-r"><strong>RC4 (고정키)</strong></td><td class="tc-w"><strong>RC4 - TKIP (동적)</strong></td><td class="tc-g"><strong>AES - CCMP</strong></td></tr>
+    <tr><td><strong>키 관리</strong></td><td class="tc-r">고정키 사용</td><td class="tc-w">TKIP으로 동적 변경</td><td class="tc-g">AES 기반 동적 변경</td></tr>
+    <tr><td><strong>보안 수준</strong></td><td class="tc-r">취약 (수분 내 해독)</td><td class="tc-w">WEP보다 안전, 불완전한 RC4</td><td class="tc-g">가장 강력한 보안 제공</td></tr>
+    <tr><td><strong>표준 기반</strong></td><td class="tc-r">802.11 초기</td><td class="tc-w">802.11i Draft 3.0 Subset</td><td class="tc-g">IEEE 802.11i 완전 표준</td></tr>
+  </tbody>
+</table></div>
+
+<div class="trap">
+  <div class="th"><span>⚠</span><span class="tht">함정 ★★★ — WPA의 암호화 = CCMP? (2020 경찰간부)</span></div>
+  <div class="tb">
+    <div class="tq">"WPA(Wifi Protected Access)는 WEP(Wired Equivalent Privacy) 암호의 약점을 보완한 <u>CCMP</u>(Counter mode with CBC-MAC Protocol) 암호화 방식을 사용한다" → <span class="vw">✗ 오답</span> (2020 경찰간부 '나')</div>
+    <p>WPA의 암호화 = <strong>RC4-TKIP</strong>. CCMP는 <strong>WPA2</strong>의 암호화. 구분 필수: WPA=TKIP / WPA2=CCMP.</p>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">개인모드 vs 기업모드 인증 비교</div><span class="slb le">★★★</span></div>
+
+<div class="tw"><table>
+  <thead><tr><th>설정 방식</th><th>보안 기술</th><th>인증</th><th>암호화</th></tr></thead>
+  <tbody>
+    <tr class="tc-r"><td><strong>개인 모드</strong></td><td>WEP</td><td>PSK</td><td>RC4 (64bit/128bit)</td></tr>
+    <tr class="tc-w"><td><strong>개인 모드</strong></td><td>WPA</td><td>PSK</td><td>RC4-TKIP</td></tr>
+    <tr class="tc-g"><td><strong>개인 모드</strong></td><td>WPA2</td><td>PSK</td><td>AES-CCMP</td></tr>
+    <tr class="tc-w"><td><strong>기업 모드</strong></td><td>WPA</td><td>IEEE 802.1x/EAP</td><td>RC4-TKIP</td></tr>
+    <tr class="tc-g"><td><strong>기업 모드</strong></td><td>WPA2</td><td>IEEE 802.1x/EAP</td><td>AES-CCMP</td></tr>
+  </tbody>
+</table></div>
+
+</div><!-- /tab-compare -->
+
+<!-- ════ 보안 기술 ════ -->
+<div class="tab-pane" id="tab-tech">
+
+<div class="sh"><div class="sn2">1</div><div class="st">802.1x / EAP — 기업용 인증</div><span class="slb le">★★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">802.1x 정의</div>
+  <p>IEEE 802.1x는 <strong>유선망의 표준을 무선랜으로 확장하며 무선 802.11 네트워크에 대한 인증된 Network Access를 제공하는 IEEE 표준</strong>. 중앙 사용자 ID·인증·동적 키 관리 및 계정을 지원하는 무선랜 인증 및 암호화 표준 기술. <strong>Port Based Access Control</strong>로 AP에 접속 요청이 오면 먼저 인증장비를 통해 인증을 요청하고, 인증이 완료되면 접속을 허용.</p>
+</div>
+
+<div class="sb">
+<p>IEEE 802.1x는 <strong>RADIUS 서버</strong>를 이용해 중앙 집중식으로 사용자를 인증해요. EAPOL(EAP Over LAN) 패킷이 클라이언트와 AP 사이에서 전송되고, AP와 인증 서버 사이에는 <strong>RADIUS</strong>를 통해 전달해요.</p>
+</div>
+
+<div class="dfb">
+  <div class="dfl">EAP 정의</div>
+  <p>EAP(Extensible Authentication Protocol)는 <strong>IEEE 802.1x에서 사용자 인증을 위해 사용하는 프로토콜</strong>. 확장 인증 프로토콜로 RFC 2284에서 공식적인 표준이 되었으며, 원래는 PPP(Point to Point Protocol)에서의 인증을 위해 발전됐으나 현재는 IEEE 802.1x의 사용자 인증으로 사용. 어떤 링크에도 가능한 단순한 Request/Response 프로토콜로 다양한 인증 방법 사용 가능: MD5, 일회용 패스워드, 토큰카드, 인증서 기반 <strong>EAP-TLS</strong>, 터널로 보호된 TLS인 <strong>EAP-TTLS</strong> 등.</p>
+</div>
+
+<div class="sb">
+<p><strong>802.1x의 단점:</strong> IEEE 802.1x 규격은 무선구간의 보안을 위한 키 분배 시점 및 키 분배 여부를 사용자 인증에 참조하는 조건을 정의하지 않아 인증과 키 분배라는 암호학적 프로토콜의 주요기능을 만족하지 못하는 취약점을 내포한다고 알려져 있어요.</p>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">SSID / MAC 주소 필터링 — 기술적 보안 방안</div><span class="slb ld">★★</span></div>
+
+<div class="tw"><table>
+  <thead><tr><th>보안 방안</th><th>원리</th><th>취약점</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>SSID 설정</strong></td>
+      <td>AP가 사용하는 ID를 통해 적재된 패킷 헤더에 붙는 32바이트 고유 식별자. AP에서 설정된 SSID와 일치하는 무선 단말기만 접속 허용.</td>
+      <td><strong>스니핑으로 쉽게 SSID를 알아낼 수 있음</strong>. SSID를 알면 쉽게 정상 AP를 통해 사용할 수 있는 이점이 있어 보안 효과 제한적.</td>
+    </tr>
+    <tr>
+      <td><strong>MAC 주소 필터링</strong></td>
+      <td>MAC = 네트워크 카드에 의해 부여된 48비트 물리적 주소. AP가 고유 MAC 주소를 등록하여 MAC 주소 미등록 단말기의 접속을 차단.</td>
+      <td><strong>MAC 스푸핑(MAC Spoofing)</strong>: MAC 주소를 다른 MAC 주소로 위장하는 것이 가능. AP에 등록된 MAC 주소를 알아내고 자신의 MAC 주소를 바꾸면 MAC 필터링이 무력화됨.</td>
+    </tr>
+    <tr>
+      <td><strong>WEP 인증</strong></td>
+      <td>공개키 WEP 키를 이용하여 사용자를 인증. AP를 이용한 WEP 인증 및 인증서버를 이용한 인증 모두 AP 또는 인증 서버와 사용자의 단말기에 같은 값의 WEP 키를 설정하여 사용.</td>
+      <td>RC4 취약성, 64비트 WEP 키는 수분 내 노출 가능. 취약하여 널리 사용되지 않음.</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">3</div><div class="st">KRACK 공격 (심화 — 1~2회 출제)</div><span class="slb lw">★★ 2020 경찰간부</span></div>
+
+<div class="dfb">
+  <div class="dfl">KRACK 정의</div>
+  <p>KRACK(Key Reinstallation Attacks)은 <strong>WPA2의 4-way 핸드셰이크(Handshake) 과정에서 메시지를 조작하고 재전송하여 정보를 획득하는 공격</strong>. 2017년 발견. 이미 사용된 암호화 키를 재설치(Reinstallation)하도록 유도하여 암호화된 통신을 복호화·위조·주입할 수 있음. WPA2의 프로토콜 설계상 취약점으로 특정 구현체가 아닌 표준 자체의 취약점.</p>
+</div>
+
+</div><!-- /tab-tech -->
+
+<!-- ════ 블루투스 ════ -->
+<div class="tab-pane" id="tab-bluetooth">
+
+<div class="sh"><div class="sn2">1</div><div class="st">블루투스(Bluetooth) 보안 위협 5종</div><span class="slb le">★★★ 매년 출제</span></div>
+
+<div class="sb">
+<p>블루투스 보안 공격은 이름이 비슷해 혼동하기 쉬워요. 정확한 정의와 키워드를 매핑해서 암기해야 해요. <strong>블루재킹 → 스팸 메시지</strong>, <strong>블루스나프 → OPP/파일 접근</strong>, <strong>블루버그 → 임의 명령 실행</strong>, <strong>블루프린팅 → 기기 정보 수집(SDP)</strong>, <strong>BIAS → 인증 취약점 위장</strong> 순으로 구분하면 돼요.</p>
+</div>
+
+<div class="bt-grid">
+  <div class="btc">
+    <div class="btch" style="background:#374151;">📩 블루재킹 (Bluejacking)</div>
+    <div class="btcb">
+      <div class="btcr"><strong>정의:</strong> 블루투스를 이용해 <strong>스팸처럼 명함을 익명으로 퍼트리는</strong> 공격. 비요청 메시지·이미지를 전송.</div>
+      <div class="btcr"><strong>특징:</strong> 데이터의 이동이나 변조가 없어 사용자를 귀찮게 하는 문제 외에는 <strong>별다른 위험 없음</strong>. 가장 낮은 위협 수준.</div>
+      <div class="btcr"><strong>키워드:</strong> 스팸, 명함, 익명 메시지, 별다른 위험 없음</div>
+    </div>
+  </div>
+  <div class="btc">
+    <div class="btch" style="background:#c0392b;">📂 블루스나프 (Bluesnarf / Bluesnarfing)</div>
+    <div class="btcb">
+      <div class="btcr"><strong>정의:</strong> 블루투스 장치끼리 인증 없이 정보를 간편하게 교환하기 위해 개발된 <strong>OPP(OBEX Push Profile)</strong> 기능을 사용하여 블루투스 장치로부터 <strong>주소록·달력 등의 내용을 요청해 이를 열람하거나 취약한 장치의 파일에 접근</strong>하는 공격.</div>
+      <div class="btcr"><strong>키워드:</strong> OPP, OBEX Push Profile, 주소록·달력 열람, 파일 접근</div>
+    </div>
+  </div>
+  <div class="btc">
+    <div class="btch" style="background:#6d28d9;">📱 블루버그 (Bluebug / Bluebugging)</div>
+    <div class="btcb">
+      <div class="btcr"><strong>정의:</strong> 블루투스 <strong>장비 간의 취약한 연결 관리를 악용</strong>한 공격. 공격 장치와 공격 대상 장치를 연결하여 <strong>공격 대상 장치에서 임의의 동작(전화 걸기·다른 기능)을 실행</strong>하도록 하는 공격. 블루투스 기기가 한 번 연결된 이후에는 다시 연결하지 않아도 <strong>자동으로 연결되는 인증 취약점</strong>을 이용.</div>
+      <div class="btcr"><strong>키워드:</strong> 취약한 연결 관리, 임의 동작 실행, 자동 연결, 전화 걸기</div>
+    </div>
+  </div>
+  <div class="btc">
+    <div class="btch" style="background:#0f766e;">🔍 블루프린팅 (Blueprinting)</div>
+    <div class="btcb">
+      <div class="btcr"><strong>정의:</strong> 블루투스 장치는 장치 간 종류 식별을 위해 <strong>SDP(Service Discovery Protocol)</strong>를 보내고 받음. 이 서비스 발견 프로토콜을 이용해 <strong>공격이 가능한 블루투스 장치를 검색하고 모델을 확인</strong>. 블루투스 공격 장치의 검색 활동.</div>
+      <div class="btcr"><strong>키워드:</strong> SDP, 서비스 발견 프로토콜, 기기 검색·정보 수집, 모델 확인</div>
+    </div>
+  </div>
+</div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">BIAS (Bluetooth Impersonation AttackS) — 심화</div><span class="slb lw">★★ 2022 국회직 출제</span></div>
+
+<div class="dfb">
+  <div class="dfl">BIAS 정의</div>
+  <p>BIAS(Bluetooth Impersonation AttackS)는 <strong>블루투스를 통해 무선 기기에서 무단으로 정보에 접근하는 것</strong>으로, 블루투스 장치 간 보안 연결을 수립할 때의 <strong>인증 절차 취약점</strong>을 악용하여 이미 페어링된 기기로 <strong>위장(Impersonation)</strong>하는 공격. 2020년 공개.</p>
+</div>
+
+<div class="tw"><table>
+  <thead><tr><th>공격 종류</th><th>주요 특징</th><th>키워드</th></tr></thead>
+  <tbody>
+    <tr class="tc-r"><td><strong>블루재킹</strong></td><td>스팸 메시지·명함 전송. 데이터 변조 없음. 가장 낮은 위협.</td><td>스팸, 익명, 별다른 위험 없음</td></tr>
+    <tr class="tc-b"><td><strong>블루스나프</strong></td><td>OPP 기능으로 주소록·파일 무단 접근.</td><td>OPP, OBEX Push Profile, 주소록</td></tr>
+    <tr class="tc-v"><td><strong>블루버그</strong></td><td>취약한 연결 관리 악용. 임의 동작 실행(전화 걸기 등).</td><td>취약한 연결, 임의 동작, 자동 연결</td></tr>
+    <tr class="tc-g"><td><strong>블루프린팅</strong></td><td>SDP로 기기 정보 수집. 공격 전 사전 스캔.</td><td>SDP, 서비스 발견, 기기 모델 확인</td></tr>
+    <tr><td><strong>BIAS</strong></td><td>페어링된 기기 위장. 인증 절차 취약점 악용.</td><td>위장(Impersonation), 인증 취약점</td></tr>
+  </tbody>
+</table></div>
+
+<div class="trap">
+  <div class="th"><span>⚠</span><span class="tht">함정 ★★★ — 블루스나프 vs 블루버그 혼동 주의</span></div>
+  <div class="tb">
+    <div class="tq">"OPP(OBEX Push Profile) 기능을 사용하여 주소록·달력 등의 내용을 요청해 이를 열람하거나 취약한 장치의 파일에 접근" → <span class="vr">✓ 블루스나프</span></div>
+    <div class="tq">"블루투스 장비 간의 취약한 연결 관리를 악용한 공격으로, 공격 대상 장치에서 임의의 동작(전화 걸기 등)을 실행하도록 하는 공격" → <span class="vr">✓ 블루버그</span></div>
+    <p>가장 많이 혼동하는 쌍. 블루스나프=<strong>파일 접근(OPP)</strong> / 블루버그=<strong>기능 실행(자동 연결 취약점)</strong>. 블루프린팅=<strong>기기 검색(SDP)</strong>. 블루재킹=<strong>스팸 메시지(위험 없음)</strong>.</p>
+  </div>
+</div>
+
+</div><!-- /tab-bluetooth -->
+
+<!-- ════ 기출 8선 ════ -->
+<div class="tab-pane" id="tab-exam">
+
+<div class="sh"><div class="sn2">📝</div><div class="st">기출문제 전수 해설 — 8문제</div><span class="slb le">연도순</span></div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2016 국가직 7급 · 802.11i·TKIP·AES·EAP 빈칸</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">강도 높은 프라이버시 및 인증 기능을 포함하는 무선 LAN 보안 표준인 IEEE (㉠)가 진화하는 과정에서 Wi-Fi 연합이 WPA/WPA2를 공표하였다. WPA는 WEP 암호의 약점을 보완한 (㉡)를 사용한다. 유사한 WPA2는 (㉢)를 채택하여 보다 강력한 보안을 제공한다. (㉣)는 엄격한 보안이 요구되는 네트워크에서 확장된 인증 과정을 수행하는 인증 프로토콜이다.</div>
+    <div class="eo">
+      <div class="op or">① ㉠802.11i ㉡TKIP ㉢AES ㉣EAP</div>
+      <div class="op ow">② ㉠802.11i ㉡DES ㉢TKIP ㉣RADIUS</div>
+      <div class="op ow">③ ㉠802.1x ㉡DES ㉢TKIP ㉣EAP</div>
+      <div class="op ow">④ ㉠802.1x ㉡TKIP ㉢AES ㉣RADIUS</div>
+    </div>
+    <div class="ex"><strong>정답 ①</strong> — ㉠ 무선 LAN 보안 표준 = <strong>802.11i</strong> (802.1x는 포트 기반 인증). ㉡ WPA의 WEP 보완 = <strong>TKIP</strong>. ㉢ WPA2가 채택 = <strong>AES(CCMP)</strong>. ㉣ 확장된 인증 프로토콜 = <strong>EAP</strong> (RADIUS는 인증 서버 프로토콜).</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2017 국가직 9급 네트워크보안 · WEP→WPA 진화 과정</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">무선 랜에서의 프라이버시 강화를 위하여 IEEE 802.11에서 (㉠)를 정의하였으나, 이 표준에서 무결성 보장과 키 사용의 심각한 약점이 발견되었다. (㉡)에서 이를 개선할 목적으로 IEEE 802.11i의 초안에 기초한 중간 조치로 (㉢)를 공표하였고, 이후 IEEE 802.11i 전체 표준을 따르는 새로운 보안 대책이 등장하게 되었다.</div>
+    <div class="eo">
+      <div class="op ow">① ㉠WPA ㉡Wi-Fi Alliance ㉢WPA2</div>
+      <div class="op ow">② ㉠WPA ㉡IETF ㉢WPA2</div>
+      <div class="op or">③ ㉠WEP ㉡Wi-Fi Alliance ㉢WPA</div>
+      <div class="op ow">④ ㉠WEP ㉡IETF ㉢WPA</div>
+    </div>
+    <div class="ex"><strong>정답 ③</strong> — ㉠ 무선 랜 초기 보안 = <strong>WEP</strong>. ㉡ WPA를 공표한 주체 = <strong>Wi-Fi Alliance</strong> (IETF 아님). ㉢ 802.11i Draft 기반 중간 조치 = <strong>WPA</strong>. 이후 IEEE 802.11i 완전 표준 = WPA2.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2017 국회직 9급 · Wi-Fi 보안 기술 오답</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">와이파이(Wi-Fi) 보안 기술에 대한 설명으로 옳지 않은 것은?</div>
+    <div class="eo">
+      <div class="op on">① IEEE 802.11 표준 기반의 무선 랜 기술이다.</div>
+      <div class="op on">② WEP 방식은 현재 보안상 취약점이 발견되었다.</div>
+      <div class="op ow">③ WEP 방식은 <u>MAC(Media Access Control) 주소 인증 프로토콜</u>을 사용한다.</div>
+      <div class="op on">④ WPA 방식은 TKIP(Temporal Key Integrity Protocol)를 사용한다.</div>
+      <div class="op on">⑤ WPA2 방식은 AES-CCMP(Counter Mode CBC-MAC Protocol)를 사용한다.</div>
+    </div>
+    <div class="ex"><strong>정답 ③</strong> — WEP는 <strong>PSK(Pre-Shared Key)</strong> 인증 방식이에요. MAC 주소 인증은 WEP의 인증 방식이 아니라 별도의 MAC 주소 필터링 보안 기법. ④WPA=TKIP, ⑤WPA2=AES-CCMP는 모두 맞아요.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2020 서울시 7급 · WEP→TKIP→CCMP, MIC 빈칸</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">IEEE 802.11i 표준은 무선랜 사용자 보호를 위해 사용자 인증 방식, 키 교환 방식 및 향상된 무선구간 암호 알고리즘을 정의하고 있다. 무선구간에서 전송되는 데이터를 보호하기 위한 방법으로 (㈎)의 취약성을 해결한 (㈏) 방식과 AES 암호 알고리즘을 사용하는 (㈐) 방식을 지원한다. (㈏) 방식은 암호키가 각 데이터프레임마다 변경되도록 만들고 메시지 무결성을 보장하기 위해 (㈑)을 프레임에 포함시킴으로써 (㈎)의 보안 취약성을 해결하였다.</div>
+    <div class="eo">
+      <div class="op or">① ㈎WEP ㈏TKIP ㈐CCMP ㈑MIC</div>
+      <div class="op ow">② ㈎WAP ㈏TKIP ㈐CCMP ㈑MAC</div>
+      <div class="op ow">③ ㈎WEP ㈏CCMP ㈐TKIP ㈑MAC</div>
+      <div class="op ow">④ ㈎WAP ㈏CCMP ㈐TKIP ㈑MIC</div>
+    </div>
+    <div class="ex"><strong>정답 ①</strong> — ㈎ 취약성 해결 대상 = <strong>WEP</strong>. ㈏ WEP를 해결한 방식 = <strong>TKIP</strong>. ㈐ AES 사용 방식 = <strong>CCMP</strong>. ㈑ 메시지 무결성 보장 위해 프레임에 포함 = <strong>MIC(Message Integrity Code)</strong>. MAC는 미디어 접근 제어로 다른 개념.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2020 경찰간부 · WPA = CCMP? + KRACK 공격</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">무선 랜 보안과 관련한 설명으로 옳지 않은 것은 모두 몇 개인가?<br>가. 무선 랜 취약점 보완을 위해 IEEE 802.1x와 RADIUS 서버를 이용해 무선 사용자를 인증한다.<br>나. WPA는 WEP 암호의 약점을 보완한 <u>CCMP</u>(Counter mode with CBC-MAC Protocol) 암호화 방식을 사용한다.<br>다. WPA2는 보안 강화를 위해 RC4 대신 AES 알고리즘을 사용한다.<br>라. KRACK(Key Reinstallation Attacks)은 WPA2의 4-way 핸드셰이크 과정에서 메시지를 조작하고 재전송하여 정보를 획득하는 공격이다.</div>
+    <div class="eo">
+      <div class="op ow">① 0개</div>
+      <div class="op or">② 1개</div>
+      <div class="op ow">③ 2개</div>
+      <div class="op ow">④ 3개</div>
+    </div>
+    <div class="ex"><strong>정답 ②</strong> — 오답은 '나' 1개. 나: WPA의 암호화 = <strong>TKIP</strong>. CCMP는 WPA2의 암호화. 가=맞음(802.1x+RADIUS). 다=맞음(WPA2=AES). 라=맞음(KRACK=WPA2 4-way HS 공격).</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2018 경찰공무원 · 블루스나프 정의</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">다음에 해당하는 블루투스 공격 방법으로 가장 적절한 것은?<br>"블루투스의 취약점을 이용하여 장비의 임의 파일에 접근하는 공격 방법이다. 블루투스 장치끼리 인증 없이 정보를 간편하게 교환하기 위해 개발된 OPP(OBEX Push Profile) 기능을 사용하여, 공격자가 블루투스 장치로부터 주소록 또는 달력 등의 내용을 요청해 이를 열람하거나 취약한 장치의 파일에 접근하는 공격 방법이다."</div>
+    <div class="eo">
+      <div class="op or">① 블루스나프(BlueSnarf)</div>
+      <div class="op ow">② 블루프린팅(BluePrinting)</div>
+      <div class="op ow">③ 블루버그(BlueBug)</div>
+      <div class="op ow">④ 블루재킹(BlueJacking)</div>
+    </div>
+    <div class="ex"><strong>정답 ①</strong> — 키워드: <strong>OPP(OBEX Push Profile)</strong>, 주소록·달력 열람, 파일 접근 = <strong>블루스나프</strong>. 블루프린팅=SDP로 기기 검색. 블루버그=취약한 연결 관리 악용. 블루재킹=스팸 메시지.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2020 서울시 7급 · 블루프린팅 SDP 정의</span><span class="es">★★</span></div>
+  <div class="eb">
+    <div class="eq">다음에서 설명하는 블루투스 보안 위협으로 가장 옳은 것은?<br>"블루투스 장치는 장치 간 종류(전화통화, 키보드 입력, 마우스 입력 등) 식별을 위해 서비스 발견 프로토콜(SDP)을 보내고 받는다. 이 서비스 발견 프로토콜을 이용해 공격자는 공격이 가능한 블루투스 장치를 검색하고 모델을 확인할 수 있다."</div>
+    <div class="eo">
+      <div class="op or">① 블루프린팅</div>
+      <div class="op ow">② 블루스나프</div>
+      <div class="op ow">③ 블루버그</div>
+      <div class="op ow">④ 블루재킹</div>
+    </div>
+    <div class="ex"><strong>정답 ①</strong> — 키워드: <strong>SDP(Service Discovery Protocol)</strong>, 장치 검색, 모델 확인 = <strong>블루프린팅</strong>. 공격 전 사전 정보 수집 단계. 블루스나프=OPP 파일 접근. 블루버그=임의 동작 실행. 블루재킹=스팸.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2025 지방직 9급 · 블루버그 정의</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">다음에서 설명하는 블루투스 취약점 공격은?<br>"블루투스 장비 간의 취약한 연결 관리를 악용한 공격으로, 공격 장치와 공격 대상 장치를 연결하여 공격 대상 장치에서 임의의 동작을 실행한다. 블루투스 기기가 한 번 연결된 이후에는 다시 연결하지 않아도 자동으로 연결되는 인증 취약점을 이용한 공격이다."</div>
+    <div class="eo">
+      <div class="op or">① 블루버그(bluebug)</div>
+      <div class="op ow">② 블루재킹(bluejacking)</div>
+      <div class="op ow">③ 블루프린팅(blueprinting)</div>
+      <div class="op ow">④ 블루스나프(bluesnarf)</div>
+    </div>
+    <div class="ex"><strong>정답 ①</strong> — 키워드: <strong>취약한 연결 관리</strong>, 임의의 동작 실행, <strong>자동 연결 인증 취약점</strong> = <strong>블루버그</strong>. 블루버그는 이미 한 번 연결된 기기의 자동 재연결 취약점을 악용해 전화 걸기 등 임의 명령 실행.</div>
+  </div>
+</div>
+
+<!-- 암기 카드 -->
+<div class="dv"></div>
+<div class="mem">
+  <div class="mt">📡 무선 LAN 보안 핵심 암기</div>
+  <div class="mi">
+    <div class="mr"><span class="mk">WEP→WPA</span><span class="mv">WEP 취약점 발견 → <strong>Wi-Fi Alliance</strong>가 802.11i Draft 기반으로 WPA 공표 (중간 조치)</span></div>
+    <div class="mr"><span class="mk">WPA→WPA2</span><span class="mv">IEEE 802.11i <strong>완전 표준</strong>을 따르는 새로운 보안 대책</span></div>
+    <div class="mr"><span class="mk">WPA 암호화</span><span class="mv"><strong>RC4-TKIP</strong> (WEP의 RC4를 개선, 패킷마다 키 동적 변경 + MIC)</span></div>
+    <div class="mr"><span class="mk">WPA2 암호화</span><span class="mv"><strong>AES-CCMP</strong> (강제사항. 기밀성·무결성·키관리 모두 제공)</span></div>
+    <div class="mr"><span class="mk">기업모드 인증</span><span class="mv">WPA/WPA2 기업모드 = <strong>IEEE 802.1x/EAP</strong> (개인모드=PSK)</span></div>
+    <div class="mr"><span class="mk">802.11i</span><span class="mv">무선 LAN <strong>보안 표준</strong>. 인증·무결성·기밀성 규격. (802.1x는 포트 기반 인증 표준)</span></div>
+    <div class="mr"><span class="mk">KRACK</span><span class="mv">WPA2 <strong>4-way 핸드셰이크</strong>에서 메시지 조작·재전송 → 정보 획득</span></div>
+    <div class="mr"><span class="mk">블루재킹</span><span class="mv">스팸 메시지·명함 전송. <strong>별다른 위험 없음</strong>.</span></div>
+    <div class="mr"><span class="mk">블루스나프</span><span class="mv"><strong>OPP(OBEX Push Profile)</strong>로 주소록·달력·파일 접근</span></div>
+    <div class="mr"><span class="mk">블루버그</span><span class="mv"><strong>취약한 연결 관리</strong> 악용. 자동 연결 취약점 → 임의 동작 실행</span></div>
+    <div class="mr"><span class="mk">블루프린팅</span><span class="mv"><strong>SDP(서비스 발견 프로토콜)</strong>로 기기 검색·모델 확인</span></div>
+  </div>
+</div>
+
+<ul class="cl">
+  <li class="clw">"WPA의 암호화 = CCMP" → ✗ (WPA=TKIP, WPA2=CCMP)</li>
+  <li class="clw">"WPA를 공표한 기관 = IETF" → ✗ (Wi-Fi Alliance)</li>
+  <li class="clw">"802.11i = 포트 기반 인증" → ✗ (802.11i=무선LAN 보안 표준 / 802.1x=포트 기반 인증)</li>
+  <li class="clw">"WEP = MAC 주소 인증 프로토콜 사용" → ✗ (WEP=PSK 인증, MAC 필터링은 별도)</li>
+  <li class="clw">"블루스나프 = SDP로 기기 정보 수집" → ✗ (SDP=블루프린팅, 블루스나프=OPP 파일 접근)</li>
+  <li class="clr">"WEP→WPA: Wi-Fi Alliance가 802.11i Draft 기반으로 공표한 중간 조치" → ✓</li>
+  <li class="clr">"WPA=RC4-TKIP / WPA2=AES-CCMP" → ✓</li>
+  <li class="clr">"블루스나프 = OPP(OBEX Push Profile) 이용 파일 접근" → ✓</li>
+  <li class="clr">"블루버그 = 취약한 연결 관리 악용, 자동 연결 취약점, 임의 동작 실행" → ✓</li>
+  <li class="clr">"KRACK = WPA2 4-way 핸드셰이크 공격" → ✓</li>
+</ul>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2017 국가직 7급 · 802.11i RSN 4단계 오답</span><span class="es">★★</span></div>
+  <div class="eb">
+    <div class="eq">IEEE 802.11i RSN(Robust Security Network) 동작 단계에 대한 설명으로 옳지 않은 것은?</div>
+    <div class="eo">
+      <div class="op on">① 발견 단계에서는 STA와 AP가 서로를 인지하여 일련의 보안 능력에 합의하고 향후 통신에 사용할 연관을 설정한다.</div>
+      <div class="op on">② 인증 단계에서는 STA와 AS 간의 상호 인증을 위하여 EAP를 교환한다.</div>
+      <div class="op on">③ 키 관리 단계에서는 STA와 AP 간에 사용되는 한 쌍의 쌍별 키와 멀티캐스팅에 사용되는 그룹 키가 정의된다.</div>
+      <div class="op ow">④ 보호 데이터 전송 단계에서는 <u>CRC(Cyclic Redundancy Check)</u>로 메시지 인증과 데이터 기밀성을 제공한다.</div>
+    </div>
+    <div class="ex"><strong>정답 ④</strong> — CRC는 <strong>오류 검출(Error Detection)</strong>을 위한 체크섬 방식이에요. 메시지 인증과 데이터 기밀성은 <strong>CCMP(AES 기반) 또는 TKIP</strong>이 제공해요. 보호 데이터 전송 단계에서는 STA와 AP 사이에서만 안전한 데이터 전송이 이루어져요.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2016·2020 국가직·해경 · 안전하지 않은 무선 LAN 대책</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">무선랜의 보안을 강화하기 위한 대책으로 안전하지 않은 것은?</div>
+    <div class="eo">
+      <div class="op on">① 무선랜 AP 접속 시 데이터 암호화와 사용자 인증 기능을 제공하도록 설정한다.</div>
+      <div class="op on">② 무선랜 AP에 지향성 안테나를 사용한다.</div>
+      <div class="op on">③ 무선랜 AP에 MAC 주소를 필터링하여 등록된 MAC 주소만 허용하는 정책을 설정한다.</div>
+      <div class="op ow">④ 무선랜 AP의 이름인 SSID를 <u>브로드캐스팅</u>하도록 설정한다.</div>
+    </div>
+    <div class="ex"><strong>정답 ④</strong> — SSID 브로드캐스팅 = 전파 범위 내 누구나 네트워크 존재를 발견 → 비인가 접속 시도 증가 → <strong>보안에 불리</strong>. SSID는 숨김(Hidden) 설정으로 브로드캐스트를 막아야 해요. 지향성 안테나 = 전파 범위 제한 → 보안에 유리. 무지향성 안테나가 나오면 마찬가지로 안전하지 않은 대책이에요.</div>
+  </div>
+</div>
+
+<div class="ft">
+  <span>정보보안 합격전략 교재 · INHYUK PI</span>
+  <span>무선 LAN 보안 완전 교재 · 2026 목표</span>
+</div>
+
+</div><!-- /tab-exam -->
+
+</div><!-- /cc -->
+</div><!-- /wrap -->
+
+<script>
+function sw(id){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b=>{
+    if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'"+id+"'")){
+      b.classList.add('active');
+    }
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>

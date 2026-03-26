@@ -85,7 +85,7 @@ body{font-family:var(--sans);background:#eef1f8;color:var(--tx);min-height:100vh
   <div class="htitle">INHYUK PI 정보보안 교재</div>
   <div class="hsub">2026 지방직 · 군무원 · 해경 · 국회직 대비</div>
   <div class="hinfo">
-    <div class="hi"><div class="hi-n">11</div><div class="hi-l">교재 수</div></div>
+    <div class="hi"><div class="hi-n">14</div><div class="hi-l">교재 수</div></div>
     <div class="hi"><div class="hi-n">Ch.08</div><div class="hi-l">웹보안 · 전자우편 · FTP</div></div>
     <div class="hi"><div class="hi-n">스토리</div><div class="hi-l">+ 기출 수록</div></div>
   </div>
@@ -284,6 +284,56 @@ body{font-family:var(--sans);background:#eef1f8;color:var(--tx);min-height:100vh
       </div>
     </a>
 
+    <!-- 12 -->
+    <a class="card c3" href="08_ecommerce.html">
+      <div class="card-top">
+        <div class="card-num" style="color:#1a7a4a;">12 · 전자상거래 보안</div>
+        <div class="card-title">전자상거래 정의·구성요소 · 위협요소 · 보안 요구사항 · SET · FDS</div>
+        <div class="card-desc">전자상거래 3대 위협(시스템·데이터·비즈니스) · 인터넷뱅킹 5종 위험요소 · 보안 요구사항 7가지 · SET 5주체·이중서명 · FDS</div>
+      </div>
+      <div class="card-bottom">
+        <div class="card-tags">
+          <span class="tag t-r">거래처리 위협 ★</span>
+          <span class="tag t-g">SET 이중서명 ★</span>
+          <span class="tag t-b">FDS ★</span>
+        </div>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <!-- 13 -->
+    <a class="card c6" href="08_payment.html">
+      <div class="card-top">
+        <div class="card-num" style="color:#6d28d9;">13 · 전자지불시스템</div>
+        <div class="card-title">지불수단 4종 · 전자화폐 요구사항 · 전자화폐 vs 가상화폐 · 프로토콜</div>
+        <div class="card-desc">신용카드·전자화폐·계좌이체·모바일 4종 / 전자화폐 6요건(이중사용방지·익명성·양도성·분할성) / 가상화폐 이중지불 / SET 이중서명</div>
+      </div>
+      <div class="card-bottom">
+        <div class="card-tags">
+          <span class="tag t-v">이중사용방지 ★</span>
+          <span class="tag t-v">온라인성=함정 ★</span>
+          <span class="tag t-r">이중서명 ★</span>
+        </div>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <!-- 14 -->
+    <a class="card c1" href="08_wireless.html">
+      <div class="card-top">
+        <div class="card-num" style="color:#0f766e;">14 · 무선 LAN 보안</div>
+        <div class="card-title">WEP·WPA·WPA2 · TKIP·CCMP · 블루투스 공격 5종</div>
+        <div class="card-desc">IEEE 802.11i 진화 과정 · WEP(RC4고정) → WPA(TKIP) → WPA2(AES-CCMP) · 개인/기업모드 · SSID·MAC필터링 · EAP · 블루재킹·스나프·버그·프린팅·BIAS</div>
+      </div>
+      <div class="card-bottom">
+        <div class="card-tags">
+          <span class="tag t-t">WPA=TKIP vs WPA2=CCMP ★</span>
+          <span class="tag t-r">블루스나프·버그 구분 ★</span>
+        </div>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
   </div>
 
   <!-- 빠른 참고 -->
@@ -340,6 +390,22 @@ body{font-family:var(--sans);background:#eef1f8;color:var(--tx);min-height:100vh
       <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;">
         <span style="font-family:monospace;font-size:10.5px;font-weight:700;background:#fdf0ef;color:#dc2626;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;">Heartbeat</span>
         <span style="color:var(--tx);">TLS <strong>세션 활성 상태 유지</strong> · Heartbleed=(가)<strong>TLS</strong>+(나)<strong>길이</strong> / PRF 입력=<strong>secret·label·seed</strong>(3가지), 데이터 확장 함수=2가지</span>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;">
+        <span style="font-family:monospace;font-size:10.5px;font-weight:700;background:#edf7f2;color:#1a7a4a;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;">거래처리 위협</span>
+        <span style="color:var(--tx);"><strong>Weak Encryption·Server Spoof</strong> (Poor Programming·Weak Auth = 애플리케이션)</span>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;">
+        <span style="font-family:monospace;font-size:10.5px;font-weight:700;background:#edf7f2;color:#1a7a4a;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;">보안요구 1번</span>
+        <span style="color:var(--tx);">신분확인·인증 = <strong>모든 보안의 전제조건</strong> / FDS = 보안프로그램이 못 막는 이상거래 탐지</span>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;">
+        <span style="font-family:monospace;font-size:10.5px;font-weight:700;background:#ede9fe;color:#6d28d9;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;">전자화폐 4요건</span>
+        <span style="color:var(--tx);"><strong>이중사용방지·익명성·양도성·분할성</strong> / 온라인성=필수 아님(함정) / 비트코인 이중지불=이론적 가능</span>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;">
+        <span style="font-family:monospace;font-size:10.5px;font-weight:700;background:#ccfbf1;color:#0f766e;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;">무선 LAN</span>
+        <span style="color:var(--tx);">WPA=<strong>RC4-TKIP</strong> / WPA2=<strong>AES-CCMP</strong> / 블루스나프=OPP 파일접근 / 블루버그=취약한연결 임의동작</span>
       </div>
     </div>
   </div>

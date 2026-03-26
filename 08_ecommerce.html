@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>전자상거래 보안 완전 교재 | INHYUK PI</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --p:#1a2540;--a:#2d5be3;--al:#e8eeff;
+  --r:#c0392b;--rl:#fdf0ef;
+  --g:#1a7a4a;--gl:#edf7f2;
+  --w:#b45309;--wl:#fffbeb;
+  --v:#6d28d9;--vl:#ede9fe;
+  --t:#0f766e;--tl:#ccfbf1;
+  --bd:#dde3ec;--bg:#fff;--tx:#1c2331;--tm:#5a6478;
+  --g0:#f8f9fa;--g1:#f0f2f5;
+  --sans:'Noto Sans KR',sans-serif;--serif:'Noto Serif KR',serif;--mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--sans);background:#eef1f8;color:var(--tx);font-size:14px;line-height:1.8;}
+.wrap{max-width:960px;margin:0 auto;padding:28px 14px 70px;}
+.hdr{background:linear-gradient(135deg,#060d1a 0%,#0d1a2e 50%,#0a1a0a 100%);border-radius:14px 14px 0 0;padding:30px 42px 26px;position:relative;overflow:hidden;}
+.hdr::before{content:'🛒';position:absolute;right:28px;top:10px;font-size:110px;opacity:.06;}
+.mbr{display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap;}
+.bdg{font-size:9.5px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.06em;text-transform:uppercase;}
+.bdg-ch{background:rgba(255,255,255,.13);color:rgba(255,255,255,.9);}
+.bdg-hot{background:#c0392b;color:white;}
+.bdg-ok{background:#1a7a4a;color:white;}
+.ht{font-family:var(--serif);font-size:27px;font-weight:600;color:white;letter-spacing:-.02em;margin-bottom:3px;}
+.hs{color:rgba(255,255,255,.55);font-size:12px;font-weight:300;}
+.hst{display:flex;gap:22px;margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.1);flex-wrap:wrap;}
+.hn{font-size:18px;font-weight:700;color:#86efac;}
+.hl{font-size:9.5px;color:rgba(255,255,255,.5);margin-top:1px;}
+.tab-bar{display:flex;background:var(--p);padding:0 42px;gap:2px;flex-wrap:wrap;border-bottom:2px solid rgba(255,255,255,.08);}
+.tab-btn{padding:11px 13px;font-size:11.5px;font-weight:600;color:rgba(255,255,255,.5);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all .18s;white-space:nowrap;}
+.tab-btn:hover{color:rgba(255,255,255,.8);}
+.tab-btn.active{color:#86efac;border-bottom-color:#1a7a4a;}
+.cc{background:var(--bg);border-radius:0 0 14px 14px;padding:36px 42px;border:1px solid var(--bd);border-top:none;}
+.tab-pane{display:none;}.tab-pane.active{display:block;}
+.sh{display:flex;align-items:center;gap:9px;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--g1);margin-top:6px;}
+.sn2{width:30px;height:30px;background:var(--p);color:white;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.st{font-size:17px;font-weight:700;color:var(--p);}
+.slb{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.06em;text-transform:uppercase;}
+.le{background:var(--rl);color:var(--r);}
+.ld{background:var(--al);color:var(--a);}
+.lv{background:var(--vl);color:var(--v);}
+.lw{background:var(--wl);color:var(--w);}
+.lg{background:var(--gl);color:var(--g);}
+.lt{background:var(--tl);color:var(--t);}
+.sb{font-size:13.5px;line-height:2.1;color:var(--tx);}
+.sb p{margin-bottom:14px;}
+.sb strong{color:var(--p);}
+.sq{background:var(--p);color:white;border-radius:10px;padding:14px 22px 14px 34px;margin:16px 0;font-size:13.5px;line-height:1.9;position:relative;}
+.sq::before{content:'💬';position:absolute;left:-12px;top:12px;font-size:20px;}
+.sq strong{color:#86efac;}
+.sdiv{height:1px;background:linear-gradient(90deg,transparent,var(--bd),transparent);margin:28px 0;}
+.dfb{background:var(--p);color:white;border-radius:11px;padding:16px 21px;margin-bottom:14px;}
+.dfl{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#86efac;margin-bottom:6px;}
+.dfb p{font-size:13.5px;line-height:1.95;color:rgba(255,255,255,.9);}
+.dfb strong{color:#86efac;}
+.tw{overflow-x:auto;margin:12px 0;border-radius:9px;border:1px solid var(--bd);}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead tr{background:var(--p);color:white;}
+thead th{padding:10px 13px;text-align:left;font-weight:600;font-size:11.5px;}
+tbody tr{border-bottom:1px solid var(--g1);}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:#f0fff8;}
+tbody td{padding:9px 13px;color:var(--tx);vertical-align:top;line-height:1.7;}
+tbody td:first-child{font-weight:600;color:var(--p);}
+.cds{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:10px;margin:12px 0;}
+.cd{border:1px solid var(--bd);border-radius:9px;padding:13px 15px;background:var(--g0);}
+.cdt{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--g);margin-bottom:6px;}
+.cdb{font-size:13px;color:var(--tx);line-height:1.75;}
+.cdb strong{color:var(--p);}
+.dw{background:var(--g0);border:1px solid var(--bd);border-radius:12px;padding:18px;margin:14px 0;overflow-x:auto;}
+.dt{font-size:11px;font-weight:700;color:var(--p);margin-bottom:12px;letter-spacing:.03em;}
+/* 위협 카드 */
+.threat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:14px 0;}
+.tc-card{border-radius:11px;overflow:hidden;border:1px solid var(--bd);}
+.tc-head{padding:11px 15px;font-size:13px;font-weight:700;color:white;display:flex;align-items:center;gap:7px;}
+.tc-body{padding:12px 15px;background:var(--bg);}
+.tc-row{font-size:12.5px;color:var(--tx);padding:4px 0;border-bottom:1px solid var(--g1);line-height:1.7;}
+.tc-row:last-child{border-bottom:none;}
+.tc-row strong{color:var(--p);}
+/* 보안요구 proc */
+.proc{display:flex;flex-direction:column;gap:0;margin:14px 0;border-radius:11px;overflow:hidden;border:1px solid var(--bd);}
+.ps{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;border-bottom:1px solid var(--g1);}
+.ps:last-child{border-bottom:none;}
+.ps:nth-child(even){background:var(--g0);}
+.pn{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white;flex-shrink:0;margin-top:2px;}
+.pc{flex:1;}
+.pt{font-size:13.5px;font-weight:700;color:var(--p);margin-bottom:4px;}
+.pd{font-size:13px;color:var(--tm);line-height:1.8;}
+.pd+.pd{margin-top:8px;}
+.ptag{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:5px;margin-top:5px;background:var(--al);color:var(--a);}
+/* SET 주체 */
+.set-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0;}
+.set-card{border-radius:9px;padding:13px 15px;background:var(--g0);border:1px solid var(--bd);}
+.set-t{font-size:10.5px;font-weight:700;color:var(--a);margin-bottom:5px;text-transform:uppercase;letter-spacing:.05em;}
+.set-b{font-size:13px;color:var(--tx);line-height:1.7;}
+.trap{border-radius:11px;margin:16px 0;overflow:hidden;}
+.th{display:flex;align-items:center;gap:8px;padding:11px 16px;background:var(--r);color:white;}
+.tht{font-size:12.5px;font-weight:700;}
+.tb{background:var(--rl);padding:14px 18px;border:1px solid #f5c6c2;border-top:none;border-radius:0 0 11px 11px;}
+.tb p{font-size:13px;color:#7a1c1c;line-height:1.9;margin-bottom:8px;}
+.tb p:last-child{margin-bottom:0;}
+.tq{background:white;border-left:3px solid var(--r);padding:9px 13px;border-radius:0 7px 7px 0;margin:9px 0;font-size:13px;color:var(--tx);line-height:1.75;}
+.vw{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:20px;background:var(--r);color:white;}
+.vr{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:20px;background:var(--g);color:white;}
+.inf-g{background:var(--gl);border:1px solid #a3dbc0;border-radius:9px;padding:12px 16px;margin:12px 0;font-size:13px;color:#0d3321;line-height:1.85;}
+.inf-g strong{color:var(--p);}
+.ec{border:1px solid var(--bd);border-radius:11px;margin:11px 0;overflow:hidden;}
+.eh{display:flex;align-items:center;justify-content:space-between;padding:9px 15px;background:var(--g0);border-bottom:1px solid var(--bd);}
+.ey{font-size:11.5px;font-weight:700;color:var(--p);}
+.es{color:#e8b000;font-size:12px;letter-spacing:2px;}
+.eb{padding:14px 16px;}
+.eq{font-size:13.5px;font-weight:600;color:var(--tx);margin-bottom:11px;line-height:1.75;}
+.eo{display:flex;flex-direction:column;gap:5px;}
+.op{font-size:13px;padding:7px 11px;border-radius:6px;border:1px solid transparent;line-height:1.6;}
+.ow{background:#fdf0ef;border-color:#f5c6c2;color:#7a1c1c;text-decoration:line-through;opacity:.8;}
+.ow::before{content:'✗ ';}
+.or{background:var(--gl);border-color:#a3dbc0;color:#0d4a2a;font-weight:600;}
+.or::before{content:'✓ ';}
+.on{background:var(--g0);border-color:var(--bd);color:var(--tx);}
+.ex{margin-top:11px;padding:12px 14px;background:var(--g0);border-radius:7px;font-size:13px;color:var(--tm);line-height:1.9;border-left:3px solid var(--g);}
+.mem{background:linear-gradient(135deg,#060d1a 0%,#1a2540 100%);border-radius:13px;padding:22px 25px;color:white;margin:14px 0;position:relative;overflow:hidden;}
+.mem::before{content:'🛒';position:absolute;right:14px;top:8px;font-size:52px;opacity:.07;}
+.mt{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#86efac;margin-bottom:12px;}
+.mi{display:flex;flex-direction:column;gap:9px;}
+.mr{display:flex;gap:10px;align-items:flex-start;}
+.mk{font-family:var(--mono);font-size:10.5px;font-weight:600;background:rgba(134,239,172,.18);color:#86efac;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;}
+.mv{font-size:13px;color:rgba(255,255,255,.85);line-height:1.75;}
+.mv strong{color:#86efac;}
+.cl{list-style:none;margin:12px 0;display:flex;flex-direction:column;gap:5px;}
+.cl li{display:flex;align-items:flex-start;gap:8px;font-size:13px;padding:8px 13px;border-radius:7px;border:1px solid var(--bd);background:var(--bg);line-height:1.65;}
+.clw{background:#fdf0ef;border-color:#f5c6c2;}
+.clw::before{content:'⚠';color:var(--r)!important;font-size:12px;flex-shrink:0;margin-top:2px;}
+.clr{background:var(--gl);border-color:#a3dbc0;}
+.clr::before{content:'✓';color:var(--g)!important;font-size:12px;flex-shrink:0;margin-top:2px;}
+.dv{height:1px;background:var(--g1);margin:26px 0;}
+.ft{display:flex;justify-content:space-between;margin-top:28px;padding-top:13px;border-top:1px solid var(--bd);font-size:10.5px;color:var(--tm);}
+@media(max-width:640px){.cc,.hdr{padding:22px 16px;}.tab-bar{padding:0 16px;}.threat-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hdr">
+  <div class="mbr">
+    <span class="bdg bdg-ch">Chapter 08 · 전자상거래 보안</span>
+    <span class="bdg bdg-hot">기출 출제</span>
+    <span class="bdg bdg-ok">기출 3문제 수록</span>
+  </div>
+  <div class="ht">전자상거래 보안 완전 교재</div>
+  <div class="hs">전자상거래 정의·구성요소 · 위협요소 · 보안 요구사항 · SET 이중서명·절차·시나리오 · FDS</div>
+  <div class="hst">
+    <div><div class="hn">위협 3종</div><div class="hl">시스템·데이터·비즈니스</div></div>
+    <div><div class="hn">보안 요구사항 7</div><div class="hl">인증·기밀·무결성 등</div></div>
+    <div><div class="hn">SET 5주체</div><div class="hl">카드소지자·상점·은행 등</div></div>
+    <div><div class="hn">FDS</div><div class="hl">이상금융거래탐지 ★</div></div>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="sw('def')">🏪 정의·구성요소</button>
+  <button class="tab-btn" onclick="sw('threat')">⚠️ 위협요소</button>
+  <button class="tab-btn" onclick="sw('req')">🔐 보안 요구사항</button>
+  <button class="tab-btn" onclick="sw('set')">💳 SET 개요·주체</button>
+  <button class="tab-btn" onclick="sw('dualsig')">✍ 이중서명·절차</button>
+  <button class="tab-btn" onclick="sw('fds')">🔍 FDS</button>
+  <button class="tab-btn" onclick="sw('exam')">📝 기출 6선</button>
+</div>
+
+<div class="cc">
+
+<!-- ════ 정의·구성요소 ════ -->
+<div class="tab-pane active" id="tab-def">
+
+<div class="sh"><div class="sn2">1</div><div class="st">전자상거래(Electronic Commerce) 정의</div><span class="slb lg">★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">전자상거래 정의</div>
+  <p>전자상거래(Electronic Commerce)란 <strong>개인, 기업, 정부 간에 인터넷을 통하여 이루어지는 상거래</strong>를 의미한다. 광의로는 인터넷이나 네트워크를 이용한 관련 정보 제공, 협상, 주문, 납품, 대금 지불, 이체 등을 통해 마케팅, 판매하는 것을 말한다.</p>
+</div>
+
+<div class="sb">
+<p>전자상거래는 단순히 인터넷으로 물건을 사고파는 것을 넘어서요. <strong>정보 제공 → 협상 → 주문 → 납품 → 결제 → 이체</strong>까지 거래의 전 과정이 전자적으로 이루어지는 것을 포괄해요. 인터넷 쇼핑, 인터넷 뱅킹, 전자결제, 전자세금계산서, B2B 거래 모두 포함돼요.</p>
+
+<p>전자상거래 환경에서는 <strong>법적·정책적·프라이버시 문제</strong>에 대한 공통된 규칙이 있어야 하고, 기술 표준과 멀티미디어 콘텐츠, 네트워크 인프라가 유지되어야 해요. 이 환경이 갖춰지지 않으면 신뢰할 수 있는 전자상거래가 이루어지기 어렵습니다.</p>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">전자상거래 구성요소 (환경 구조)</div><span class="slb lg">★★</span></div>
+
+<div class="sb">
+<p>전자상거래 환경은 크게 <strong>참여 주체</strong>, <strong>프로세스 지원 시스템</strong>, <strong>네트워크 인프라</strong> 세 축으로 구성돼요.</p>
+</div>
+
+<!-- 구성요소 SVG -->
+<div class="dw">
+  <div class="dt">전자상거래 환경 구성도</div>
+  <svg viewBox="0 0 740 155" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:740px;display:block;margin:0 auto;">
+    <!-- 구매자 -->
+    <rect x="10" y="15" width="120" height="50" rx="7" fill="#1a2540"/>
+    <text x="70" y="38" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">구매자</text>
+    <text x="70" y="55" text-anchor="middle" fill="rgba(255,255,255,.65)" font-size="9.5" font-family="sans-serif">개인 / 기업 / 정부</text>
+
+    <!-- 판매자 -->
+    <rect x="610" y="15" width="120" height="50" rx="7" fill="#1a7a4a"/>
+    <text x="670" y="38" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="700">판매자</text>
+    <text x="670" y="55" text-anchor="middle" fill="rgba(255,255,255,.65)" font-size="9.5" font-family="sans-serif">기업 / 개인</text>
+
+    <!-- 프로세스 지원 -->
+    <rect x="180" y="8" width="380" height="68" rx="9" fill="#e8eeff" stroke="#2d5be3" stroke-width="1.5"/>
+    <text x="370" y="30" text-anchor="middle" fill="#1a2540" font-size="11" font-family="sans-serif" font-weight="700">프로세스 지원</text>
+    <rect x="195" y="38" width="80" height="26" rx="5" fill="#2d5be3"/>
+    <text x="235" y="55" text-anchor="middle" fill="white" font-size="9.5" font-family="sans-serif">결제 시스템</text>
+    <rect x="285" y="38" width="80" height="26" rx="5" fill="#6d28d9"/>
+    <text x="325" y="55" text-anchor="middle" fill="white" font-size="9.5" font-family="sans-serif">주문 처리</text>
+    <rect x="375" y="38" width="80" height="26" rx="5" fill="#0f766e"/>
+    <text x="415" y="55" text-anchor="middle" fill="white" font-size="9.5" font-family="sans-serif">배송 관리</text>
+    <rect x="465" y="38" width="80" height="26" rx="5" fill="#c0392b"/>
+    <text x="505" y="55" text-anchor="middle" fill="white" font-size="9.5" font-family="sans-serif">은행 / 금융</text>
+
+    <!-- 화살표 -->
+    <line x1="130" y1="40" x2="180" y2="40" stroke="#374151" stroke-width="1.5"/>
+    <polygon points="180,36 190,40 180,44" fill="#374151"/>
+    <line x1="560" y1="40" x2="610" y2="40" stroke="#374151" stroke-width="1.5"/>
+    <polygon points="610,36 620,40 610,44" fill="#374151"/>
+
+    <!-- 네트워크 -->
+    <rect x="10" y="90" width="720" height="55" rx="9" fill="#f0f2f5" stroke="#5a6478" stroke-width="1.5"/>
+    <text x="370" y="113" text-anchor="middle" fill="#1a2540" font-size="11" font-family="sans-serif" font-weight="700">네트워크 인프라</text>
+    <rect x="25" y="122" width="100" height="18" rx="4" fill="#374151"/>
+    <text x="75" y="135" text-anchor="middle" fill="white" font-size="8.5" font-family="sans-serif">인터넷</text>
+    <rect x="135" y="122" width="110" height="18" rx="4" fill="#374151"/>
+    <text x="190" y="135" text-anchor="middle" fill="white" font-size="8.5" font-family="sans-serif">상용 네트워크(EDI)</text>
+    <rect x="255" y="122" width="100" height="18" rx="4" fill="#374151"/>
+    <text x="305" y="135" text-anchor="middle" fill="white" font-size="8.5" font-family="sans-serif">전용 네트워크</text>
+    <rect x="365" y="122" width="110" height="18" rx="4" fill="#374151"/>
+    <text x="420" y="135" text-anchor="middle" fill="white" font-size="8.5" font-family="sans-serif">모바일 네트워크</text>
+    <rect x="485" y="122" width="100" height="18" rx="4" fill="#374151"/>
+    <text x="535" y="135" text-anchor="middle" fill="white" font-size="8.5" font-family="sans-serif">케이블 네트워크</text>
+    <rect x="595" y="122" width="125" height="18" rx="4" fill="#374151"/>
+    <text x="657" y="135" text-anchor="middle" fill="white" font-size="8.5" font-family="sans-serif">무선(Wi-Fi/4G/5G)</text>
+
+    <line x1="370" y1="76" x2="370" y2="90" stroke="#5a6478" stroke-width="1.5" stroke-dasharray="4,2"/>
+  </svg>
+</div>
+
+<div class="inf-g">
+  <strong>핵심 구성요소 정리:</strong> 전자상거래에는 ① 구매자(개인·기업·정부) ② 판매자(기업·개인) ③ <strong>프로세스 지원</strong>(결제·주문·배송·금융기관) ④ <strong>네트워크 인프라</strong>(인터넷·상용네트워크·전용네트워크)가 반드시 필요해요.
+</div>
+
+</div><!-- /tab-def -->
+
+<!-- ════ 위협요소 ════ -->
+<div class="tab-pane" id="tab-threat">
+
+<div class="sh"><div class="sn2">1</div><div class="st">전자상거래 3대 위협요소</div><span class="slb le">★★★</span></div>
+
+<div class="sb">
+<p>전자상거래에 대한 위협은 크게 <strong>3가지</strong>로 분류돼요. 시스템 공격·데이터 공격·비즈니스 공격이에요. 각 유형의 정의와 특성을 정확히 구분해야 해요.</p>
+</div>
+
+<div class="threat-grid">
+  <div class="tc-card">
+    <div class="tc-head" style="background:#c0392b;">⚔ ① 시스템 공격</div>
+    <div class="tc-body">
+      <div class="tc-row">인터넷에 연결된 서버를 <strong>불법으로 침입</strong>하여 컴퓨터를 오작동시키거나, 데이터 유출·삭제·변경하는 공격.</div>
+      <div class="tc-row">이런 공격을 막기 위해 <strong>방화벽</strong> 같은 보안 도구를 사용한다.</div>
+      <div class="tc-row" style="color:var(--r);">외부 공격으로 인한 손실은 내부 직원에 의한 손실보다 불법적인 경우가 더 많다.</div>
+    </div>
+  </div>
+  <div class="tc-card">
+    <div class="tc-head" style="background:#2d5be3;">💾 ② 데이터 공격</div>
+    <div class="tc-body">
+      <div class="tc-row">전자상거래에서 데이터 공격은 <strong>저장된 데이터</strong>와 <strong>전송 중인 데이터</strong>로 구분할 수 있음.</div>
+      <div class="tc-row">저장 시에도 <strong>암호화</strong>를 통한 보호가 필요하다.</div>
+      <div class="tc-row">전송 중인 데이터에 대한 공격을 막기 위해 <strong>기밀성·무결성</strong> 등에 대한 보호가 요구된다.</div>
+    </div>
+  </div>
+  <div class="tc-card">
+    <div class="tc-head" style="background:#6d28d9;">🏢 ③ 비즈니스 공격</div>
+    <div class="tc-body">
+      <div class="tc-row">전자상거래에서는 <strong>익명성</strong>이라는 특징 때문에 거래하는 제3자가 누구인지 알 수 없을 수 있음.</div>
+      <div class="tc-row">오프라인에서만 일어날 수 있는 공격이 전자적 환경에서도 일어날 수 있음.</div>
+      <div class="tc-row">법적인 장치, 전자적 시스템 외적인 합의가 이루어져야 한다.</div>
+    </div>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">인터넷 뱅킹 시스템 위험요소 5종</div><span class="slb le">★★★ 2022 경찰간부 출제</span></div>
+
+<div class="sb">
+<p>전자상거래·인터넷 뱅킹 시스템의 위험요소는 5가지 구성요소별로 분류돼요. 각 요소에 해당하는 구체적인 위협 이름까지 매핑해서 외워야 해요. <strong>2022 경찰간부 기출</strong>에서 요소별 위협 이름 매핑이 출제됐어요.</p>
+</div>
+
+<div class="tw"><table>
+  <thead><tr><th>구성요소</th><th>위협 요소</th><th>설명</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>① 클라이언트 보안</td>
+      <td><strong>Virus, Trojan Horse</strong></td>
+      <td>사용자 단말기(PC·스마트폰)에 악성코드 감염. 키로거, 화면 캡처 등으로 인증정보 탈취.</td>
+    </tr>
+    <tr>
+      <td>② 처리요소 보안<br>(거래처리)</td>
+      <td><strong>Weak Encryption, Server Spoof</strong></td>
+      <td>거래 전송 구간의 암호화 취약 또는 서버 위장(Spoofing). 전송 중 데이터 도청·위변조.</td>
+    </tr>
+    <tr>
+      <td>③ 서버 보안</td>
+      <td><strong>Unix/NT Security Holes, Improper Administration</strong></td>
+      <td>서버 OS 취약점 악용, 관리 소홀(패치 미적용, 불필요 서비스 운영). 서버 직접 침입.</td>
+    </tr>
+    <tr>
+      <td>④ 애플리케이션 보안</td>
+      <td><strong>Poor Programming, Weak Authentication</strong></td>
+      <td>불안전한 코드(SQL Injection·BOF 등), 취약한 인증 로직. 앱 자체 취약점.</td>
+    </tr>
+    <tr style="background:#fdf0ef;">
+      <td>⑤ 내부적 보안</td>
+      <td><strong>Virus &amp; Trojan Horse,<br>Unix/NT Security Holes,<br>Improper Administration</strong></td>
+      <td>내부자에 의한 위협. 클라이언트+서버 위협이 내부에서 복합적으로 발생할 수 있음.</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<div class="trap">
+  <div class="th"><span>⚠</span><span class="tht">함정 ★★★ — 거래처리 vs 애플리케이션 위협 혼동 (2022 경찰간부)</span></div>
+  <div class="tb">
+    <div class="tq">③ 거래처리 보안에서의 위협요소 — <u>Poor Programming, Weak Authentication</u> → <span class="vw">✗ 오답</span></div>
+    <p>Poor Programming, Weak Authentication은 <strong>애플리케이션 보안(④)</strong>의 위협요소예요. 거래처리(②) 보안 위협은 <strong>Weak Encryption, Server Spoof</strong>이에요. 처리 중 전송 구간의 암호화 문제와 서버 위장이 핵심.</p>
+    <p>내부적 보안(⑤) = Virus &amp; Trojan Horse + Unix/NT Security Holes + Improper Administration → 클라이언트(①)와 서버(③) 위협이 모두 포함되는 가장 넓은 범위.</p>
+  </div>
+</div>
+
+</div><!-- /tab-threat -->
+
+<!-- ════ 보안 요구사항 ════ -->
+<div class="tab-pane" id="tab-req">
+
+<div class="sh"><div class="sn2">1</div><div class="st">전자상거래 보안 요구사항 7가지</div><span class="slb le">★★★</span></div>
+
+<div class="sb">
+<p>전자상거래에서는 일반 정보보호의 CIA(기밀성·무결성·가용성)를 넘어 거래의 특성에 맞는 7가지 보안 요구사항이 필요해요. 특히 <strong>신분 확인 및 인증</strong>이 모든 보안 기능의 전제조건이에요.</p>
+</div>
+
+<div class="proc">
+  <div class="ps">
+    <div class="pn" style="background:#c0392b;">1</div>
+    <div class="pc">
+      <div class="pt">신분 확인 및 인증 (Identification &amp; Authentication)</div>
+      <div class="pd">거래하는 당사자를 서로 확인하고 있어야 한다. 인증 수단으로는 ID/패스워드, 암호화 기반 인증서(PKI) 등이 포함된다.</div>
+      <div class="pd"><strong>모든 보안 기능(접근통제·기밀성·무결성·부인방지·프라이버시 관리)의 전제조건</strong>이 되는 가장 기본적이고 중요한 보안 요건이다.</div>
+      <span class="ptag">가장 기본적이고 중요한 전제조건 ★</span>
+    </div>
+  </div>
+  <div class="ps">
+    <div class="pn" style="background:#2d5be3;">2</div>
+    <div class="pc">
+      <div class="pt">기밀성 (Confidentiality)</div>
+      <div class="pd">저장되어 있거나 전송 중인 정보를 인가되지 않은 자가 접근할 수 없도록 해야 한다.</div>
+      <div class="pd">특히 결제 정보, 주문 정보는 더욱 중요하게 보호되어야 한다. <strong>암호화</strong>를 통해 제3자가 접근할 수 없도록 보호한다.</div>
+    </div>
+  </div>
+  <div class="ps">
+    <div class="pn" style="background:#0f766e;">3</div>
+    <div class="pc">
+      <div class="pt">무결성 (Integrity)</div>
+      <div class="pd">저장되어 있거나 전송 중인 정보가 인가하지 않은 자에 의해 <strong>변조되거나 삭제되지 않도록</strong> 해야 한다.</div>
+      <div class="pd">무결성 보장을 위해 <strong>전자서명·해시 함수</strong>를 이용한다.</div>
+    </div>
+  </div>
+  <div class="ps">
+    <div class="pn" style="background:#6d28d9;">4</div>
+    <div class="pc">
+      <div class="pt">가용성 (Availability)</div>
+      <div class="pd">정당한 사용자에게 서비스가 중단되지 않고 원활하게 제공될 수 있도록 해야 한다.</div>
+      <div class="pd">DoS·DDoS 공격 같은 서비스 거부 공격으로부터 보호되어야 하며, 장애 발생 시 대처할 수 있는 복구 능력이 있어야 한다.</div>
+    </div>
+  </div>
+  <div class="ps">
+    <div class="pn" style="background:#b45309;">5</div>
+    <div class="pc">
+      <div class="pt">거래 부인 방지 (Non-repudiation)</div>
+      <div class="pd">거래 당사자 간에 <strong>정보 제공 및 수신에 대한 부인을 방지</strong>하는 것이다.</div>
+      <div class="pd">전자서명을 이용한 법률 분쟁에서 매우 중요한 역할을 하며, <strong>전자서명</strong>에 의해 해결할 수 있다.</div>
+    </div>
+  </div>
+  <div class="ps">
+    <div class="pn" style="background:#1a7a4a;">6</div>
+    <div class="pc">
+      <div class="pt">접근 제어 (Access Control)</div>
+      <div class="pd">정보에 대한 변경 및 모든 접근에 대해 명백히 제어함으로써 인가되지 않은 접근을 차단할 수 있도록 하는 것이 요구된다.</div>
+      <div class="pd">서버에서는 접근 통제 시스템을 운영하며, 클라이언트에서는 암호화를 강화하여 통제 수준을 높일 수 있다.</div>
+    </div>
+  </div>
+  <div class="ps">
+    <div class="pn" style="background:#374151;">7</div>
+    <div class="pc">
+      <div class="pt">보안 관리 (Security Management)</div>
+      <div class="pd">모든 보안 기능에 대한 <strong>체계적인 관리</strong>가 요구되며, 이를 위해 보안 정책·기준·절차의 제정, 보안 기술에 대한 교육이 이루어져야 한다.</div>
+      <div class="pd">또한 보안 사고에 대한 처리 절차와 <strong>보안 감사</strong>가 이루어져야 한다.</div>
+    </div>
+  </div>
+</div>
+
+<div class="tw"><table>
+  <thead><tr><th>요구사항</th><th>핵심 키워드</th><th>주요 보안 기술</th></tr></thead>
+  <tbody>
+    <tr><td>신분 확인 및 인증</td><td>거래 당사자 확인 · 모든 보안의 전제</td><td>ID/PW, PKI 인증서</td></tr>
+    <tr><td>기밀성</td><td>인가되지 않은 접근 차단 · 결제·주문 보호</td><td>암호화</td></tr>
+    <tr><td>무결성</td><td>변조·삭제 방지</td><td>전자서명, 해시 함수</td></tr>
+    <tr><td>가용성</td><td>서비스 중단 없이 원활 제공</td><td>DDoS 대응, 이중화</td></tr>
+    <tr><td>부인 방지</td><td>거래 사실 부인 방지 · 법률 분쟁</td><td>전자서명</td></tr>
+    <tr><td>접근 제어</td><td>인가되지 않은 접근 차단</td><td>방화벽, 접근통제 목록</td></tr>
+    <tr><td>보안 관리</td><td>정책·기준·절차 제정 · 보안 감사</td><td>ISMS, 보안 감사</td></tr>
+  </tbody>
+</table></div>
+
+</div><!-- /tab-req -->
+
+<!-- ════ SET 개요·주체 ════ -->
+<div class="tab-pane" id="tab-set">
+
+<div class="sh"><div class="sn2">1</div><div class="st">SET (Secure Electronic Transaction) 개요</div><span class="slb le">★★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">SET 정의</div>
+  <p>SET(Secure Electronic Transaction)는 <strong>비자(VISA)와 마스터카드(MasterCard)가 합동으로 개발</strong>한 인터넷상에서 신용카드를 이용한 상품 구매 시 안전한 대금결제 처리를 위한 프로토콜. <strong>RSA 암호화와 인증 기술</strong>을 이용하여 네트워크상에서 민감한 개인금융 정보를 안전하게 전송하기 위해 개발됨. 전자봉투(Digital Envelope)와 <strong>이중서명(Dual Signature)</strong>을 핵심 기법으로 사용.</p>
+</div>
+
+<div class="sb">
+<p>SET가 일반 SSL/HTTPS 결제와 다른 결정적인 차이는 <strong>이중서명(Dual Signature)</strong>이에요. 카드소지자의 주문 정보는 상점에만, 지불 정보(카드번호 등)는 은행에만 보여요. 상점이 카드번호를 알 수 없고, 은행이 주문 내용을 알 수 없어요. 이중 서명 기법으로 프라이버시를 보호하면서도 거래의 정당성을 증명해요.</p>
+
+<p>SET의 또 다른 특징은 <strong>PKI(공개키 기반구조)</strong> 전면 도입이에요. 모든 참여자(카드소지자·상점·은행·게이트웨이)가 각자의 인증서를 보유하고, CA(인증기관)가 신원을 보증해요. 신용카드 소지자에게는 <strong>전자지갑(Wallet) 소프트웨어</strong>가 필요하고, 상점에도 SET 전용 소프트웨어가 필요해요.</p>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">SET 6대 참여 주체</div><span class="slb lg">★★★</span></div>
+
+<div class="set-grid">
+  <div class="set-card">
+    <div class="set-t">① 카드소지자 (Cardholder)</div>
+    <div class="set-b">카드를 발급받아 인터넷에서 상품·서비스를 구매하는 사람. <strong>전자지갑(Wallet) 소프트웨어</strong> 필요. 인증서 보유.</div>
+  </div>
+  <div class="set-card">
+    <div class="set-t">② 가상 상점 (Merchant)</div>
+    <div class="set-b">인터넷 상에서 카드소지자에게 상품·서비스를 판매하는 주체. SET 전용 소프트웨어 필요. 결제 게이트웨이와 연결.</div>
+  </div>
+  <div class="set-card">
+    <div class="set-t">③ 카드 발급사 (Issuer)</div>
+    <div class="set-b">카드소지자에게 카드를 발급하는 금융기관. 계좌 개설·관리 담당.</div>
+  </div>
+  <div class="set-card">
+    <div class="set-t">④ 지불 처리 은행 (Acquirer)</div>
+    <div class="set-b">상점(가맹점)과 계약을 맺고 거래를 처리하는 금융기관. 상점의 은행.</div>
+  </div>
+  <div class="set-card">
+    <div class="set-t">⑤ 지불 게이트웨이 (Payment Gateway)</div>
+    <div class="set-b">처리 은행 또는 제3자에 의해 운영. 요청한 지급 <strong>승인 및 처리를 하는 카드 지불 네트워크로의 통로</strong>.</div>
+  </div>
+  <div class="set-card">
+    <div class="set-t">⑥ 인증 기관 (CA)</div>
+    <div class="set-b">SET 참여자에게 인증서를 발행하는 기관. 각 주체의 신원 보증.</div>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">3</div><div class="st">SET vs SSL 비교</div><span class="slb lv">★★ 심화</span></div>
+
+<div class="tw"><table>
+  <thead><tr><th>구분</th><th>SET</th><th>SSL/TLS</th></tr></thead>
+  <tbody>
+    <tr><td><strong>개발사</strong></td><td>VISA + MasterCard (합동)</td><td>Netscape (1994년)</td></tr>
+    <tr><td><strong>동작 계층</strong></td><td>애플리케이션 계층 (전자결제 전용)</td><td>전송/응용 계층 사이</td></tr>
+    <tr><td><strong>인증 방식</strong></td><td>PKI 기반 <strong>모든 참여자 인증서</strong> 보유</td><td>주로 서버 인증서만 사용</td></tr>
+    <tr><td><strong>이중서명</strong></td><td>✓ (주문정보·지불정보 분리)</td><td>✗</td></tr>
+    <tr><td><strong>암호화</strong></td><td>RSA(비대칭) + DES(대칭) 혼용</td><td>핸드셰이크 후 대칭키 사용</td></tr>
+    <tr><td><strong>보안 수준</strong></td><td>매우 높음 (복잡)</td><td>높음 (단순·실용적)</td></tr>
+    <tr><td><strong>소프트웨어</strong></td><td>카드소지자·상점 모두 전용 SW 필요</td><td>브라우저 기본 내장</td></tr>
+    <tr><td><strong>확산 여부</strong></td><td>구현 복잡성으로 실제 사용 제한적</td><td>현재 HTTPS 표준으로 광범위 사용</td></tr>
+  </tbody>
+</table></div>
+
+<div class="trap">
+  <div class="th"><span>⚠</span><span class="tht">함정 — SET 오답 선지 모음 (2015·2019 서울시, 경찰간부 반복 출제)</span></div>
+  <div class="tb">
+    <div class="tq">"SET는 오프라인상에서 금융거래 안전성을 보장하기 위한 시스템이다" → <span class="vw">✗ 오답</span></div>
+    <p>SET는 <strong>온라인(인터넷) 신용카드 거래</strong> 보안 프로토콜. 오프라인이 아님.</p>
+    <div class="tq">"신용카드 사용을 위해 <u>상점에서</u> 소프트웨어를 요구하지 않는다" → <span class="vw">✗ 오답</span></div>
+    <p>SET는 카드소지자(전자지갑)와 <strong>상점 모두</strong>에게 전용 소프트웨어 필요. 상점도 SET 소프트웨어 설치 필요.</p>
+    <div class="tq">"SET 참여자들이 신원을 확인하지 않고 인증서를 발급한다" → <span class="vw">✗ 오답</span></div>
+    <p>CA(인증기관)가 SET 참여자들의 신원을 확인한 후 인증서 발급. 신원 확인이 전제됨.</p>
+    <div class="tq">"RSA 암호화를 사용하여 속도가 빠르다" → <span class="vw">✗ 오답</span></div>
+    <p>RSA는 <strong>공개키 암호화로 속도가 느림</strong>. SET는 RSA 사용으로 처리 속도가 느린 것이 단점 중 하나.</p>
+  </div>
+</div>
+
+</div><!-- /tab-set -->
+
+<!-- ════ 이중서명·절차 ════ -->
+<div class="tab-pane" id="tab-dualsig">
+
+<div class="sh"><div class="sn2">1</div><div class="st">이중서명 (Dual Signature) 원리</div><span class="slb le">★★★ 경찰간부 출제</span></div>
+
+<div class="dfb">
+  <div class="dfl">이중서명 정의</div>
+  <p>이중서명(Dual Signature)은 SET의 핵심 보안 기법. <strong>상점은 카드소지자의 지불 정보(카드번호 등)를 알 수 없고, 은행은 카드소지자가 구매한 물건(주문 내용)을 알 수 없지만, 두 정보가 연결되어 있음을 증명</strong>할 수 있게 하는 서명 방식. 프라이버시 보호와 거래 무결성을 동시에 달성.</p>
+</div>
+
+<div class="sb">
+<p>이중서명의 원리를 단계적으로 살펴볼게요. 카드소지자는 두 가지 메시지를 만들어요. <strong>주문 정보(OI, Order Information)</strong>와 <strong>지불 정보(PI, Payment Information)</strong>예요. 이 두 메시지를 직접 합치지 않고 해시로 연결해요.</p>
+
+<p>구체적인 과정: ① 주문 정보의 해시(OIMD) 생성 → ② 지불 정보의 해시(PIMD) 생성 → ③ OIMD와 PIMD를 연결(||)하여 다시 해시 → ④ 이 결합 해시를 카드소지자의 <strong>개인키로 서명 = 이중서명(DS)</strong>. 이 이중서명 하나로 두 메시지가 연결됨을 증명해요.</p>
+</div>
+
+<!-- 이중서명 SVG -->
+<div class="dw">
+  <div class="dt">이중서명(Dual Signature) 생성 및 검증 구조</div>
+  <svg viewBox="0 0 740 190" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:740px;display:block;margin:0 auto;">
+    <!-- 주문정보 -->
+    <rect x="5" y="10" width="130" height="36" rx="6" fill="#2d5be3"/>
+    <text x="70" y="28" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">주문 정보 (OI)</text>
+    <text x="70" y="42" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="8.5" font-family="sans-serif">상품·수량·금액</text>
+
+    <!-- 지불정보 -->
+    <rect x="5" y="62" width="130" height="36" rx="6" fill="#c0392b"/>
+    <text x="70" y="80" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">지불 정보 (PI)</text>
+    <text x="70" y="94" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="8.5" font-family="sans-serif">카드번호·유효기간</text>
+
+    <!-- Hash -->
+    <line x1="135" y1="28" x2="165" y2="28" stroke="#2d5be3" stroke-width="1.5"/>
+    <polygon points="165,24 175,28 165,32" fill="#2d5be3"/>
+    <line x1="135" y1="80" x2="165" y2="80" stroke="#c0392b" stroke-width="1.5"/>
+    <polygon points="165,76 175,80 165,84" fill="#c0392b"/>
+
+    <rect x="175" y="14" width="70" height="26" rx="5" fill="#374151"/>
+    <text x="210" y="31" text-anchor="middle" fill="white" font-size="9.5" font-family="sans-serif">Hash(OI)</text>
+    <text x="210" y="43" text-anchor="middle" fill="rgba(255,255,255,.55)" font-size="8" font-family="sans-serif">OIMD</text>
+
+    <rect x="175" y="66" width="70" height="26" rx="5" fill="#374151"/>
+    <text x="210" y="83" text-anchor="middle" fill="white" font-size="9.5" font-family="sans-serif">Hash(PI)</text>
+    <text x="210" y="95" text-anchor="middle" fill="rgba(255,255,255,.55)" font-size="8" font-family="sans-serif">PIMD</text>
+
+    <!-- 연결 -->
+    <line x1="245" y1="27" x2="270" y2="55" stroke="#374151" stroke-width="1.5"/>
+    <line x1="245" y1="79" x2="270" y2="55" stroke="#374151" stroke-width="1.5"/>
+
+    <rect x="270" y="42" width="85" height="26" rx="5" fill="#6d28d9"/>
+    <text x="312" y="59" text-anchor="middle" fill="white" font-size="9.5" font-family="sans-serif">Hash(OIMD‖PIMD)</text>
+
+    <!-- 개인키 서명 -->
+    <line x1="355" y1="55" x2="385" y2="55" stroke="#6d28d9" stroke-width="1.5"/>
+    <polygon points="385,51 395,55 385,59" fill="#6d28d9"/>
+
+    <rect x="360" y="100" width="80" height="26" rx="5" fill="#1a2540"/>
+    <text x="400" y="117" text-anchor="middle" fill="#c4b5fd" font-size="9" font-family="sans-serif">카드소지자 개인키</text>
+
+    <line x1="400" y1="100" x2="400" y2="68" stroke="#1a2540" stroke-width="1.5" stroke-dasharray="3,2"/>
+
+    <rect x="395" y="40" width="90" height="30" rx="6" fill="#1a7a4a"/>
+    <text x="440" y="57" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">이중서명 (DS)</text>
+    <text x="440" y="68" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="8" font-family="sans-serif">Sig(카드소지자개인키)</text>
+
+    <!-- 상점으로 전송 -->
+    <line x1="485" y1="55" x2="510" y2="30" stroke="#2d5be3" stroke-width="1.5"/>
+    <polygon points="510,26 520,30 510,34" fill="#2d5be3"/>
+
+    <rect x="520" y="10" width="130" height="50" rx="6" fill="#2d5be3" opacity=".85"/>
+    <text x="585" y="30" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">상점 수신</text>
+    <text x="585" y="44" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="8.5" font-family="sans-serif">OI + DS + PIMD</text>
+    <text x="585" y="56" text-anchor="middle" fill="#bfdbfe" font-size="8" font-family="sans-serif">PI(카드번호)는 받지 않음 ✓</text>
+
+    <!-- 은행으로 전송 -->
+    <line x1="485" y1="55" x2="510" y2="80" stroke="#c0392b" stroke-width="1.5"/>
+    <polygon points="510,76 520,80 510,84" fill="#c0392b"/>
+
+    <rect x="520" y="65" width="130" height="50" rx="6" fill="#c0392b" opacity=".85"/>
+    <text x="585" y="85" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">은행 수신</text>
+    <text x="585" y="99" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="8.5" font-family="sans-serif">PI + DS + OIMD</text>
+    <text x="585" y="111" text-anchor="middle" fill="#fca5a5" font-size="8" font-family="sans-serif">OI(주문내용)는 받지 않음 ✓</text>
+
+    <!-- 라벨 -->
+    <text x="370" y="150" text-anchor="middle" fill="#1a2540" font-size="9" font-family="sans-serif" font-weight="700">이중서명 1개로 두 메시지 연결 증명</text>
+    <text x="370" y="165" text-anchor="middle" fill="#5a6478" font-size="8.5" font-family="sans-serif">상점은 카드번호 모름 / 은행은 주문내용 모름 → 프라이버시 보호</text>
+    <text x="370" y="178" text-anchor="middle" fill="#1a7a4a" font-size="8.5" font-family="sans-serif" font-weight="600">하지만 두 메시지가 동일 거래임은 수학적으로 증명 가능</text>
+  </svg>
+</div>
+
+<div class="sb">
+<p>이중서명의 검증 방법: 상점은 OI를 알고 있고 PIMD(지불정보 해시)를 받아요. 상점은 Hash(OIMD‖PIMD)를 계산하고, 카드소지자의 공개키로 DS를 검증해서 일치하면 주문과 지불이 같은 거래임을 확인해요. 은행도 마찬가지로 PI를 알고 OIMD(주문정보 해시)를 받아 검증해요. <strong>실제 내용은 전혀 모르지만 연결된 거래임을 증명</strong>하는 것이 이중서명의 핵심이에요.</p>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">SET 쇼핑 시나리오 흐름</div><span class="slb lg">★★ 심화</span></div>
+
+<div class="dw">
+  <div class="dt">SET 쇼핑 시나리오 — 10단계 흐름도</div>
+  <svg viewBox="0 0 740 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:740px;display:block;margin:0 auto;">
+    <!-- 4 주체 박스 -->
+    <rect x="10" y="10" width="100" height="36" rx="7" fill="#2d5be3"/>
+    <text x="60" y="28" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">카드소지자</text>
+    <text x="60" y="41" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="8.5" font-family="sans-serif">(고객)</text>
+
+    <rect x="230" y="10" width="100" height="36" rx="7" fill="#1a7a4a"/>
+    <text x="280" y="28" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">가상 상점</text>
+    <text x="280" y="41" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="8.5" font-family="sans-serif">(Merchant)</text>
+
+    <rect x="450" y="10" width="130" height="36" rx="7" fill="#6d28d9"/>
+    <text x="515" y="28" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">지불 게이트웨이</text>
+    <text x="515" y="41" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="8.5" font-family="sans-serif">(Payment Gateway)</text>
+
+    <rect x="610" y="10" width="120" height="36" rx="7" fill="#c0392b"/>
+    <text x="670" y="28" text-anchor="middle" fill="white" font-size="10" font-family="sans-serif" font-weight="700">카드 발급사</text>
+    <text x="670" y="41" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="8.5" font-family="sans-serif">(Issuer/은행)</text>
+
+    <!-- 수직선 -->
+    <line x1="60" y1="46" x2="60" y2="175" stroke="#2d5be3" stroke-width="1" stroke-dasharray="3,3"/>
+    <line x1="280" y1="46" x2="280" y2="175" stroke="#1a7a4a" stroke-width="1" stroke-dasharray="3,3"/>
+    <line x1="515" y1="46" x2="515" y2="175" stroke="#6d28d9" stroke-width="1" stroke-dasharray="3,3"/>
+    <line x1="670" y1="46" x2="670" y2="175" stroke="#c0392b" stroke-width="1" stroke-dasharray="3,3"/>
+
+    <!-- 화살표들 -->
+    <line x1="60" y1="60" x2="278" y2="60" stroke="#374151" stroke-width="1.5"/>
+    <polygon points="278,56 280,60 278,64" fill="#374151"/>
+    <text x="168" y="56" text-anchor="middle" fill="#374151" font-size="8.5" font-family="sans-serif">①구매 요청</text>
+
+    <line x1="278" y1="75" x2="62" y2="75" stroke="#1a7a4a" stroke-width="1.5"/>
+    <polygon points="62,71 60,75 62,79" fill="#1a7a4a"/>
+    <text x="168" y="71" text-anchor="middle" fill="#1a7a4a" font-size="8.5" font-family="sans-serif">②상점 인증서 + 카탈로그 제공</text>
+
+    <line x1="60" y1="90" x2="278" y2="90" stroke="#2d5be3" stroke-width="1.5"/>
+    <polygon points="278,86 280,90 278,94" fill="#2d5be3"/>
+    <text x="168" y="86" text-anchor="middle" fill="#2d5be3" font-size="8.5" font-family="sans-serif">③암호화된 구매 요구 전송(OI+PI)</text>
+
+    <line x1="280" y1="105" x2="513" y2="105" stroke="#1a7a4a" stroke-width="1.5"/>
+    <polygon points="513,101 515,105 513,109" fill="#1a7a4a"/>
+    <text x="396" y="101" text-anchor="middle" fill="#1a7a4a" font-size="8.5" font-family="sans-serif">④인가 요청(암호화된 PI 전달)</text>
+
+    <line x1="513" y1="120" x2="282" y2="120" stroke="#6d28d9" stroke-width="1.5"/>
+    <polygon points="282,116 280,120 282,124" fill="#6d28d9"/>
+    <text x="396" y="116" text-anchor="middle" fill="#6d28d9" font-size="8.5" font-family="sans-serif">⑤인가 또는 거부 응답</text>
+
+    <line x1="515" y1="133" x2="668" y2="133" stroke="#6d28d9" stroke-width="1.5"/>
+    <polygon points="668,129 670,133 668,137" fill="#6d28d9"/>
+    <text x="591" y="129" text-anchor="middle" fill="#6d28d9" font-size="8.5" font-family="sans-serif">⑥승인 요청</text>
+
+    <line x1="668" y1="148" x2="517" y2="148" stroke="#c0392b" stroke-width="1.5"/>
+    <polygon points="517,144 515,148 517,152" fill="#c0392b"/>
+    <text x="591" y="144" text-anchor="middle" fill="#c0392b" font-size="8.5" font-family="sans-serif">⑦승인 응답</text>
+
+    <line x1="278" y1="163" x2="62" y2="163" stroke="#1a7a4a" stroke-width="1.5"/>
+    <polygon points="62,159 60,163 62,167" fill="#1a7a4a"/>
+    <text x="168" y="159" text-anchor="middle" fill="#1a7a4a" font-size="8.5" font-family="sans-serif">⑧결과 통보 + 상품 배달</text>
+
+    <line x1="280" y1="175" x2="513" y2="175" stroke="#b45309" stroke-width="1.5"/>
+    <polygon points="513,171 515,175 513,179" fill="#b45309"/>
+    <text x="396" y="171" text-anchor="middle" fill="#b45309" font-size="8.5" font-family="sans-serif">⑨지불 요청(정산)</text>
+
+    <text x="60" y="175" text-anchor="middle" fill="#5a6478" font-size="7.5" font-family="sans-serif">전자지갑</text>
+  </svg>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">3</div><div class="st">SET 암호화 절차 (전자봉투 + 이중서명)</div><span class="slb le">★★ 심화</span></div>
+
+<div class="sb">
+<p>SET에서 카드소지자가 상점에 구매 요청을 보낼 때의 암호화 절차를 구체적으로 살펴볼게요. 하이브리드 암호 방식(대칭키+공개키)과 이중서명이 결합돼요.</p>
+</div>
+
+<div class="tw"><table>
+  <thead><tr><th>단계</th><th>암호화 절차</th><th>목적</th></tr></thead>
+  <tbody>
+    <tr><td>①</td><td>주문 정보(OI)를 <strong>대칭키(세션키)로 암호화</strong></td><td>OI 기밀성 보호</td></tr>
+    <tr><td>②</td><td>대칭키를 <strong>상점의 RSA 공개키로 암호화</strong> → 전자봉투</td><td>세션키를 상점에 안전하게 전달</td></tr>
+    <tr><td>③</td><td>지불 정보(PI)를 <strong>별도 대칭키로 암호화</strong></td><td>PI 기밀성 보호</td></tr>
+    <tr><td>④</td><td>PI용 대칭키를 <strong>지불 게이트웨이의 RSA 공개키로 암호화</strong></td><td>PI는 은행(게이트웨이)만 복호화 가능</td></tr>
+    <tr><td>⑤</td><td>Hash(OI)와 Hash(PI)를 연결 후 해시 → <strong>카드소지자 개인키로 서명 = 이중서명(DS)</strong></td><td>두 메시지가 같은 거래임을 증명</td></tr>
+    <tr><td>⑥</td><td>암호화된 OI + OI용 전자봉투 + 암호화된 PI + PI용 전자봉투 + DS + 카드소지자 인증서를 <strong>상점에 전송</strong></td><td>상점은 OI만 해독, PI는 해독 불가</td></tr>
+  </tbody>
+</table></div>
+
+<div class="sb">
+<p>복호화 절차: <strong>상점</strong>은 ① 자신의 RSA 개인키로 전자봉투 복호화 → 대칭키 획득 → ② 대칭키로 OI 복호화 → ③ 카드소지자 공개키로 DS 검증. <strong>지불 게이트웨이(은행)</strong>는 ① 자신의 RSA 개인키로 전자봉투 복호화 → PI용 대칭키 획득 → ② 대칭키로 PI 복호화 → ③ DS 검증. 두 주체 모두 서로의 정보에 접근하지 못해요.</p>
+</div>
+
+</div><!-- /tab-dualsig -->
+
+<!-- ════ FDS ════ -->
+<div class="tab-pane" id="tab-fds">
+
+<div class="dfb">
+  <div class="dfl">FDS 정의</div>
+  <p>FDS(Fraud Detection System)는 <strong>전자금융거래에서 사용되는 단말기 정보, 접속 정보, 거래 내용 등을 종합적으로 분석하여 의심 거래를 탐지하고 이상금융거래를 차단하는 시스템</strong>. 보안 프로그램에서 방지하지 못하는 전자금융사기에 대한 이상 거래를 탐지하여 조치할 수 있도록 지원.</p>
+</div>
+
+<div class="sb">
+<p>FDS는 기존 보안 프로그램(백신, 방화벽 등)이 탐지하지 못하는 <strong>정상적인 인증을 통과한 비정상 거래</strong>를 탐지하는 게 특징이에요. 예를 들어 평소에 국내에서만 사용하던 계좌에서 갑자기 해외에서 대규모 이체가 발생하면, 인증 자체는 통과했어도 FDS가 이상 거래로 탐지할 수 있어요.</p>
+
+<p>FDS 분석 항목: 단말기 정보(기기 고유값·OS 버전), 접속 정보(IP 주소·접속 시간·위치), 거래 정보(금액·빈도·수신 계좌), 행동 패턴(평소 거래 패턴과의 비교) 등을 <strong>실시간으로 종합 분석</strong>해요.</p>
+</div>
+
+<div class="cds">
+  <div class="cd">
+    <div class="cdt">분석 대상</div>
+    <div class="cdb">단말기 정보 · 접속 정보 · <strong>거래 내용 종합 분석</strong></div>
+  </div>
+  <div class="cd">
+    <div class="cdt">목적</div>
+    <div class="cdb"><strong>의심 거래 탐지 · 이상금융거래 차단</strong>. 정상 인증을 통과한 이상 거래도 탐지.</div>
+  </div>
+  <div class="cd">
+    <div class="cdt">특징</div>
+    <div class="cdb">기존 보안 프로그램이 <strong>방지하지 못하는 전자금융사기</strong> 대응. 실시간 분석.</div>
+  </div>
+</div>
+
+</div><!-- /tab-fds -->
+
+<!-- ════ 기출 ════ -->
+<div class="tab-pane" id="tab-exam">
+
+<div class="sh"><div class="sn2">📝</div><div class="st">기출문제 전수 해설 — 6문제</div><span class="slb le">연도순</span></div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2015·2016 서울시 9급 · SET 옳은 것</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">SET(Secure Electronic Transaction)에 대한 설명으로 옳은 것은?</div>
+    <div class="eo">
+      <div class="op ow">① SET 참여자들이 신원을 확인하지 않고 인증서를 발급한다.</div>
+      <div class="op ow">② 오프라인상에서 금융거래 안전성을 보장하기 위한 시스템이다.</div>
+      <div class="op ow">③ 신용카드 사용을 위해 상점에서 소프트웨어를 요구하지 않는다.</div>
+      <div class="op or">④ SET는 신용카드 트랜잭션을 보호하기 위해 인증, 기밀성 및 메시지 무결성 등의 서비스를 제공한다.</div>
+    </div>
+    <div class="ex"><strong>정답 ④</strong> — ①CA가 신원 확인 후 인증서 발급. ②오프라인 ✗ → 인터넷(온라인) 전자결제. ③상점도 SET 전용 소프트웨어 필요 → ✗. ④SET 제공 서비스: 인증·기밀성·무결성·부인방지 → <strong>✓ 정답</strong>.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2018 경찰간부 · 이중서명 정의</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">SET에서 상점이 카드 사용자의 계좌번호와 같은 정보를 모르게 하는 동시에, 상점에 대금을 지불하는 은행은 카드 사용자가 구매한 물건을 알지 못하지만 상점이 요구한 결제 대금이 정확한지 확인할 수 있게 하기 위해 사용하는 방식은?</div>
+    <div class="eo">
+      <div class="op ow">① 인증서(Certificate)</div>
+      <div class="op ow">② 전자봉투(Digital Envelop)</div>
+      <div class="op or">③ 이중서명(Dual Signature)</div>
+      <div class="op ow">④ 지불게이트웨이(Payment Gateway)</div>
+    </div>
+    <div class="ex"><strong>정답 ③</strong> — 이중서명 = 상점은 카드번호 모름 / 은행은 주문내용 모름 / 하지만 두 메시지가 같은 거래임을 수학적으로 증명. Hash(OIMD‖PIMD)를 카드소지자 개인키로 서명. 전자봉투는 대칭키를 공개키로 암호화하는 기법으로 별개 개념.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2019 경찰간부 · RSA 속도 오답</span><span class="es">★★</span></div>
+  <div class="eb">
+    <div class="eq">SET(Secure Electronic Transaction) 프로토콜에 관한 설명 중 옳지 않은 것은?</div>
+    <div class="eo">
+      <div class="op ow">① RSA 암호화를 사용하여 <u>속도가 빠르고</u>, 강력한 보안을 제공한다.</div>
+      <div class="op on">② 기존의 신용카드 기반을 그대로 활용할 수 있다.</div>
+      <div class="op on">③ 신용카드 소지자에게 전자지갑 소프트웨어를 요구한다.</div>
+      <div class="op on">④ 신용카드 트랜잭션을 보호하기 위해 기밀성, 인증 및 메시지 무결성 등의 서비스를 제공한다.</div>
+    </div>
+    <div class="ex"><strong>정답 ①</strong> — RSA는 <strong>공개키 암호화 알고리즘으로 속도가 느림</strong>. SET가 RSA를 사용하는 것은 맞지만 "속도가 빠르다"는 오답. RSA의 느린 속도가 SET의 단점 중 하나. ②③④는 모두 맞는 설명.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2020 경찰공무원 · SET 식별 (전자봉투+이중서명)</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">인터넷상에서 신용카드를 이용한 상품구매 시 안전한 대금결제 과정 처리를 위해 RSA 암호화와 인증기술을 이용한다. <strong>전자봉투와 이중서명</strong>을 사용한다.</div>
+    <div class="eo">
+      <div class="op or">① SET(Secure Electronic Transaction)</div>
+      <div class="op ow">② PGP(Pretty Good Privacy)</div>
+      <div class="op ow">③ OTP(One Time Password)</div>
+      <div class="op ow">④ SSO(Single Sign On)</div>
+    </div>
+    <div class="ex"><strong>정답 ① SET</strong> — 키워드: "RSA 암호화 + 인증기술", "<strong>전자봉투</strong>", "<strong>이중서명</strong>" → SET. PGP=이메일 보안(RSA+IDEA). OTP=일회용 비밀번호. SSO=단일 인증. 전자봉투+이중서명 조합은 SET만의 특징.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2017 서울시 A·B형 · FDS 정의</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">다음의 지문은 무엇을 설명한 것인가?<br>ㄱ. 전자금융거래에서 사용되는 단말기 정보, 접속 정보, 거래 내용 등을 종합적으로 분석하여 의심 거래를 탐지하고 이상금융거래를 차단하는 시스템이다.<br>ㄴ. 보안 프로그램에서 방지하지 못하는 전자금융사기에 대한 이상거래를 탐지하여 조치를 할 수 있도록 지원하는 시스템이다.</div>
+    <div class="eo">
+      <div class="op ow">① MDM (Mobile Device Management)</div>
+      <div class="op or">② FDS (Fraud Detection System)</div>
+      <div class="op ow">③ MDC (Mobile Data Center)</div>
+      <div class="op ow">④ RPO (Recovery Point Objective)</div>
+    </div>
+    <div class="ex"><strong>정답 ②</strong> — 키워드: "단말기·접속·거래 내용 종합 분석", "의심 거래 탐지·이상금융거래 차단", "보안 프로그램이 방지하지 못하는 금융사기" = <strong>FDS(이상금융거래탐지 시스템)</strong>. MDM=모바일 기기 관리. MDC=데이터센터. RPO=복구 시점 목표.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2022 경찰간부 · 인터넷뱅킹 위험요소 매핑 오답</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">인터넷 뱅킹 시스템의 위험요소로 바르게 연결되지 않은 것은?</div>
+    <div class="eo">
+      <div class="op on">① 클라이언트 보안에서의 위협요소 — Virus, Trojan Horse</div>
+      <div class="op on">② 서버보안에서의 위협요소 — Unix/NT Security Holes, Improper Administration</div>
+      <div class="op ow">③ 거래처리 보안에서의 위협요소 — <u>Poor Programming, Weak Authentication</u></div>
+      <div class="op on">④ 내부적인 보안에서의 위협요소 — Virus &amp; Trojan Horse, Unix/NT Security Holes, Improper Administration</div>
+    </div>
+    <div class="ex"><strong>정답 ③</strong> — Poor Programming·Weak Authentication은 <strong>애플리케이션(④ 위) 보안</strong>의 위협요소. 거래처리(처리요소) 보안의 위협요소는 <strong>Weak Encryption, Server Spoof</strong>(전송 구간 암호화 취약, 서버 위장). 시험에서 가장 많이 혼동되는 쌍이에요.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 경찰 기출 · SET 프로토콜 식별</span><span class="es">★★</span></div>
+  <div class="eb">
+    <div class="eq">사용자의 신용카드 번호와 같은 지불정보는 은행의 공개키로 암호화하여 상점에 숨기고, 주문정보는 상점의 공개키로 암호화하여 은행이 알지 못하도록 하는 서명기법을 사용하는 응용보안 프로토콜로 가장 적절한 것은?</div>
+    <div class="eo">
+      <div class="op ow">① PGP</div>
+      <div class="op or">② SET (Secure Electronic Transaction)</div>
+      <div class="op ow">③ IPsec</div>
+      <div class="op ow">④ Bitcoin</div>
+    </div>
+    <div class="ex"><strong>정답 ② SET</strong> — 키워드: "지불정보는 은행에만 / 주문정보는 상점에만" = <strong>이중 서명(Dual Signature)</strong>. 상점은 카드번호 모름, 은행은 주문내용 모름. SET만의 독특한 프라이버시 보호 기법. PGP=이메일 보안. IPsec=VPN/네트워크 암호화. Bitcoin=블록체인.</div>
+  </div>
+</div>
+
+<!-- 암기 카드 -->
+<div class="dv"></div>
+<div class="mem">
+  <div class="mt">🛒 전자상거래 보안 핵심 암기</div>
+  <div class="mi">
+    <div class="mr"><span class="mk">위협 3종</span><span class="mv">①시스템공격(방화벽 대응) ②데이터공격(저장·전송 암호화) ③비즈니스공격(익명성 문제)</span></div>
+    <div class="mr"><span class="mk">거래처리 위협</span><span class="mv"><strong>Weak Encryption, Server Spoof</strong> (Poor Programming·Weak Auth는 애플리케이션)</span></div>
+    <div class="mr"><span class="mk">내부 위협</span><span class="mv">Virus&amp;TH + Unix/NT + Improper Admin (클라이언트+서버 복합)</span></div>
+    <div class="mr"><span class="mk">보안요구 1번</span><span class="mv">신분확인·인증 = <strong>모든 보안의 전제조건</strong> (가장 기본적이고 중요)</span></div>
+    <div class="mr"><span class="mk">부인방지 수단</span><span class="mv"><strong>전자서명</strong>. 법률 분쟁에서 핵심 역할.</span></div>
+    <div class="mr"><span class="mk">SET 개발사</span><span class="mv"><strong>VISA + MasterCard</strong> 합동. RSA 암호화·인증 기술. 이중 서명.</span></div>
+    <div class="mr"><span class="mk">FDS</span><span class="mv">단말기·접속·거래 종합 분석. <strong>보안 프로그램이 못 막는 이상 거래</strong> 탐지.</span></div>
+  </div>
+</div>
+
+<ul class="cl">
+  <li class="clw">"거래처리 위협 = Poor Programming, Weak Authentication" → ✗ (애플리케이션 위협)</li>
+  <li class="clw">"SET = PGP처럼 이메일 보안 프로토콜" → ✗ (신용카드 전자결제 보안 프로토콜)</li>
+  <li class="clw">"FDS = 바이러스 백신과 동일한 기능" → ✗ (백신이 못 막는 이상 거래 탐지)</li>
+  <li class="clr">"인터넷 뱅킹 클라이언트 위협 = Virus, Trojan Horse" → ✓</li>
+  <li class="clr">"거래처리 위협 = Weak Encryption, Server Spoof" → ✓</li>
+  <li class="clr">"신분 확인 및 인증 = 전자상거래 보안 요구사항 중 가장 기본적인 전제조건" → ✓</li>
+  <li class="clr">"SET 이중 서명: 지불 정보는 은행만, 주문 정보는 상점만" → ✓</li>
+</ul>
+
+<div class="ft">
+  <span>정보보안 합격전략 교재 · INHYUK PI</span>
+  <span>Chapter 08 · 전자상거래 보안 완전 교재 · 2026 목표</span>
+</div>
+
+</div><!-- /tab-exam -->
+
+</div><!-- /cc -->
+</div><!-- /wrap -->
+
+<script>
+function sw(id){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b=>{
+    if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'"+id+"'")){
+      b.classList.add('active');
+    }
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>

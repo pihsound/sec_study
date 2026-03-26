@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>전자지불시스템 완전 교재 | INHYUK PI</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --p:#1a2540;--a:#2d5be3;--al:#e8eeff;
+  --r:#c0392b;--rl:#fdf0ef;
+  --g:#1a7a4a;--gl:#edf7f2;
+  --w:#b45309;--wl:#fffbeb;
+  --v:#6d28d9;--vl:#ede9fe;
+  --t:#0f766e;--tl:#ccfbf1;
+  --bd:#dde3ec;--bg:#fff;--tx:#1c2331;--tm:#5a6478;
+  --g0:#f8f9fa;--g1:#f0f2f5;
+  --sans:'Noto Sans KR',sans-serif;--serif:'Noto Serif KR',serif;--mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--sans);background:#eef1f8;color:var(--tx);font-size:14px;line-height:1.8;}
+.wrap{max-width:960px;margin:0 auto;padding:28px 14px 70px;}
+.hdr{background:linear-gradient(135deg,#0a0d1a 0%,#1a1430 50%,#100a20 100%);border-radius:14px 14px 0 0;padding:30px 42px 26px;position:relative;overflow:hidden;}
+.hdr::before{content:'💴';position:absolute;right:28px;top:10px;font-size:110px;opacity:.07;}
+.mbr{display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap;}
+.bdg{font-size:9.5px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.06em;text-transform:uppercase;}
+.bdg-ch{background:rgba(255,255,255,.13);color:rgba(255,255,255,.9);}
+.bdg-hot{background:#c0392b;color:white;}
+.bdg-ok{background:#6d28d9;color:white;}
+.ht{font-family:var(--serif);font-size:27px;font-weight:600;color:white;letter-spacing:-.02em;margin-bottom:3px;}
+.hs{color:rgba(255,255,255,.55);font-size:12px;font-weight:300;}
+.hst{display:flex;gap:22px;margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.1);flex-wrap:wrap;}
+.hn{font-size:18px;font-weight:700;color:#c4b5fd;}
+.hl{font-size:9.5px;color:rgba(255,255,255,.5);margin-top:1px;}
+.tab-bar{display:flex;background:var(--p);padding:0 42px;gap:2px;flex-wrap:wrap;border-bottom:2px solid rgba(255,255,255,.08);}
+.tab-btn{padding:11px 13px;font-size:11.5px;font-weight:600;color:rgba(255,255,255,.5);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all .18s;white-space:nowrap;}
+.tab-btn:hover{color:rgba(255,255,255,.8);}
+.tab-btn.active{color:#c4b5fd;border-bottom-color:#6d28d9;}
+.cc{background:var(--bg);border-radius:0 0 14px 14px;padding:36px 42px;border:1px solid var(--bd);border-top:none;}
+.tab-pane{display:none;}.tab-pane.active{display:block;}
+.sh{display:flex;align-items:center;gap:9px;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--g1);margin-top:6px;}
+.sn2{width:30px;height:30px;background:var(--p);color:white;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.st{font-size:17px;font-weight:700;color:var(--p);}
+.slb{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.06em;text-transform:uppercase;}
+.le{background:var(--rl);color:var(--r);}
+.ld{background:var(--al);color:var(--a);}
+.lv{background:var(--vl);color:var(--v);}
+.lw{background:var(--wl);color:var(--w);}
+.lg{background:var(--gl);color:var(--g);}
+.sb{font-size:13.5px;line-height:2.1;color:var(--tx);}
+.sb p{margin-bottom:14px;}
+.sb strong{color:var(--p);}
+.sb em{color:var(--v);font-style:normal;font-weight:700;}
+.sq{background:var(--p);color:white;border-radius:10px;padding:14px 22px 14px 34px;margin:16px 0;font-size:13.5px;line-height:1.9;position:relative;}
+.sq::before{content:'💬';position:absolute;left:-12px;top:12px;font-size:20px;}
+.sq strong{color:#c4b5fd;}
+.sdiv{height:1px;background:linear-gradient(90deg,transparent,var(--bd),transparent);margin:28px 0;}
+.dfb{background:var(--p);color:white;border-radius:11px;padding:16px 21px;margin-bottom:14px;}
+.dfl{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#c4b5fd;margin-bottom:6px;}
+.dfb p{font-size:13.5px;line-height:1.95;color:rgba(255,255,255,.9);}
+.dfb strong{color:#c4b5fd;}
+.tw{overflow-x:auto;margin:12px 0;border-radius:9px;border:1px solid var(--bd);}
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+thead tr{background:var(--p);color:white;}
+thead th{padding:10px 13px;text-align:left;font-weight:600;font-size:11.5px;}
+tbody tr{border-bottom:1px solid var(--g1);}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:#f5f0ff;}
+tbody td{padding:9px 13px;color:var(--tx);vertical-align:top;line-height:1.7;}
+tbody td:first-child{font-weight:600;color:var(--p);}
+/* 지불수단 카드 그리드 */
+.pay-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin:14px 0;}
+.pc{border-radius:11px;overflow:hidden;border:1px solid var(--bd);}
+.pch{padding:11px 16px;font-size:13px;font-weight:700;color:white;display:flex;align-items:center;gap:7px;}
+.pcb{padding:13px 16px;background:var(--bg);}
+.pcr{font-size:13px;color:var(--tx);padding:5px 0;border-bottom:1px solid var(--g1);line-height:1.7;}
+.pcr:last-child{border-bottom:none;}
+.pcr strong{color:var(--p);}
+.pcr .sub{font-size:11px;color:var(--tm);margin-top:2px;}
+/* 요구사항 proc */
+.reqs{display:flex;flex-direction:column;gap:0;border-radius:11px;overflow:hidden;border:1px solid var(--bd);margin:14px 0;}
+.rq{display:flex;align-items:flex-start;gap:12px;padding:13px 15px;border-bottom:1px solid var(--g1);}
+.rq:last-child{border-bottom:none;}
+.rq:nth-child(even){background:var(--g0);}
+.rn{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:700;color:white;flex-shrink:0;margin-top:2px;}
+.rc{flex:1;}
+.rt{font-size:13.5px;font-weight:700;color:var(--p);margin-bottom:4px;}
+.rd{font-size:13px;color:var(--tm);line-height:1.8;}
+/* 비교표 강조 */
+.tc-o{background:#fffbeb!important;}
+.tc-v{background:#ede9fe!important;}
+.tc-b{background:#e8eeff!important;}
+/* 전자화폐 특성 카드 */
+.prop-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:9px;margin:14px 0;}
+.prop{border:1px solid var(--bd);border-radius:9px;padding:11px 13px;background:var(--g0);}
+.prop-t{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--v);margin-bottom:5px;}
+.prop-b{font-size:13px;color:var(--tx);line-height:1.7;}
+.prop-b strong{color:var(--p);}
+.trap{border-radius:11px;margin:16px 0;overflow:hidden;}
+.th{display:flex;align-items:center;gap:8px;padding:11px 16px;background:var(--r);color:white;}
+.tht{font-size:12.5px;font-weight:700;}
+.tb{background:var(--rl);padding:14px 18px;border:1px solid #f5c6c2;border-top:none;border-radius:0 0 11px 11px;}
+.tb p{font-size:13px;color:#7a1c1c;line-height:1.9;margin-bottom:8px;}
+.tb p:last-child{margin-bottom:0;}
+.tq{background:white;border-left:3px solid var(--r);padding:9px 13px;border-radius:0 7px 7px 0;margin:9px 0;font-size:13px;color:var(--tx);line-height:1.75;}
+.vw{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:20px;background:var(--r);color:white;}
+.vr{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:20px;background:var(--g);color:white;}
+.inf-v{background:var(--vl);border:1px solid #c4b5fd;border-radius:9px;padding:12px 16px;margin:12px 0;font-size:13px;color:#3b0764;line-height:1.85;}
+.inf-g{background:var(--gl);border:1px solid #a3dbc0;border-radius:9px;padding:12px 16px;margin:12px 0;font-size:13px;color:#0d3321;line-height:1.85;}
+.inf strong{color:var(--p);}
+.ec{border:1px solid var(--bd);border-radius:11px;margin:11px 0;overflow:hidden;}
+.eh{display:flex;align-items:center;justify-content:space-between;padding:9px 15px;background:var(--g0);border-bottom:1px solid var(--bd);}
+.ey{font-size:11.5px;font-weight:700;color:var(--p);}
+.es{color:#e8b000;font-size:12px;letter-spacing:2px;}
+.eb{padding:14px 16px;}
+.eq{font-size:13.5px;font-weight:600;color:var(--tx);margin-bottom:11px;line-height:1.75;}
+.eo{display:flex;flex-direction:column;gap:5px;}
+.op{font-size:13px;padding:7px 11px;border-radius:6px;border:1px solid transparent;line-height:1.6;}
+.ow{background:#fdf0ef;border-color:#f5c6c2;color:#7a1c1c;text-decoration:line-through;opacity:.8;}
+.ow::before{content:'✗ ';}
+.or{background:var(--gl);border-color:#a3dbc0;color:#0d4a2a;font-weight:600;}
+.or::before{content:'✓ ';}
+.on{background:var(--g0);border-color:var(--bd);color:var(--tx);}
+.ex{margin-top:11px;padding:12px 14px;background:var(--g0);border-radius:7px;font-size:13px;color:var(--tm);line-height:1.9;border-left:3px solid var(--v);}
+.mem{background:linear-gradient(135deg,#0a0d1a 0%,#1a2540 100%);border-radius:13px;padding:22px 25px;color:white;margin:14px 0;position:relative;overflow:hidden;}
+.mem::before{content:'💴';position:absolute;right:14px;top:8px;font-size:52px;opacity:.08;}
+.mt{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#c4b5fd;margin-bottom:12px;}
+.mi{display:flex;flex-direction:column;gap:9px;}
+.mr{display:flex;gap:10px;align-items:flex-start;}
+.mk{font-family:var(--mono);font-size:10.5px;font-weight:600;background:rgba(196,181,253,.18);color:#c4b5fd;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;}
+.mv{font-size:13px;color:rgba(255,255,255,.85);line-height:1.75;}
+.mv strong{color:#c4b5fd;}
+.cl{list-style:none;margin:12px 0;display:flex;flex-direction:column;gap:5px;}
+.cl li{display:flex;align-items:flex-start;gap:8px;font-size:13px;padding:8px 13px;border-radius:7px;border:1px solid var(--bd);background:var(--bg);line-height:1.65;}
+.clw{background:#fdf0ef;border-color:#f5c6c2;}
+.clw::before{content:'⚠';color:var(--r)!important;font-size:12px;flex-shrink:0;margin-top:2px;}
+.clr{background:var(--gl);border-color:#a3dbc0;}
+.clr::before{content:'✓';color:var(--g)!important;font-size:12px;flex-shrink:0;margin-top:2px;}
+.dv{height:1px;background:var(--g1);margin:26px 0;}
+.ft{display:flex;justify-content:space-between;margin-top:28px;padding-top:13px;border-top:1px solid var(--bd);font-size:10.5px;color:var(--tm);}
+@media(max-width:640px){.cc,.hdr{padding:22px 16px;}.tab-bar{padding:0 16px;}.pay-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hdr">
+  <div class="mbr">
+    <span class="bdg bdg-ch">Chapter 08 · 전자상거래 보안</span>
+    <span class="bdg bdg-hot">다수 기출</span>
+    <span class="bdg bdg-ok">기출 5문제 수록</span>
+  </div>
+  <div class="ht">전자지불시스템 완전 교재</div>
+  <div class="hs">지불수단 4종 · 전자화폐 6대 요구사항 · 전자화폐 vs 가상화폐 비교 · Payment Broker vs 전자화폐 · 기출 5문제</div>
+  <div class="hst">
+    <div><div class="hn">지불수단 4종</div><div class="hl">신용카드·전자화폐·은행이체·모바일</div></div>
+    <div><div class="hn">전자화폐 6요건</div><div class="hl">이중사용방지 ★★★</div></div>
+    <div><div class="hn">가상화폐</div><div class="hl">비트코인 이중지불 문제</div></div>
+    <div><div class="hn">5문제</div><div class="hl">서울시·경찰간부·지방직 기출</div></div>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="sw('type')">💳 지불수단 4종</button>
+  <button class="tab-btn" onclick="sw('emoney')">🪙 전자화폐</button>
+  <button class="tab-btn" onclick="sw('compare')">📊 전자화폐 vs 가상화폐</button>
+  <button class="tab-btn" onclick="sw('proto')">🔗 전자화폐 프로토콜</button>
+  <button class="tab-btn" onclick="sw('exam')">📝 기출 5선</button>
+</div>
+
+<div class="cc">
+
+<!-- ════ 지불수단 4종 ════ -->
+<div class="tab-pane active" id="tab-type">
+
+<div class="sh"><div class="sn2">1</div><div class="st">전자지불시스템 개요</div><span class="slb lg">★★★</span></div>
+
+<div class="dfb">
+  <div class="dfl">전자지불시스템 정의</div>
+  <p>전자지불시스템(Electronic Payment System)이란 <strong>인터넷 등 네트워크를 통해 거래 또는 결제가 이루어지도록 고안된 시스템</strong>. 최근 다양한 지불 수단이 발전하고 있는데, 크게 <strong>신용카드 기반 지불 / 전자화폐 이용 지불 / 계좌이체 이용 지불 / 모바일 수단</strong> 4가지로 나눌 수 있다.</p>
+</div>
+
+<div class="sb">
+<p>전자지불시스템은 지불 방법에 따라 <strong>Payment Broker 방식</strong>과 <strong>전자화폐(Electronic Money) 방식</strong>으로도 분류해요. Payment Broker 방식은 신용카드나 은행계좌를 이용하는 중개자 방식이고, 전자화폐 방식은 브로커 없이 직접 가치를 지닌 전자적 수단이에요.</p>
+</div>
+
+<div class="pay-grid">
+  <!-- 신용카드 -->
+  <div class="pc">
+    <div class="pch" style="background:#2d5be3;">💳 ① 신용카드(Credit Card) 이용 지불</div>
+    <div class="pcb">
+      <div class="pcr"><strong>오프라인:</strong> 카드 단말기에서 카드를 판독하는 방식.</div>
+      <div class="pcr"><strong>온라인:</strong> 카드 번호·유효기간·CVC 번호·비밀번호 앞 2자리를 입력하면 해당 서버에 조회하여 지불 처리. 결제 정보 전송 시 <strong>SET(VISA+MasterCard)</strong> 또는 <strong>SSL/TLS</strong>로 보호.</div>
+      <div class="pcr"><strong>Payment Broker 분류:</strong> SET, CyberCash, First Virtual 등과 SSL/TLS, S-HTTP 보안 프로토콜을 이용한 신용카드 지불.
+        <div class="sub">SET 개발자: VISA, MasterCard / Green Commerce: First Virtual</div>
+      </div>
+    </div>
+  </div>
+  <!-- 전자화폐 -->
+  <div class="pc">
+    <div class="pch" style="background:#6d28d9;">🪙 ② 전자화폐(Electronic Money) 이용 지불</div>
+    <div class="pcb">
+      <div class="pcr"><strong>정의:</strong> 일정한 화폐 가치를 IC카드나 PC 등에 디지털 데이터로 저장하였다가 온라인·오프라인에서 대금 지불이나 운임 결제 등에 활용하는 수단.</div>
+      <div class="pcr"><strong>종류:</strong> IC카드형 - Mondex. 네트워크형 - E-cash(Digicash), NetCash, CAFE, Millicent(DEC), MPTP(W3C), iPK(IBM).
+        <div class="sub">브로커 없이 직접 가치 보유 / 익명성 강함</div>
+      </div>
+    </div>
+  </div>
+  <!-- 은행이체 -->
+  <div class="pc">
+    <div class="pch" style="background:#0f766e;">🏦 ③ 계좌이체(EFT) 이용 지불</div>
+    <div class="pcb">
+      <div class="pcr"><strong>1세대 뱅킹:</strong> 전화 뱅킹(Phone Banking). 과거에는 주로 이용.</div>
+      <div class="pcr"><strong>2세대 뱅킹:</strong> 인터넷 뱅킹. PC + 공인인증서 발급 시책 등에 힘입어 <strong>인터넷 뱅킹 이용자 수가 날로 증가</strong>하고 있음.</div>
+      <div class="pcr"><strong>프로토콜:</strong> EFT(Electronic Funds Transfer). SFNB 개발.
+        <div class="sub">전자수표: NetCheque(USC), NetBill(CMU)</div>
+      </div>
+    </div>
+  </div>
+  <!-- 모바일 -->
+  <div class="pc">
+    <div class="pch" style="background:#c0392b;">📱 ④ 모바일 수단 이용 지불</div>
+    <div class="pcb">
+      <div class="pcr"><strong>휴대폰 소액결제:</strong> 유무선 서비스에서 구매 후, 차후 휴대폰 요금 청구서에 상품 대금이 함께 청구.</div>
+      <div class="pcr"><strong>UIM(User Identity Module) 이용:</strong> 휴대폰에서 사용자 인증 및 각종 결제 관련 서비스를 제공함으로써 보안을 강화할 수 있고, 신용카드나 전자화폐, 휴대폰 번호로도 결제할 수 있어 상황에 따라 선택 가능.</div>
+    </div>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">Payment Broker vs 전자화폐 방식 분류</div><span class="slb lv">★★</span></div>
+
+<div class="tw"><table>
+  <thead><tr><th>분류</th><th>의미</th><th>특징</th><th>대표 프로토콜</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Payment Broker 방식</strong></td>
+      <td>신용카드나 은행계좌를 이용한 전자적 지불 수단. <strong>중개 기관(Payment Broker)이 개입</strong>.</td>
+      <td>기존 금융 인프라 활용. 은행·카드사가 중개.</td>
+      <td>SET, CyberCash, First Virtual, SSL/TLS 기반 결제</td>
+    </tr>
+    <tr>
+      <td><strong>전자화폐 방식</strong></td>
+      <td>브로커 없이 <strong>직접 가치를 가지는 현금 유사 전자적 수단</strong>.</td>
+      <td>익명성 강함. 별도 금융기관 불필요. 이중사용 문제 존재.</td>
+      <td>Mondex(IC카드), E-cash(네트워크형), CAFE, NetCash 등</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<div class="tw"><table>
+  <thead><tr><th>전자지불 프로토콜</th><th>지불 매체</th><th>개발자</th></tr></thead>
+  <tbody>
+    <tr class="tc-v"><td><strong>E-cash</strong></td><td>전자화폐 (네트워크형)</td><td>Digicash</td></tr>
+    <tr class="tc-v"><td><strong>NetCash</strong></td><td>전자화폐 (네트워크형)</td><td>NetBank</td></tr>
+    <tr class="tc-v"><td><strong>Mondex</strong></td><td>전자화폐 (IC카드형)</td><td>Mondex</td></tr>
+    <tr class="tc-v"><td><strong>Millicent</strong></td><td>전자화폐 (소액결제)</td><td>DEC</td></tr>
+    <tr class="tc-b"><td><strong>SET</strong></td><td>신용카드 기반</td><td>VISA, MasterCard</td></tr>
+    <tr class="tc-b"><td><strong>Green Commerce</strong></td><td>신용카드 기반</td><td>First Virtual</td></tr>
+    <tr class="tc-o"><td><strong>NetCheque</strong></td><td>전자수표</td><td>USC (서던캘리포니아대)</td></tr>
+    <tr class="tc-o"><td><strong>NetBill</strong></td><td>전자수표</td><td>CMU (카네기멜론대)</td></tr>
+    <tr><td><strong>EFT (SFNB)</strong></td><td>전자자금이체</td><td>SFNB</td></tr>
+  </tbody>
+</table></div>
+
+</div><!-- /tab-type -->
+
+<!-- ════ 전자화폐 ════ -->
+<div class="tab-pane" id="tab-emoney">
+
+<div class="sh"><div class="sn2">1</div><div class="st">전자화폐(Electronic Cash/Money) 정의 및 요구사항</div><span class="slb le">★★★ 다수 기출</span></div>
+
+<div class="dfb">
+  <div class="dfl">전자화폐 정의</div>
+  <p>전자화폐(Electronic Cash/Money)는 <strong>네트워크를 통해 거래 또는 지불이 이루어지도록 고안된 화폐</strong>. 일정한 화폐 가치를 IC카드나 PC에 디지털 데이터로 저장하여 사용하는 지불 수단. 실물 현금과 유사한 특성을 디지털로 구현하려 하지만 <strong>이중 사용(Double Spending)</strong> 문제가 존재함.</p>
+</div>
+
+<div class="sb">
+<p>전자화폐가 실물 현금을 대체하려면 현금이 가진 특성을 최대한 구현해야 해요. 현금은 익명으로 사용할 수 있고, 누구에게나 이전할 수 있고, 잔돈을 받을 수 있어요. 이 특성들이 전자화폐의 요구사항이 됩니다.</p>
+<p>그런데 디지털 데이터는 복사가 가능해요. 전자화폐를 복사해서 두 곳에 동시에 쓸 수 있어요. 이게 <strong>이중 사용(Double Spending)</strong> 문제예요. 전자화폐의 가장 핵심적인 기술 과제이자 시험 포인트예요.</p>
+</div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">전자화폐 6대 요구사항 (특성)</div><span class="slb le">★★★ 서울시·경찰간부 반복 출제</span></div>
+
+<div class="reqs">
+  <div class="rq">
+    <div class="rn" style="background:#c0392b;">1</div>
+    <div class="rc">
+      <div class="rt">이중 사용 방지 (Double-Spending Prevention)</div>
+      <div class="rd">동일한 전자화폐를 두 곳에서 동시에 사용하는 것을 방지해야 한다. 은행의 온라인 검증 또는 블라인드 서명 등의 암호 기술로 해결. <strong>전자화폐 고유의 가장 핵심적인 보안 요구사항.</strong></div>
+    </div>
+  </div>
+  <div class="rq">
+    <div class="rn" style="background:#6d28d9;">2</div>
+    <div class="rc">
+      <div class="rt">재사용 불가능 (Non-Reusability)</div>
+      <div class="rd">한 번 사용한 전자화폐는 재사용할 수 없어야 한다. 사용된 전자화폐는 은행 시스템에 기록되어 다시 사용 불가.</div>
+    </div>
+  </div>
+  <div class="rq">
+    <div class="rn" style="background:#2d5be3;">3</div>
+    <div class="rc">
+      <div class="rt">익명성 (Anonymity)</div>
+      <div class="rd">전자화폐의 지불 과정에서 <strong>물품 구입 내용과 사용자 식별 정보가 어느 누구에 의해서도 연계되어서는 안 된다.</strong> 누가 무엇을 샀는지 추적할 수 없어야 함. 블라인드 서명(Blind Signature) 기법 활용.</div>
+    </div>
+  </div>
+  <div class="rq">
+    <div class="rn" style="background:#0f766e;">4</div>
+    <div class="rc">
+      <div class="rt">양도성 (Transferability)</div>
+      <div class="rd">전자화폐를 <strong>다른 사람에게 즉시 이전(양도)할 수 있어야 한다.</strong> 개인 간 직접 지불 가능. 현금처럼 자유롭게 이전 가능해야 함.</div>
+    </div>
+  </div>
+  <div class="rq">
+    <div class="rn" style="background:#b45309;">5</div>
+    <div class="rc">
+      <div class="rt">분할성 (Divisibility)</div>
+      <div class="rd">일정한 가치를 가지는 전자화폐는 <strong>그 가치만큼 자유롭게 분할 이용(잔돈 개념)이 가능해야 한다.</strong> 소액 지불 시 잔액을 나눠 사용할 수 있어야 함.</div>
+    </div>
+  </div>
+  <div class="rq">
+    <div class="rn" style="background:#374151;">6</div>
+    <div class="rc">
+      <div class="rt">온라인성 (On-Line) — ★함정 주의</div>
+      <div class="rd">대금 지불 시 전자화폐의 유효성 확인이 <strong>온라인으로 즉시</strong> 이루어질 수 있어야 한다는 요구사항. <strong>단, "은행이 개입하여 즉시 이루어져야 한다"는 표현은 오답</strong>. 오프라인 전자화폐(IC카드형)도 있기 때문에 온라인성이 <strong>필수 요건에 포함되지 않는 경우도 있음</strong>. 2018 경찰간부 문33에서 "온라인성"을 요구사항에 포함되지 않는 것으로 출제.</div>
+    </div>
+  </div>
+</div>
+
+<div class="trap">
+  <div class="th"><span>⚠</span><span class="tht">함정 ★★★ — 전자화폐 요구사항에 포함되지 않는 것 (2018 경찰간부 문33)</span></div>
+  <div class="tb">
+    <div class="tq">전자화폐의 요구사항에 포함되지 않는 것은?<br>① 이중 사용 방지(Double-Spending) ② 양도성(Transferability) <u>③ 온라인성(On-Line)</u> ④ 분할성(Divisibility) → <span class="vw">정답 ③</span></div>
+    <p>핵심 요구사항 4가지: <strong>이중사용방지 · 익명성 · 양도성 · 분할성</strong>. "온라인성"은 일부 전자화폐 시스템의 특성이지만 <strong>모든 전자화폐의 필수 요구사항은 아님</strong>. IC카드형 전자화폐(Mondex)는 오프라인에서도 사용 가능.</p>
+    <div class="tq">"대금 지불 시 전자화폐의 유효성 확인은 은행이 개입하여 즉시 이루어져야 한다" → <span class="vw">✗ 오답</span> (2016 서울시)</div>
+    <p>IC카드형 전자화폐는 오프라인 거래가 가능해요. 모든 전자화폐가 은행의 즉시 개입을 요구하지는 않아요. 이 선지는 "모든 전자화폐"에 적용되는 요건이 아니에요.</p>
+  </div>
+</div>
+
+<div class="inf-v">
+  <strong>핵심 4요건 암기:</strong> 이중사용방지(①) · 재사용불가(②) · 익명성(③) · 양도성(④) · 분할성(⑤) → 시험에서 반드시 나오는 핵심은 <strong>①②③④⑤</strong>. "온라인성"은 함정 선지로 자주 출제.
+</div>
+
+</div><!-- /tab-emoney -->
+
+<!-- ════ 비교 ════ -->
+<div class="tab-pane" id="tab-compare">
+
+<div class="sh"><div class="sn2">1</div><div class="st">현금 / 전자화폐 / 가상화폐 비교</div><span class="slb le">★★★ 지방직 2019 출제</span></div>
+
+<div class="sb">
+<p>시험에서 전자화폐와 가상화폐의 차이를 혼동하는 문제가 자주 나와요. 2019 지방직에서 비트코인(가상화폐)의 이중 지불 문제가 출제됐어요. 가상화폐와 전자화폐의 법적 지위와 이중 사용 여부가 핵심이에요.</p>
+</div>
+
+<div class="tw"><table>
+  <thead><tr><th>구분</th><th>현금</th><th>전자화폐</th><th>가상화폐</th></tr></thead>
+  <tbody>
+    <tr><td><strong>형태</strong></td><td>화폐/동전 (물리적)</td><td>디지털 데이터 (IC카드, PC 저장)</td><td>디지털 데이터 (분산원장)</td></tr>
+    <tr><td><strong>법적 규정</strong></td><td class="tc-b">O (법정화폐)</td><td class="tc-b">O (법률로 규정)</td><td class="tc-o">✗ (별도 법규 없음)</td></tr>
+    <tr><td><strong>발행 기관</strong></td><td>중앙은행</td><td>금융기관</td><td class="tc-o">✗ (없음 — 분산)</td></tr>
+    <tr><td><strong>이중 사용</strong></td><td>불가능</td><td class="tc-o">⚠ 가능성 존재 (방지 기술 필요)</td><td class="tc-o">⚠ 가능성 존재 (블록체인으로 방어)</td></tr>
+    <tr><td><strong>익명성</strong></td><td>높음 (추적 어려움)</td><td>중간 (블라인드 서명으로 보장 가능)</td><td>높음 (가명성 — 지갑 주소만 노출)</td></tr>
+    <tr><td><strong>사용 범위</strong></td><td>거의 모든 거래</td><td>가맹점 (한정)</td><td class="tc-o">인터넷 공간 + 특정 가맹점</td></tr>
+    <tr><td><strong>현금과의 교환</strong></td><td>—</td><td>가능 (충전/환전)</td><td class="tc-o">거래소 통해 가능 (법적 보장 없음)</td></tr>
+  </tbody>
+</table></div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">비트코인의 이중 지불 문제 — 중요 심화 개념</div><span class="slb le">★★ 2019 지방직 출제</span></div>
+
+<div class="sb">
+<p>2019 지방직 문19에서 "비트코인은 전자화폐와 마찬가지로 이중 지불 문제가 발생하지 않는다"는 선지가 오답으로 출제됐어요. 이중 지불 문제가 어디서 발생하고, 비트코인은 어떻게 해결하는지 정확히 이해해야 해요.</p>
+
+<p><strong>비트코인의 이중 지불 문제:</strong> 비트코인도 디지털 데이터이기 때문에 이론적으로는 이중 지불이 가능해요. 공격자가 동일한 비트코인을 두 곳에 동시에 보내는 시도를 할 수 있어요. 비트코인은 이를 <strong>블록체인 기술</strong>로 해결해요. 모든 거래가 분산원장에 기록되고, 네트워크 참여자들의 합의(Proof of Work)로 검증돼요. 그러나 <strong>51% 공격</strong>처럼 채굴 해시파워를 51% 이상 장악하면 이중 지불이 가능해지는 이론적 취약점이 있어요.</p>
+
+<p>따라서 "비트코인은 이중 지불 문제가 발생하지 않는다"는 <strong>오답</strong>이에요. 블록체인으로 실용적으로 방어하지만, 완전히 불가능한 건 아니에요.</p>
+</div>
+
+<div class="sb">
+<p>또한 <strong>전자화폐와 가상화폐의 법적 지위 차이</strong>도 중요해요. "전자화폐는 발행·사용·교환 등의 절차에 관하여 법률에서 규정하고 있으나, 가상화폐는 별도로 규정하고 있지 않다"는 것이 2019 지방직 정답 선지예요. 전자화폐는 「전자금융거래법」으로 규제되지만, 가상화폐는 (2019년 기준으로) 별도 법규가 없었어요.</p>
+</div>
+
+<div class="inf-g">
+  <strong>가상화폐의 핵심 특성:</strong> 비트코인은 분산원장기술(블록체인)을 이용한 가상화폐. <strong>법정화폐가 아니고 중앙 발행 기관이 없음</strong>. 이중 지불 문제는 블록체인으로 실용적 방어를 하지만 이론적으로 완전 불가능하지는 않음.
+</div>
+
+</div><!-- /tab-compare -->
+
+<!-- ════ 프로토콜 ════ -->
+<div class="tab-pane" id="tab-proto">
+
+<div class="sh"><div class="sn2">1</div><div class="st">전자화폐 프로토콜 3단계</div><span class="slb ld">★★</span></div>
+
+<div class="sb">
+<p>전자화폐 시스템은 세 가지 기본 프로토콜로 동작해요. 출금 → 지불 → 입금 순서예요.</p>
+</div>
+
+<div class="reqs">
+  <div class="rq">
+    <div class="rn" style="background:#2d5be3;">1</div>
+    <div class="rc">
+      <div class="rt">출금 프로토콜 (Withdrawal Protocol)</div>
+      <div class="rd">사용자가 <strong>은행으로부터 전자화폐를 인출</strong>하고 은행으로부터 받은 전자화폐를 소프트웨어 지갑에 저장. 블라인드 서명(Blind Signature)을 통해 은행이 전자화폐의 진위를 보증하면서도 사용자 신원은 모르게 함 → 익명성 보장.</div>
+    </div>
+  </div>
+  <div class="rq">
+    <div class="rn" style="background:#6d28d9;">2</div>
+    <div class="rc">
+      <div class="rt">지불 프로토콜 (Payment Protocol)</div>
+      <div class="rd">사용자가 <strong>상점으로부터 상품을 구입하고 은행으로부터 받은 전자화폐를 지불</strong>. 상점은 전자화폐의 유효성을 검증(온라인이면 은행에, 오프라인이면 내부 검증). 보안을 위한 암호화 처리 수행.</div>
+    </div>
+  </div>
+  <div class="rq">
+    <div class="rn" style="background:#1a7a4a;">3</div>
+    <div class="rc">
+      <div class="rt">입금 프로토콜 (Deposit Protocol)</div>
+      <div class="rd">상점이 <strong>은행으로부터 받은 전자화폐를 예치하고 지급받는</strong> 과정. 은행은 이미 사용된 전자화폐인지 확인하여 이중 사용을 방지함.</div>
+    </div>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">2</div><div class="st">SET 프로토콜 4단계</div><span class="slb le">★★★</span></div>
+
+<div class="sb">
+<p>SET(Secure Electronic Transaction)는 신용카드 기반 전자상거래 보안 프로토콜이에요. SET에서는 4가지 세부 프로토콜이 순서대로 수행돼요.</p>
+</div>
+
+<div class="reqs">
+  <div class="rq">
+    <div class="rn" style="background:#c0392b;">1</div>
+    <div class="rc">
+      <div class="rt">카드소지자 등록 프로토콜</div>
+      <div class="rd">해당 거래에 참가하고자 하는 카드소지자가 CA에 등록하여 <strong>카드소지자 인증서를 생성</strong>한다.</div>
+    </div>
+  </div>
+  <div class="rq">
+    <div class="rn" style="background:#2d5be3;">2</div>
+    <div class="rc">
+      <div class="rt">구매 요구 프로토콜</div>
+      <div class="rd">구매를 하고자 하여 구매가 이루어지는 과정에서 <strong>거래 당사자 사이의 메시지 보안을 위한</strong> 절차를 정한다.</div>
+    </div>
+  </div>
+  <div class="rq">
+    <div class="rn" style="background:#6d28d9;">3</div>
+    <div class="rc">
+      <div class="rt">지불 허가 프로토콜</div>
+      <div class="rd">지불 게이트웨이를 통하여 <strong>처리 은행으로부터 원하는 신용카드 처리 승인을 받는</strong> 절차를 정한다.</div>
+    </div>
+  </div>
+  <div class="rq">
+    <div class="rn" style="background:#1a7a4a;">4</div>
+    <div class="rc">
+      <div class="rt">지불 확인 프로토콜</div>
+      <div class="rd">구매가 만족스럽다는 것을 <strong>카드소지자에게 전달하도록 절차</strong>를 정한다.</div>
+    </div>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<div class="sh"><div class="sn2">3</div><div class="st">SET의 보호 사항 (기본 전자결제 요구사항)</div><span class="slb le">★★</span></div>
+
+<div class="prop-grid">
+  <div class="prop"><div class="prop-t">위조 불가능</div><div class="prop-b">전자화폐는 위조할 수 없어야 함. 동일 화폐 복사·생성 불가.</div></div>
+  <div class="prop"><div class="prop-t">부인 방지</div><div class="prop-b">어느 거래 당사자도 거래를 부인할 수 없어야 함. <strong>전자서명</strong> 활용.</div></div>
+  <div class="prop"><div class="prop-t">틀림 없음</div><div class="prop-b">(Framing-Freeness): 거래하는 요소 간에 서로 관련하여 문제가 없어야 함.</div></div>
+  <div class="prop"><div class="prop-t">무결성·인증</div><div class="prop-b">받은 메시지가 전송 도중 변경되지 않았음을 확인, 상대방임을 확인.</div></div>
+  <div class="prop"><div class="prop-t">기밀성·프라이버시</div><div class="prop-b">인터넷에서는 정보 유출 위험이 높으므로 관련 정보를 보호해야 함.</div></div>
+</div>
+
+</div><!-- /tab-proto -->
+
+<!-- ════ 기출 ════ -->
+<div class="tab-pane" id="tab-exam">
+
+<div class="sh"><div class="sn2">📝</div><div class="st">기출문제 전수 해설 — 5문제</div><span class="slb le">연도순</span></div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2014 국회직 9급 · 신용카드 기반 전자지불 프로토콜</span><span class="es">★★</span></div>
+  <div class="eb">
+    <div class="eq">전자 상거래를 위한 신용카드 기반의 전자지불 프로토콜은?</div>
+    <div class="eo">
+      <div class="op ow">① SSL</div>
+      <div class="op ow">② PGP</div>
+      <div class="op ow">③ OTP</div>
+      <div class="op ow">④ SSO</div>
+      <div class="op or">⑤ SET (Secure Electronic Transaction)</div>
+    </div>
+    <div class="ex"><strong>정답 ⑤</strong> — SET = VISA + MasterCard 합동 개발. 신용카드 기반 전자상거래 보안 프로토콜. SSL은 전송 계층 암호화, PGP는 이메일 보안, OTP는 인증 수단, SSO는 싱글사인온. 오직 SET만 신용카드 거래 전용.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2016 서울시 A·B형 · 전자화폐 유효성 확인 오답</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">전자화폐(Electronic Cash)에 대한 설명으로 옳지 않은 것은?</div>
+    <div class="eo">
+      <div class="op on">① 전자화폐의 지불 과정에서 물품 구입 내용과 사용자 식별 정보가 어느 누구에 의해서도 연계되어서는 안된다.</div>
+      <div class="op on">② 전자화폐는 다른 사람에게 즉시 이전할 수 있어야 한다.</div>
+      <div class="op on">③ 일정한 가치를 가지는 전자화폐는 그 가치만큼 자유롭게 분산이용이 가능해야 한다.</div>
+      <div class="op ow">④ 대금 지불 시 전자화폐의 유효성 확인은 <u>은행이 개입하여 즉시 이루어져야 한다</u>.</div>
+    </div>
+    <div class="ex"><strong>정답 ④</strong> — IC카드형 전자화폐(Mondex 등)는 오프라인에서도 사용 가능해요. "모든 전자화폐가 은행이 개입하여 즉시 온라인 검증을 요구한다"는 것은 틀려요. ①=익명성, ②=양도성, ③=분할성은 모두 전자화폐의 핵심 요구사항.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2018 경찰간부 · 이중서명 정의</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">SET에서 상점이 카드 사용자의 계좌번호와 같은 정보를 모르게 하는 동시에, 상점에 대금을 지불하는 은행은 카드 사용자가 구매한 물건을 알지 못하지만 상점이 요구한 결제 대금이 정확한지 확인할 수 있게 하기 위해 사용하는 방식은?</div>
+    <div class="eo">
+      <div class="op ow">① 인증서(Certificate)</div>
+      <div class="op ow">② 전자봉투(Digital Envelop)</div>
+      <div class="op or">③ 이중서명(Dual Signature)</div>
+      <div class="op ow">④ 지불게이트웨이(Payment Gateway)</div>
+    </div>
+    <div class="ex"><strong>정답 ③</strong> — 이중서명(Dual Signature) = SET의 핵심 기법. 상점은 카드번호 모름, 은행은 주문내용 모름 → 프라이버시 보호 + 거래 정당성 증명 동시 달성. 이중서명은 두 메시지(주문정보+지불정보)의 해시를 연결하여 하나의 서명으로 만드는 기법.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2018 경찰간부 · 전자화폐 요구사항 포함되지 않는 것</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">전자화폐의 요구사항에 포함되지 않는 것은 무엇인가?</div>
+    <div class="eo">
+      <div class="op on">① 이중 사용 방지(Double-Spending)</div>
+      <div class="op on">② 양도성(Transferability)</div>
+      <div class="op ow">③ 온라인성(On-Line)</div>
+      <div class="op on">④ 분할성(Divisibility)</div>
+    </div>
+    <div class="ex"><strong>정답 ③</strong> — 전자화폐 핵심 요구사항: 이중사용방지·재사용불가·익명성·양도성·분할성. <strong>온라인성</strong>은 일부 전자화폐 시스템의 특성이지만 IC카드형(Mondex 등)은 오프라인에서도 사용 가능하므로 필수 요건이 아님.</div>
+  </div>
+</div>
+
+<div class="ec">
+  <div class="eh"><span class="ey">📄 2019 지방직 9급 · 가상화폐 이중지불 문제</span><span class="es">★★★</span></div>
+  <div class="eb">
+    <div class="eq">전자화폐 및 가상화폐에 대한 설명으로 옳지 않은 것은?</div>
+    <div class="eo">
+      <div class="op on">① 전자화폐는 전자적 매체에 화폐의 가치를 저장한 후 물품 및 서비스 구매 시 활용하는 결제 수단이며, 가상화폐는 전자화폐의 일종으로 볼 수 있다.</div>
+      <div class="op on">② 전자화폐는 발행·사용·교환 등의 절차에 관하여 법률에서 규정하고 있으나, 가상화폐는 별도로 규정하고 있지 않다.</div>
+      <div class="op on">③ 가상화폐인 비트코인은 분산원장기술로 알려진 블록체인을 이용한다.</div>
+      <div class="op ow">④ 가상화폐인 비트코인은 전자화폐와 마찬가지로 <u>이중 지불(Double Spending) 문제가 발생하지 않는다</u>.</div>
+    </div>
+    <div class="ex"><strong>정답 ④</strong> — 비트코인도 이론적으로는 이중 지불이 가능해요. 블록체인으로 실용적 방어를 하지만 완전한 방지는 아님(51% 공격 시 이중지불 가능). "발생하지 않는다"는 표현은 과도한 단정. 전자화폐도 이중사용 방지 기술이 필요하고, 비트코인도 마찬가지예요.</div>
+  </div>
+</div>
+
+<!-- 암기 카드 -->
+<div class="dv"></div>
+<div class="mem">
+  <div class="mt">💴 전자지불시스템 핵심 암기</div>
+  <div class="mi">
+    <div class="mr"><span class="mk">지불수단 4종</span><span class="mv">신용카드 / 전자화폐 / 계좌이체(EFT) / 모바일</span></div>
+    <div class="mr"><span class="mk">SET 개발</span><span class="mv"><strong>VISA + MasterCard</strong> / E-cash=Digicash / NetCheque=USC / NetBill=CMU</span></div>
+    <div class="mr"><span class="mk">전자화폐 핵심 4요건</span><span class="mv"><strong>이중사용방지·익명성·양도성·분할성</strong> (온라인성은 필수 아님)</span></div>
+    <div class="mr"><span class="mk">이중사용 방지</span><span class="mv">전자화폐 고유 핵심 요건. <strong>온라인 검증 또는 블라인드서명</strong>으로 해결.</span></div>
+    <div class="mr"><span class="mk">익명성</span><span class="mv">지불 과정에서 물품구입 + 사용자 식별정보 연계 불가. <strong>블라인드 서명</strong> 활용.</span></div>
+    <div class="mr"><span class="mk">전자화폐 vs 가상화폐</span><span class="mv">전자화폐=법률 규정 있음 / 가상화폐=별도 규정 없음(2019 기준)</span></div>
+    <div class="mr"><span class="mk">비트코인 이중지불</span><span class="mv">블록체인으로 실용적 방어. 하지만 <strong>"완전히 불가능"은 오답</strong>. 51%공격 시 가능.</span></div>
+    <div class="mr"><span class="mk">이중서명(SET)</span><span class="mv">상점=카드번호 모름 / 은행=주문내용 모름. 프라이버시+정당성 동시 보장.</span></div>
+  </div>
+</div>
+
+<ul class="cl">
+  <li class="clw">"온라인성 = 전자화폐 필수 요구사항" → ✗ (IC카드형은 오프라인 사용 가능)</li>
+  <li class="clw">"대금 지불 시 은행이 개입하여 즉시 검증해야 함" → ✗ (오프라인 전자화폐 존재)</li>
+  <li class="clw">"비트코인은 이중 지불 문제가 발생하지 않는다" → ✗ (이론적 가능, 블록체인으로 방어)</li>
+  <li class="clr">"전자화폐 핵심 요건: 이중사용방지·익명성·양도성·분할성" → ✓</li>
+  <li class="clr">"SET = VISA+MasterCard / 이중서명 = 상점은 카드번호 모름, 은행은 주문내용 모름" → ✓</li>
+  <li class="clr">"E-cash(Digicash) = 전자화폐(네트워크형) / NetCheque = 전자수표(USC)" → ✓</li>
+</ul>
+
+<div class="ft">
+  <span>정보보안 합격전략 교재 · INHYUK PI</span>
+  <span>Chapter 08 · 전자지불시스템 완전 교재 · 2026 목표</span>
+</div>
+
+</div><!-- /tab-exam -->
+
+</div><!-- /cc -->
+</div><!-- /wrap -->
+
+<script>
+function sw(id){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b=>{
+    if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'"+id+"'")){
+      b.classList.add('active');
+    }
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
