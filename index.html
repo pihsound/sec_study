@@ -85,7 +85,7 @@ body{font-family:var(--sans);background:#eef1f8;color:var(--tx);min-height:100vh
   <div class="htitle">INHYUK PI 정보보안 교재</div>
   <div class="hsub">2026 지방직 · 군무원 · 해경 · 국회직 대비</div>
   <div class="hinfo">
-    <div class="hi"><div class="hi-n">14</div><div class="hi-l">교재 수</div></div>
+    <div class="hi"><div class="hi-n">15</div><div class="hi-l">교재 수</div></div>
     <div class="hi"><div class="hi-n">Ch.08</div><div class="hi-l">웹보안 · 전자우편 · FTP</div></div>
     <div class="hi"><div class="hi-n">스토리</div><div class="hi-l">+ 기출 수록</div></div>
   </div>
@@ -334,6 +334,23 @@ body{font-family:var(--sans);background:#eef1f8;color:var(--tx);min-height:100vh
       </div>
     </a>
 
+    <!-- 15 -->
+    <a class="card c2" href="08_http.html">
+      <div class="card-top">
+        <div class="card-num" style="color:#2d5be3;">15 · HTTP · HTTPS</div>
+        <div class="card-title">HTTP 정의·버전(1.0/1.1/2.0)·메서드·응답코드 전체·HTTPS</div>
+        <div class="card-desc">비연결성·무상태성 · RFC 1945/2616/7540 · GET·POST 등 8메서드 · 응답코드 1xx~5xx 전체 · 501 vs 503 함정 · HTTPS=443포트</div>
+      </div>
+      <div class="card-bottom">
+        <div class="card-tags">
+          <span class="tag t-b">RFC 1945/2616 ★</span>
+          <span class="tag t-r">501 vs 503 함정 ★</span>
+          <span class="tag t-b">응답코드 전체</span>
+        </div>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
   </div>
 
   <!-- 빠른 참고 -->
@@ -406,6 +423,10 @@ body{font-family:var(--sans);background:#eef1f8;color:var(--tx);min-height:100vh
       <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;">
         <span style="font-family:monospace;font-size:10.5px;font-weight:700;background:#ccfbf1;color:#0f766e;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;">무선 LAN</span>
         <span style="color:var(--tx);">WPA=<strong>RC4-TKIP</strong> / WPA2=<strong>AES-CCMP</strong> / 블루스나프=OPP 파일접근 / 블루버그=취약한연결 임의동작</span>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:13px;">
+        <span style="font-family:monospace;font-size:10.5px;font-weight:700;background:#e8eeff;color:#2d5be3;padding:2px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;">HTTP 응답코드</span>
+        <span style="color:var(--tx);">401=인증실패 / 403=접근금지 / 404=URL없음 / <strong>501=기능미지원</strong> / <strong>503=과부하</strong>(501≠503 함정)</span>
       </div>
     </div>
   </div>
